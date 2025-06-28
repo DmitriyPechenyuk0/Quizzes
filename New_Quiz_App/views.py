@@ -104,6 +104,26 @@ def render_new_quiz_student():
 
 
 @login_required
+def render_new_quiz_student_correct_answer():
+    context = {
+        'page': 'home',
+        'is_auth': current_user.is_authenticated,
+        'name': current_user.name
+    }
+    return render_template('New_Quiz_App_Student_Correct_Answer.html', **context)
+
+
+@login_required
+def render_new_quiz_student_wrong_answer():
+    context = {
+        'page': 'home',
+        'is_auth': current_user.is_authenticated,
+        'name': current_user.name
+    }
+    return render_template('New_Quiz_App_Student_Wrong_Answer.html', **context)
+
+
+@login_required
 def render_new_quiz_2_student():
     context = {
         'page': 'home',
