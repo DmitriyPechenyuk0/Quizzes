@@ -1,5 +1,5 @@
 import flask, flask_login
-from profile.models import User
+from profile_app.models import User
 from project import login_manager
 
 

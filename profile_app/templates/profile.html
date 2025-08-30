@@ -3,14 +3,14 @@
 {% block title %}Профиль{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('profile.static', filename='css/profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('profile_app.static', filename='css/profile.css') }}">
 {% endblock %}
 
 {% block main %}
 <div class="profile-container">
     <div class="profile-header">
         <div class="profile-info">
-            <img src="{{ url_for('profile.static', filename='img/Avatar.png') }}" alt="Avatar">
+            <img src="{{ url_for('profile_app.static', filename='img/Avatar.png') }}" alt="Avatar">
             <div class="l">
                 <h1>{{ name }}</h1>
                 <a href="mailto:{{ email }}">{{ email }}</a>
@@ -35,7 +35,11 @@
             <div class="quiz-grid">
                 {% for quiz in quizzes %}
                     <div class="quiz-card">
+                        {% if quiz.image %}
                         <img src="{{ url_for('New_Quiz.static', filename='media/' + quiz.image) }}" alt="Quiz Image">
+                        {% else %}
+                        <img src="" alt="QuizImage">
+                        {% endif %}
                         <p>{{ quiz.name }}</p>
                     </div>
                 {% endfor %}

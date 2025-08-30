@@ -2,7 +2,7 @@ from flask_login import login_required, current_user, logout_user
 from flask import redirect, url_for
 import flask
 
-from profile.models import User
+from profile_app.models import User
 from New_Quiz_App.models import Quiz
 @login_required
 def show_profile_page():
@@ -18,8 +18,6 @@ def show_profile_page():
     }
     
     return flask.render_template("profile.html", **context)
-
-
 
 @login_required
 def logout():

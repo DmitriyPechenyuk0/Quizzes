@@ -1,5 +1,5 @@
 import flask
-from profile.models import User, db
+from profile_app.models import User, db
 
 def show_page_registration():
     context = {'page': 'home'}
