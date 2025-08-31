@@ -183,8 +183,8 @@ def on_answer(data):
     if exists:
         return
 
-    is_correct = is_correct(answer_text, cur_quest.correct_answer)
-    db.session.add(SessionAnswer(session_id=session.id, user_id=current_user.id, question_id=cur_quest.id, answer_text=answer_text, is_correct=is_correct))
+    i_correct = is_correct(answer_text, cur_quest.correct_answer)
+    db.session.add(SessionAnswer(session_id=session.id, user_id=current_user.id, question_id=cur_quest.id, answer_text=answer_text, is_correct=i_correct))
     db.session.commit()
 
     total = SessionParticipant.query.filter_by(session_id=session.id).count()

@@ -106,7 +106,7 @@ def render_new_quiz_settigs():
 
 
             session['quiz_name'] = quiz_name
-            return redirect(url_for('New_Quiz.render_new_quiz', quiz_name=quiz_name))
+            return redirect(url_for('home_app.show_home_page'))
 
 
         except Exception as e:

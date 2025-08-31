@@ -30,7 +30,7 @@
       });
 
       socket.on("room:answers_progress", (p) => {
-        $("progress").innerText = `Ответило: ${p.answered}/${p.total}`;
+        $("progress").innerText = `Passed: ${p.answered}/${p.total}`;
       });
 
       socket.on("room:question_closed", (d) => {
@@ -38,13 +38,14 @@
         const ans = Array.isArray(d.correct_answer)
           ? d.correct_answer.join(" | ")
           : (d.correct_answer || "не задан");
-        $("state").innerText = `Закрыт вопрос ${d.question_id || d.question_index}. Правильный ответ: ${ans}`;
+        $("state").innerText = `Close question ${d.question_id || d.question_index}. True answer: ${ans}`;
         clearUI({ keepState: true });
       });
 
       socket.on("room:final_results", (res) => {
         clearUI();
-        $("question").innerHTML = `<h3>results</h3><pre>${JSON.stringify(res, null, 2)}</pre>`;
+        $("question").innerHTML = `<h3>Results</h3>`;
+        $("stats").innerHTML = `<pre>${JSON.stringify(res, null, 2)}</pre>`
       });
     }
 

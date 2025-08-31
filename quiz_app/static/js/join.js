@@ -23,7 +23,7 @@
       <div style="margin-top:8px">
         <input id="txtAnswer" type="text" placeholder="Your answer:" style="width:280px"/>
       </div>
-      <button id="send" style="margin-top:8px">Отправить</button>
+      <button id="send" style="margin-top:8px">Send</button>
     `;
     $("send").onclick = () => {
       const payload = $("txtAnswer").value;
