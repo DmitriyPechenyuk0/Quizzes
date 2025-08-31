@@ -1,4 +1,3 @@
-// quiz/static/js/join.js
 (function () {
   let socket = null;
   let state = { code: "" };
