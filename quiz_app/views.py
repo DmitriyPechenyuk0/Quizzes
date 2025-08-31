@@ -59,6 +59,7 @@ def join_page():
                'is_auth': current_user.is_authenticated,
                'name': current_user.name,
                'quizzes': quizzes}
+    
     return render_template("join.html", code=code, **context)
 
 def host_page(code):
