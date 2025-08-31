@@ -1,34 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+    <meta charset="utf-8">
+    <title>Комната ведущего</title>
     </head>
     <body>
         <h3>Код сессии: {{ code }}</h3>
+        <div id="host-root" data-code="{{ code }}"></div>
+
         <button id="start">Старт</button>
         <button id="next">Далее</button>
         <button id="finish">Завершить</button>
+
         <div id="state"></div>
         <div id="question"></div>
         <div id="progress"></div>
+
+        <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+        <script src="{{ url_for('quiz_app.static', filename='js/teacher_room.js') }}?v=1"></script>
     </body>
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
-    <script>
-        const socket = io();
-        const code = "{{ code }}";
-        start.onclick = () => socket.emit("teacher:start", { code });
-        next.onclick = () => socket.emit("teacher:next", { code });
-        finish.onclick = () => socket.emit("teacher:finish", { code });
-        socket.emit("join", { code });
-        
-        socket.on("room:state", (s) => { state.innerText = JSON.stringify(s, null, 2); if (s.question) renderQuestion(s.question); });
-        socket.on("room:question", (q) => renderQuestion(q));
-        socket.on("room:answers_progress", (p) => progress.innerText = `Ответило: ${p.answered}/${p.total}`);
-        socket.on("room:question_closed", (d) => state.innerText = `Закрыт вопрос ${d.question_index}. Правильный ответ: ${Array.isArray(d.correct_answer)? d.correct_answer.join(' | ') : (d.correct_answer || 'не задан')}`);
-        socket.on("room:final_results", (res) => question.innerHTML = `<h3>Итоги</h3><pre>${JSON.stringify(res, null, 2)}</pre>`);
-        
-        function renderQuestion(q) { question.innerHTML = `<div><strong>${q.text}</strong></div>`; }
-        </script>
 </html>
