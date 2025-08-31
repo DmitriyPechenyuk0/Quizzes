@@ -48,8 +48,6 @@ def render_new_quiz_settigs():
             filename = "json_data.json"
             empty_data = []
             
-            
-            
             file_path = os.path.join(DIR, 'static', 'quiz_data', filename)
 
 

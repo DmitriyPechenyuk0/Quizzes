@@ -4,7 +4,7 @@ from sqlalchemy import text
 from flask_login import current_user
 from project.settings import db
 from .models import QuizSession, Question
-
+from New_Quiz_App.models import Quiz
 def _gen_code():
     while True:
         code = f"{random.randint(0, 999999):06d}"
@@ -54,7 +54,12 @@ def start_session_redirect(quiz_id: int):
 
 def join_page():
     code = request.args.get("code", "")
-    return render_template("join.html", code=code)
+    quizzes = Quiz.query.all()
+    context = {'page': 'home',
+               'is_auth': current_user.is_authenticated,
+               'name': current_user.name,
+               'quizzes': quizzes}
+    return render_template("join.html", code=code, **context)
 
 def host_page(code):
     return render_template("teacher_room.html", code=code)

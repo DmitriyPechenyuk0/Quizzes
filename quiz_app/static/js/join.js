@@ -1,3 +1,4 @@
+// quiz/static/js/join.js
 (function () {
   let socket = null;
   let state = { code: "" };
@@ -9,14 +10,21 @@
     return p.get("code") || "";
   }
 
+  function clearUI({ keepStatus = false } = {}) {
+    $("question").innerHTML = "";
+    $("progress").innerText = "";
+    if (!keepStatus) $("status").innerText = "";
+  }
+
   function renderQuestion(q) {
+    clearUI({ keepStatus: false });
     const container = $("question");
     container.innerHTML = `
       <div><strong>${q.text}</strong></div>
       <div style="margin-top:8px">
-        <input id="txtAnswer" type="text" placeholder="Ваша Відповідь" style="width:280px"/>
+        <input id="txtAnswer" type="text" placeholder="Your answer:" style="width:280px"/>
       </div>
-      <button id="send" style="margin-top:8px">Надіслати</button>
+      <button id="send" style="margin-top:8px">Отправить</button>
     `;
     $("send").onclick = () => {
       const payload = $("txtAnswer").value;
@@ -28,7 +36,7 @@
     $("joinBtn").onclick = () => {
       const code = ($("code").value || "").trim();
       if (!code) {
-        $("status").innerText = "Введите код";
+        $("status").innerText = "Enter code";
         return;
       }
       state.code = code;
@@ -51,7 +59,7 @@
     });
 
     socket.on("error", (e) => {
-      $("status").innerText = e?.message || "Помилка";
+      $("status").innerText = e?.message || "Error";
     });
 
     socket.on("room:state", (s) => {
@@ -63,27 +71,27 @@
     });
 
     socket.on("room:answers_progress", (p) => {
-      $("progress").innerText = `Відповіло: ${p.answered}/${p.total}`;
+      $("progress").innerText = `responsed: ${p.answered}/${p.total}`;
     });
 
     socket.on("room:question_closed", (d) => {
       const ans = Array.isArray(d.correct_answer)
         ? d.correct_answer.join(" | ")
-        : (d.correct_answer || "не задан");
-      $("status").innerText = `Правильна відповідь: ${ans}`;
+        : (d.correct_answer || "not set");
+      $("status").innerText = `True answer: ${ans}`;
+      clearUI({ keepStatus: true });
     });
 
     socket.on("room:final_results", (res) => {
-      $("question").innerHTML = `<h3>Результати</h3><pre>${JSON.stringify(res, null, 2)}</pre>`;
+      clearUI();
+      $("question").innerHTML = `<h3>Results</h3><pre>${JSON.stringify(res, null, 2)}</pre>`;
     });
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-
-    socket = io();
-    attachEvents();
-
-    const codeFromQuery = getCodeFromQuery();
-    if (codeFromQuery && $("code")) $("code").value = codeFromQuery;
-  });
+    document.addEventListener("DOMContentLoaded", () => {
+      socket = io();
+      attachEvents();
+      const codeFromQuery = getCodeFromQuery();
+      if (codeFromQuery && $("code")) $("code").value = codeFromQuery;
+    });
 })();

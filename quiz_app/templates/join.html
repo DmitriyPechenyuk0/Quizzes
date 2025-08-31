@@ -1,20 +1,38 @@
-<!DOCTYPE html>
-<html>
-    <head>
-    <meta charset="utf-8">
-    <title>Присоединиться к квизу</title>
-    </head>
-    <body>
-        <div>
-            <input id="code" placeholder="Код (6 цифр)" value="{{ code or '' }}"/>
-            <button id="joinBtn">Войти</button>
-        </div>
-        <hr/>
+
+{% extends "base.html" %}
+
+{% block title %}Join{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('join.static', filename='css/join.css') }}">
+{% endblock %}
+
+{% block main %}
+    <div class="join-page">
+        <form method="post" class="join-form">
+            <div class="input-wrapper">
+                <input name="join_code" type="text" maxlength="6" placeholder="Enter join code" id="code" value="{{ code or '' }}"/>
+                <button type="button" id="joinBtn">⏎</button>
+            </div>
+        </form>
+        
         <div id="status"></div>
         <div id="question"></div>
         <div id="progress"></div>
-        <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+        
+        <div class="passed-quizzes">
+            <h2>All Quizzes</h2>
+            <div class="scroll-quizzes">
+                {% for quiz in quizzes %}
+                    <div class="quiz-pcs">
+                        <img src="{{ url_for('New_Quiz.static', filename='media/' ~ quiz.image) }}">
+                        <p>{{ quiz.name }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
 
-        <script src="{{ url_for('quiz_app.static', filename='js/join.js') }}?v=1"></script>
-    </body>
-</html>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+
+    <script src="{{ url_for('quiz_app.static', filename='js/join.js') }}?v=1"></script>
+{% endblock %}
