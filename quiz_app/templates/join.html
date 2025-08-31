@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <div>
+          <input id="code" placeholder="Код (6 цифр)" value="{{ code or '' }}"/>
+          <button id="joinBtn">Войти</button>
+        </div>
+        <hr/>
+        <div id="status"></div>
+        <div id="question"></div>
+        <div id="progress"></div>
+    </body>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+    <script>
+        const socket = io();
+        let state = {};
+
+        joinBtn.onclick = () => {
+        const code = document.getElementById("code").value.trim();
+        state.code = code;
+        socket.emit("join", { code });
+        };
+
+        socket.on("error", (e) => status.innerText = e.message || "Ошибка");
+        socket.on("room:state", (s) => { if (s.question) renderQuestion(s.question); });
+        socket.on("room:question", (q) => renderQuestion(q));
+        socket.on("room:answers_progress", (p) => progress.innerText = `Ответило: ${p.answered}/${p.total}`);
+        socket.on("room:question_closed", (d) => status.innerText = `Правильный ответ: ${Array.isArray(d.correct_answer)? d.correct_answer.join(' | ') : (d.correct_answer || 'не задан')}`);
+        socket.on("room:final_results", (res) => question.innerHTML = `<h3>Результаты</h3><pre>${JSON.stringify(res, null, 2)}</pre>`);
+
+        function renderQuestion(q) {
+        question.innerHTML = `
+            <div><strong>${q.text}</strong></div>
+            <div style="margin-top:8px"><input id="txtAnswer" type="text" placeholder="Ваш ответ" style="width:280px"/></div>
+            <button id="send" style="margin-top:8px">Отправить</button>
+        `;
+        document.getElementById("send").onclick = () => {
+            const payload = document.getElementById("txtAnswer").value;
+            socket.emit("participant:answer", { code: state.code, answer: payload });
+        };
+        }
+    </script>
+</html>

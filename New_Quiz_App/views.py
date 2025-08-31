@@ -5,14 +5,9 @@ from project.settings import db
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from profile_app.models import User
-import os
-import json
+import os, json, string, flask, secrets
 from flask import request, jsonify
-import string
-import flask
-import secrets
-
-
+from quiz_app.models import Question
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -89,10 +84,9 @@ def render_new_quiz_settigs():
 
             images_folder_in_media = os.path.join(base_media_dir, 'Images')
             os.makedirs(images_folder_in_media, exist_ok=True)
-
+            q_count = int(request.form['num-questions'])
             quiz = Quiz(
                 name=quiz_name,
-                json_test_data=os.path.join(base_media_dir, quiz_name, filename),
                 count_questions=int(request.form['num-questions']),
                 topic=request.form['topic'],
                 image=f"{image_filename}" if image_filename else None,
@@ -100,8 +94,16 @@ def render_new_quiz_settigs():
                 enter_code=code,
                 owner = id_user
             )
-
             db.session.add(quiz)
+            db.session.flush()
+            for question in range(q_count):
+                quest = Question(
+                    quiz_id = quiz.id,
+                    order_index = question + 1,
+                    text = "Столиця України",
+                    correct_answer = "Київ"
+                )
+                db.session.add(quest)
             db.session.commit()
 
 
