@@ -44,14 +44,27 @@ def _broadcast_state(code: str):
 @socketio.on("join")
 def on_join(data):
     code = str(data.get("code", "")).strip()
+    as_host = bool(data.get("as_host"))
+
     if not code:
         return emit("error", {"message": "Нужен code"})
+
     if not getattr(current_user, "is_authenticated", False):
         return emit("error", {"message": "Войдите в аккаунт"})
 
     s = QuizSession.query.filter_by(code=code).first()
     if not s or s.status == "FINISHED":
         return emit("error", {"message": "Сессия недоступна"})
+
+    if getattr(current_user, "is_admin", False) and not as_host:
+        return emit("error", {"message": "Ведущему нельзя подключаться как участник"})
+
+    if as_host and getattr(current_user, "is_admin", False):
+        SessionParticipant.query.filter_by(session_id=s.id, user_id=current_user.id).delete()
+        db.session.commit()
+        join_room(code)
+        _broadcast_state(code)
+        return
 
     display_name = getattr(current_user, "nickname", None) or \
                    getattr(current_user, "username", None) or f"user_{current_user.id}"
