@@ -29,3 +29,20 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     }
 })
+document.addEventListener("DOMContentLoaded", function () {
+    const generateBtn = document.getElementById("generateQuizzesBtn");
+    const scrollFrame = document.querySelector(".scroll-frame");
+
+    generateBtn.addEventListener("click", () => {
+        const count = parseInt(document.getElementById("quizCount").value);
+        scrollFrame.innerHTML = "";     
+
+        if (!isNaN(count) && count > 0) {
+            for (let i = 1; i <= count; i++) {
+                const formDiv = document.createElement("div");
+                formDiv.textContent = `#${i} Квиз`;
+                scrollFrame.appendChild(formDiv);
+            }
+        }
+    });
+});

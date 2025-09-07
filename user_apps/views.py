@@ -7,6 +7,7 @@ from New_Quiz_App.models import Quiz
 
 
 
+
 def show_authorization():
     context = {'page': 'authorization'}
     if flask_login.current_user.is_authenticated:
@@ -26,7 +27,7 @@ def show_authorization():
     print(User.query.all())
     
 
-    return flask.render_template("authorization.html", **context )
+    return flask.render_template(template_name_or_list = "authorization.html", **context )
 
 
 
@@ -47,7 +48,7 @@ def show_profile_page():
         'created_quizzes_count': len(quizzes)  
     }
     
-    return flask.render_template("profile.html", **context)
+    return flask.render_template(template_name_or_list = "profile.html", **context)
 
 
 @login_required
@@ -78,4 +79,9 @@ def show_page_registration():
         except Exception as e:
             print(e)
 
-    return flask.render_template(template_name_or_list='registration.html', **context)
+    return flask.render_template(template_name_or_list="registration.html", **context)
+
+
+
+
+

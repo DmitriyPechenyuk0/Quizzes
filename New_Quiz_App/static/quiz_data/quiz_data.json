@@ -1,24 +1,30 @@
-[
-  {
-    "mode": "large-selection",
-    "question": "asdfjhgagjhsdf",
-    "answers": [
+{
+  "gsdfgsdfgdf": {
+    "name": "gsdfgsdfgdf",
+    "topic": "",
+    "questions": [
       {
-        "text": "asdhgkf",
-        "correct": true
-      },
-      {
-        "text": "adsfg",
-        "correct": false
-      },
-      {
-        "text": "sdfh",
-        "correct": false
-      },
-      {
-        "text": "hsdfg",
-        "correct": true
+        "mode": "large-selection",
+        "question": "ooo1)0",
+        "answers": [
+          {
+            "text": "123",
+            "correct": false
+          },
+          {
+            "text": "4",
+            "correct": true
+          },
+          {
+            "text": "5",
+            "correct": false
+          },
+          {
+            "text": "86",
+            "correct": true
+          }
+        ]
       }
     ]
   }
-]
+}

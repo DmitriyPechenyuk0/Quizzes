@@ -27,20 +27,14 @@
             </button>
             
             <div class="scroll-frame">
-                <div>#1 Fill form</div>
-                <div>#2 Large selection</div>
-                <div>#3 Fill form</div>
-                <div>#4 Large selection</div>
-                <div>#5 Fill form</div>
-                <div>#6 Large selection</div>
-                <div>#7 Fill form</div>
-                <div>#8 Large selection</div>
-                <div>#9 Fill form</div>
-                <div>#10 Large selection</div>
+                {% for question in questions %}
+                    <div>{{ question }}</div>
+                {% endfor %}
             </div>
         </div>
 
         <div class="new-quiz-content">
+            <input type="hidden" id="quiz-name" value="{{ quiz_name }}">
             <div class="view-container">
                 <div class="view large-selection-view" data-view="large-selection">
                     <div class="fill-form-frame">

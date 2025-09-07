@@ -3,14 +3,29 @@
 {% block title %}Профиль{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('user_apps.static', filename='css/profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('profile.static', filename='css/profile.css') }}">
 {% endblock %}
 
 {% block main %}
 <div class="profile-container">
     <div class="profile-header">
         <div class="profile-info">
-            <img src="{{ url_for('user_apps.static', filename='img/Avatar.png') }}" alt="Avatar">
+            <button type="button" class="icon-button">
+                <input hidden type="file" id="fileInput" accept="image/*" enctype="multipart/form-data" action="/upload">
+                {% if my_avatar %}
+                    <label for="fileInput" class="label-img">
+                        <img src="{{ url_for('profile.static', filename='img/' + name + '.png') }}" alt="" class="user-img">
+                    </label>
+                {% else %}
+                    <label for="fileInput" class="label-img">
+                        <img src="{{ url_for('profile.static', filename='img/Avatar.png') }}" alt="Avatar" class="user-img">
+                    </label>
+                {% endif %}
+            </button>
+            
+            
+
+
             <div class="l">
                 <h1>{{ name }}</h1>
                 <a href="mailto:{{ email }}">{{ email }}</a>
@@ -35,7 +50,11 @@
             <div class="quiz-grid">
                 {% for quiz in quizzes %}
                     <div class="quiz-card">
+                        {% if quiz.image %}
                         <img src="{{ url_for('New_Quiz.static', filename='media/' + quiz.image) }}" alt="Quiz Image">
+                        {% else %}
+                        <img src="" alt="QuizImage">
+                        {% endif %}
                         <p>{{ quiz.name }}</p>
                     </div>
                 {% endfor %}
