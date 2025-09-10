@@ -1,0 +1,9 @@
+{% block main %}
+<link rel="stylesheet" href="{{ url_for('New_Quiz.static', filename='css/error_403.css') }}">
+<div class="error-container">
+    <h2>403 - Доступ заборонено</h2>
+    <p>У вас немає дозволу для перегляду цієї сторінки, оскільки ви не є викладачем.</p>
+    <p>Будь ласка, зверніться до адміністратора для отримання доступу.</p>
+    <a href="{{ url_for('home_app.show_home_page') }}" class="home-link">Повернутися на головну</a>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %} Registration page {% endblock %}
+
+{% block head %} 
+<link rel="stylesheet" href="{{ url_for('registration.static', filename='css/registration.css') }}">
+{% endblock %}
+
+{% block main %}
+<div class="registration-box">
+    <h2>Registration</h2>
+    <form method="post">
+        <div class='input-pass'>
+            <label for="login" class="input-title">Login:</label>
+            <input type="text" id="login" name="login" class="input-field">
+        </div>
+        <div class='input-pass'>
+            <label for="email" class="input-title">Email:</label>
+            <input type="email" id="email" name="email" class="input-field" placeholder="example@gmail.com">
+        </div>
+        <div class='input-pass'>
+            <label for="password" class="input-title">Password:</label>
+            <input type="password" id="password" name="password" class="input-field">
+        </div>
+        <div class='input-pass'> 
+            <label for="confirm" class="input-title"> Confirm Password:</label>
+            <input type="password" id="confirm" name="confirm" class="input-field">
+        </div>
+        <div class="label-text">
+            <label for="login">Student or teacher</label>
+        </div>
+        <div class="choose-choose">
+            <div>
+                <input type="radio" id="Student" name="Teacher" value="0" class="choose-btn" checked>
+                <label for="Student" class="label"> Student</label>
+            </div>
+            <div>
+                <input type="radio" id="Teacher" name="Teacher" value="1" class="choose-btn">
+                <label for="Teacher" class="label"> Teacher</label>
+            </div>
+        </div>
+            
+        <p><a class="n-underline">Already registered? </a><a href="/login" class="input">Go to authorization</a></p>
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+</div>
+{% endblock %}
