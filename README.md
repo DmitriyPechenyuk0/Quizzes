@@ -44,6 +44,39 @@ https://www.figma.com/design/YzImPm9jOsLFq1Hr3ium2P/Quizzes?node-id=0-1&p=f
 </details>
 
 <details>
+  <summary><strong>auth/reg</strong></summary>
+
+  ---
+  #### EN
+  > __auth/reg__ – This is the main app in the project. It handles the core project configurations.
+  ---
+  #### UA
+  > __auth/reg__ – це головний застосунок у проєкті. Саме в цьому застосунку здійснюються основні налаштування проєкту.
+  ---
+</details>
+
+<details>
+  <summary><strong>history</strong></summary>
+
+  ---
+  #### EN
+  > __history__ – this app is responsible for displaying and configuring the QR code creation page. It also includes the logic for customizing QR codes.<br>
+  >* If the user has a Free subscription, only basic color changes and the ability to create one QR code are available.
+  >* If the user has a Standard subscription, they can create up to 10 QR codes with a logo in the center and color customization.
+  >* If the user has a Pro subscription, they can create up to 100 QR codes with color customization, shape modification, and logo addition.
+  >* If the user has a Commerce subscription, they can only customize the color of QR codes. If they want to change the shape or add a logo, they need to purchase the corresponding monthly subscription.
+  ---
+  #### UA
+  > __history__ – цей застосунок відповідає за відображення та налаштування сторінки створення QR-кодів. Також у ньому прописана логіка кастомізації QR-кодів.<br>
+  >* Якщо користувач має підписку Free, йому доступна лише базова зміна кольору та можливість створення одного QR-коду.
+  >* Якщо користувач має підписку Standard, він може створювати до 10 QR-кодів із логотипом у центрі та кастомізацією кольору.
+  >* Якщо користувач має підписку Pro, він може створювати до 100 QR-кодів із кастомізацією кольору, зміною форми квадратів та додаванням логотипа.
+  >* Якщо користувач має підписку Commerce, він може створювати QR-коди лише з кастомізацією кольору. Якщо ж він хоче змінити форму або додати логотип, йому потрібно придбати відповідну щомісячну підписку.
+  ---
+
+</details>
+
+<details>
   <summary><strong>home_app</strong></summary>
 
   ---
@@ -56,75 +89,44 @@ https://www.figma.com/design/YzImPm9jOsLFq1Hr3ium2P/Quizzes?node-id=0-1&p=f
 </details>
 
 <details>
-  <summary><strong>profile</strong></summary>
+  <summary><strong>profile_app</strong></summary>
 
   ---
   #### EN
-  > __profile__ – This app is responsible for account creation, authentication, and logout. Additionally, this app includes the Profile model, which handles table creation in the database.
+  > __profile_app__ – This app is responsible for account creation, authentication, and logout. Additionally, this app includes the Profile model, which handles table creation in the database.
   ---
   #### UA
-  > __profile__ – цей застосунок відповідає за створення акаунта, авторизацію, а також вихід із нього. Крім того, у цьому застосунку створено модель Profile, яка відповідає за створення таблиці в БД.
+  > __profile_app__ – цей застосунок відповідає за створення акаунта, авторизацію, а також вихід із нього. Крім того, у цьому застосунку створено модель Profile, яка відповідає за створення таблиці в БД.
   ---
 </details>
 
+
+
 <details>
-  <summary><strong>contact_app</strong></summary>
+  <summary><strong>project</strong></summary>
 
   ---
   #### EN
-  > __contact_app__ – This app is responsible for displaying and configuring the contacts page, as well as sending feedback via email.
-  ---
-  #### UA
-  > __contact_app__ – цей застосунок відповідає за відображення та налаштування сторінки контактів, а також за надсилання відгуків на пошту.
-  ---
-</details>
-
-<details>
-  <summary><strong>managesub_app</strong></summary>
-
-  ---
-  #### EN
-  > __managesub_app__ – this app is responsible for displaying and configuring the subscription settings page. It also includes the main logic for changing subscriptions. There are two types of subscriptions, divided into monthly and one-time purchases.  
+  > __project__ – this app is responsible for displaying and configuring the subscription settings page. It also includes the main logic for changing subscriptions. There are two types of subscriptions, divided into monthly and one-time purchases.  
   > Monthly subscriptions include Free, Standard, and Pro. The one-time purchase subscription is Commerce. A user can have both types of subscriptions simultaneously.  
   > With a monthly subscription, the user can create QR codes only with a link, and their validity period is 30 days.  
   > With a one-time purchase subscription, the user can create QR codes only with text, and their validity period is unlimited.  
   ---
   #### UA
-  > __managesub_app__  – цей застосунок відповідає за відображення та налаштування сторінки налаштування підписки. Також у ньому прописана основна логіка зміни підписок. Є два типи підписок, які поділяються на щомісячні та одноразову покупку. Щомісячні підписки – це Free, Standard, Pro. Одноразово-купівельна підписка – це Commerce. Користувач може мати одночасно два типи підписки. З щомісячною підпискою користувач може створювати QR-коди тільки з посиланням, і їх строк придатності – 30 днів. З одноразово-купівельною підпискою користувач може створювати QR-коди тільки з текстом, і їх строк придатності – безмежний.
+  > __project__  – цей застосунок відповідає за відображення та налаштування сторінки налаштування підписки. Також у ньому прописана основна логіка зміни підписок. Є два типи підписок, які поділяються на щомісячні та одноразову покупку. Щомісячні підписки – це Free, Standard, Pro. Одноразово-купівельна підписка – це Commerce. Користувач може мати одночасно два типи підписки. З щомісячною підпискою користувач може створювати QR-коди тільки з посиланням, і їх строк придатності – 30 днів. З одноразово-купівельною підпискою користувач може створювати QR-коди тільки з текстом, і їх строк придатності – безмежний.
   ---
 
 </details>
 
 <details>
-  <summary><strong>createqr_app</strong></summary>
+  <summary><strong>quiz_app</strong></summary>
 
   ---
   #### EN
-  > __createqr_app__ – this app is responsible for displaying and configuring the QR code creation page. It also includes the logic for customizing QR codes.<br>
-  >* If the user has a Free subscription, only basic color changes and the ability to create one QR code are available.
-  >* If the user has a Standard subscription, they can create up to 10 QR codes with a logo in the center and color customization.
-  >* If the user has a Pro subscription, they can create up to 100 QR codes with color customization, shape modification, and logo addition.
-  >* If the user has a Commerce subscription, they can only customize the color of QR codes. If they want to change the shape or add a logo, they need to purchase the corresponding monthly subscription.
+  > __quiz_app__ – This app is responsible for displaying and configuring the contacts page, as well as sending feedback via email.
   ---
   #### UA
-  > __createqr_app__ – цей застосунок відповідає за відображення та налаштування сторінки створення QR-кодів. Також у ньому прописана логіка кастомізації QR-кодів.<br>
-  >* Якщо користувач має підписку Free, йому доступна лише базова зміна кольору та можливість створення одного QR-коду.
-  >* Якщо користувач має підписку Standard, він може створювати до 10 QR-кодів із логотипом у центрі та кастомізацією кольору.
-  >* Якщо користувач має підписку Pro, він може створювати до 100 QR-кодів із кастомізацією кольору, зміною форми квадратів та додаванням логотипа.
-  >* Якщо користувач має підписку Commerce, він може створювати QR-коди лише з кастомізацією кольору. Якщо ж він хоче змінити форму або додати логотип, йому потрібно придбати відповідну щомісячну підписку.
-  ---
-
-</details>
-
-<details>
-  <summary><strong>yourqr_app</strong></summary>
-
-  ---
-  #### EN
-  > __yourqr_app__ – This app is responsible for displaying and configuring the page for tracking created QR codes.
-  ---
-  #### UA
-  > __yourqr_app__ Цей застосунок відповідає за відображення та налаштування сторінки відстежування створених QR кодів
+  > __quiz_app__ – цей застосунок відповідає за відображення та налаштування сторінки контактів, а також за надсилання відгуків на пошту.
   ---
 </details>
 
