@@ -70,6 +70,10 @@ def render_new_quiz_settings():
             code = ''
             for number in range(6):
                 code += secrets.choice(string.digits)
+                
+                
+                
+                
 
             images_folder_in_media = os.path.join(base_media_dir, 'Images')
             os.makedirs(images_folder_in_media, exist_ok=True)
