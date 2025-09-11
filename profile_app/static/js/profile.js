@@ -1,16 +1,10 @@
 let currentQuizId = null;
-let currentCard = null; // Текущая карточка для удаления
 
-// Открытие модалки
+
 function openModal(quizId, quizName) {
     console.log('Opening modal:', quizId, quizName);
-
     currentQuizId = quizId;
-
-    // Находим карточку по quizId
-    currentCard = document.querySelector(`.quiz-card[onclick*="'${quizId}'"]`);
-
-    document.getElementById('modalTitle').textContent = quizName;
+    
     document.getElementById('startBtn').href = `/quiz/start/${quizId}`;
 
     const modal = document.getElementById('quizModal');
@@ -18,57 +12,69 @@ function openModal(quizId, quizName) {
     document.body.style.overflow = 'hidden';
 }
 
-// Закрытие модалки
+
 function closeModal() {
     console.log('Closing modal');
     const modal = document.getElementById('quizModal');
     modal.style.display = 'none';
     document.body.style.overflow = 'auto';
     currentQuizId = null;
-    currentCard = null;
 }
 
-// Удаление квиза
+
 async function deleteQuiz() {
     if (!currentQuizId) return;
-
-    if (!confirm('Вы уверены, что хотите удалить этот квиз?')) return;
 
     try {
         const response = await fetch(`/quiz/delete/${currentQuizId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCSRFToken() // если используешь Flask-WTF
+                'X-CSRFToken': getCSRFToken()
             }
         });
 
         if (response.ok) {
             console.log('Quiz deleted:', currentQuizId);
-            if (currentCard) currentCard.remove(); // Удаляем из DOM
+        
+            const card = document.querySelector(`.quiz-card[onclick*="'${currentQuizId}'"]`);
+            if (card) card.remove();
             closeModal();
+      
+            updateQuizCount();
         } else {
             const data = await response.json();
-            alert('Ошибка при удалении квиза: ' + data.message);
+            console.error('Ошибка при удалении квиза:', data.message);
         }
     } catch (err) {
-        console.error(err);
-        alert('Ошибка при удалении квиза');
+        console.error('Ошибка при удалении квиза:', err);
     }
 }
 
-// Закрытие модалки по клику вне окна
+
+function updateQuizCount() {
+    const quizCards = document.querySelectorAll('.quiz-card');
+    const countElement = document.querySelector('.quiz-count-box:first-child p');
+    if (countElement) {
+        countElement.textContent = quizCards.length;
+    }
+}
+
+
+function getCSRFToken() {
+    const token = document.querySelector('meta[name="csrf-token"]');
+    return token ? token.content : '';
+}
+
+
 document.getElementById('quizModal').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
 });
 
-// Получение CSRF токена для Flask-WTF
-function getCSRFToken() {
-    const token = document.querySelector('meta[name=csrf-token]');
-    return token ? token.getAttribute('content') : '';
-}
 
-// Добавляем курсор pointer для карточек
 document.querySelectorAll('.quiz-card').forEach(card => {
     card.style.cursor = 'pointer';
 });
+
+
+

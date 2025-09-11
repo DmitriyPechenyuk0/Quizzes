@@ -56,16 +56,16 @@
 <div id="quizModal" class="modal-backdrop">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 id="modalTitle">Название квиза</h3>
-            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3 id="modalTitle"></h3>
         </div>
-        <p>Что вы хотите сделать с этим квизом?</p>
+        
         <div class="modal-buttons">
-            <a id="startBtn" class="btn btn-primary" href="#">Старт</a>
-            <button class="btn btn-danger" onclick="deleteQuiz()">Удалить</button>
+            <button onclick="deleteQuiz()">Delete</button>
+            <a id="startBtn" href="#">Start</a>
         </div>
     </div>
 </div>
+
 {% endblock %}
 
 <!--  -->
