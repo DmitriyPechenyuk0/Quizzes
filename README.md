@@ -36,10 +36,10 @@ https://www.figma.com/design/YzImPm9jOsLFq1Hr3ium2P/Quizzes?node-id=0-1&p=f
 
   ---
   #### EN
-  > __New_Quiz_App__ – This is the main app in the project. It handles the core project configurations.
+  > __New_Quiz_App__ – application for creating new tests
   ---
   #### UA
-  > __New_Quiz_App__ – це головний застосунок у проєкті. Саме в цьому застосунку здійснюються основні налаштування проєкту.
+  > __New_Quiz_App__ – додаток для створення нових тестів
   ---
 </details>
 
@@ -48,10 +48,10 @@ https://www.figma.com/design/YzImPm9jOsLFq1Hr3ium2P/Quizzes?node-id=0-1&p=f
 
   ---
   #### EN
-  > __auth/reg__ – This is the main app in the project. It handles the core project configurations.
+  > __auth/reg__ – Application for registration and login to account
   ---
   #### UA
-  > __auth/reg__ – це головний застосунок у проєкті. Саме в цьому застосунку здійснюються основні налаштування проєкту.
+  > __auth/reg__ – Додаток для реєстрації та входу до облікового запису
   ---
 </details>
 
@@ -60,18 +60,10 @@ https://www.figma.com/design/YzImPm9jOsLFq1Hr3ium2P/Quizzes?node-id=0-1&p=f
 
   ---
   #### EN
-  > __history__ – this app is responsible for displaying and configuring the QR code creation page. It also includes the logic for customizing QR codes.<br>
-  >* If the user has a Free subscription, only basic color changes and the ability to create one QR code are available.
-  >* If the user has a Standard subscription, they can create up to 10 QR codes with a logo in the center and color customization.
-  >* If the user has a Pro subscription, they can create up to 100 QR codes with color customization, shape modification, and logo addition.
-  >* If the user has a Commerce subscription, they can only customize the color of QR codes. If they want to change the shape or add a logo, they need to purchase the corresponding monthly subscription.
+  > __history__ – application for viewing test history
   ---
   #### UA
-  > __history__ – цей застосунок відповідає за відображення та налаштування сторінки створення QR-кодів. Також у ньому прописана логіка кастомізації QR-кодів.<br>
-  >* Якщо користувач має підписку Free, йому доступна лише базова зміна кольору та можливість створення одного QR-коду.
-  >* Якщо користувач має підписку Standard, він може створювати до 10 QR-кодів із логотипом у центрі та кастомізацією кольору.
-  >* Якщо користувач має підписку Pro, він може створювати до 100 QR-кодів із кастомізацією кольору, зміною форми квадратів та додаванням логотипа.
-  >* Якщо користувач має підписку Commerce, він може створювати QR-коди лише з кастомізацією кольору. Якщо ж він хоче змінити форму або додати логотип, йому потрібно придбати відповідну щомісячну підписку.
+  > __history__ – додаток для перегляду історії тестів
   ---
 
 </details>
@@ -93,10 +85,10 @@ https://www.figma.com/design/YzImPm9jOsLFq1Hr3ium2P/Quizzes?node-id=0-1&p=f
 
   ---
   #### EN
-  > __profile_app__ – This app is responsible for account creation, authentication, and logout. Additionally, this app includes the Profile model, which handles table creation in the database.
+  > __profile_app__ – This app is responsible for account creation, authentication, and logout. 
   ---
   #### UA
-  > __profile_app__ – цей застосунок відповідає за створення акаунта, авторизацію, а також вихід із нього. Крім того, у цьому застосунку створено модель Profile, яка відповідає за створення таблиці в БД.
+  > __profile_app__ – цей застосунок відповідає за створення акаунта, авторизацію, а також вихід із нього. 
   ---
 </details>
 
@@ -107,13 +99,10 @@ https://www.figma.com/design/YzImPm9jOsLFq1Hr3ium2P/Quizzes?node-id=0-1&p=f
 
   ---
   #### EN
-  > __project__ – this app is responsible for displaying and configuring the subscription settings page. It also includes the main logic for changing subscriptions. There are two types of subscriptions, divided into monthly and one-time purchases.  
-  > Monthly subscriptions include Free, Standard, and Pro. The one-time purchase subscription is Commerce. A user can have both types of subscriptions simultaneously.  
-  > With a monthly subscription, the user can create QR codes only with a link, and their validity period is 30 days.  
-  > With a one-time purchase subscription, the user can create QR codes only with text, and their validity period is unlimited.  
+  > __project__ – 
   ---
   #### UA
-  > __project__  – цей застосунок відповідає за відображення та налаштування сторінки налаштування підписки. Також у ньому прописана основна логіка зміни підписок. Є два типи підписок, які поділяються на щомісячні та одноразову покупку. Щомісячні підписки – це Free, Standard, Pro. Одноразово-купівельна підписка – це Commerce. Користувач може мати одночасно два типи підписки. З щомісячною підпискою користувач може створювати QR-коди тільки з посиланням, і їх строк придатності – 30 днів. З одноразово-купівельною підпискою користувач може створювати QR-коди тільки з текстом, і їх строк придатності – безмежний.
+  > __project__ -
   ---
 
 </details>
@@ -123,10 +112,10 @@ https://www.figma.com/design/YzImPm9jOsLFq1Hr3ium2P/Quizzes?node-id=0-1&p=f
 
   ---
   #### EN
-  > __quiz_app__ – This app is responsible for displaying and configuring the contacts page, as well as sending feedback via email.
+  > __quiz_app__ – the main application, in which all manipulations with tests are carried out, their creation, modification and configuration
   ---
   #### UA
-  > __quiz_app__ – цей застосунок відповідає за відображення та налаштування сторінки контактів, а також за надсилання відгуків на пошту.
+  > __quiz_app__ – основний додаток, в ньому проводяться всі маніпуляції з тестами їх створення зміна та налаштування
   ---
 </details>
 
