@@ -13,7 +13,7 @@ quiz.add_url_rule("/join", view_func=quiz_views.join_page, methods=["GET"])
 quiz.add_url_rule("/host/<code>", view_func=quiz_views.host_page, methods=["GET"])
 quiz.add_url_rule("/start/<int:quiz_id>", view_func=quiz_views.start_session_redirect, methods=["GET"])
 project.register_blueprint(quiz)
-
+profile_app.profille.add_url_rule('/quiz/delete/<int:quiz_id>', view_func=profile_app.delete_quiz, methods=['DELETE'])
 
 home_app.home.add_url_rule(rule= '/', view_func=home_app.show_home_page, methods = ['POST', 'GET'])
 registration.registration.add_url_rule(rule = '/registration', view_func= registration.show_page_registration, methods = ['POST', 'GET'])
