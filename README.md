@@ -99,10 +99,10 @@ https://www.figma.com/design/YzImPm9jOsLFq1Hr3ium2P/Quizzes?node-id=0-1&p=f
 
   ---
   #### EN
-  > __project__ – 
+  > __project__ – The main application of the project, for setting up the project
   ---
   #### UA
-  > __project__ -
+  > __project__ - Основний додаток проекту, за налаштування проекту
   ---
 
 </details>
@@ -266,47 +266,72 @@ https://www.figma.com/design/YzImPm9jOsLFq1Hr3ium2P/Quizzes?node-id=0-1&p=f
 
 ### UA
 
-Цей проект став для нас важливим етапом у вивченні Django та веб-розробки загалом. У процесі роботи ми освоїли основи роботи з медіафайлами в Django, навчились створювати та налаштовувати зв'язки між моделями у базі даних, а також інтегрувати сторонні модулі, зокрема qrcode для генерації кодів.
+Висновки
 
-Окрему увагу було приділено розробці інтерфейсу користувача. Для цього ми використовували Figma, що дозволило нам спроєктувати зручний та інтуїтивно зрозумілий UX/UI дизайн. Ми навчилися правильно структурувати проєкт, розділяти його на логічні частини, а також використовувати сучасні підходи до розробки.
+Цей проєкт став для нас важливим етапом у вивченні веб-розробки та практичному застосуванні сучасних інструментів. У процесі роботи ми створили сайт із тестами, що генеруються за допомогою нейромережі, а також розробили сторінку авторизації з власним CSS-дизайном.
 
-Окрім цього, ми значно покращили свої навички роботи з Git, навчились ефективно використовувати систему контролю версій для спільної розробки, створення гілок та управління змінами в коді.
+Ми отримали досвід:
+ • у створенні та оформленні користувацького інтерфейсу (CSS, робота з версткою);
+ • у написанні README-файлу для документування проєкту, що дозволяє іншим розробникам швидко ознайомитися з його структурою та можливостями;
+ • у застосуванні генеративних моделей для формування динамічного контенту (тестів).
 
-Цей досвід став для нас цінним, оскільки дав змогу застосувати отримані знання на практиці та зрозуміти, як працювати з Django у реальних проєктах. Ми отримали навички командної роботи, покращили свої знання у створенні веб-застосунків та підготовці їх до реального використання.
+Проєкт показав, як можна поєднати технічну реалізацію з документацією, а також дав розуміння принципів побудови простих освітніх сервісів.
 
+⸻
 
-#### Труднощі розробки:
+Труднощі розробки
 
-Під час роботи над проєктом виникли певні проблеми. Одним із головних було некорректне створення qr кодів з зміненою формою та кольором. Це спричинило певні проблеми з відображанням їх на сторінках, що ускладнило процес розробки. На подолання цієї проблеми було витрачено багато часу, що значно загальмувало розвиток проєкту. Також довелося глибше вивчити модуль qrcode, що виявилося корисним для подальшого розвитку.
+Під час реалізації проєкту виникли деякі труднощі:
+ • робота з CSS вимагала додаткових знань для створення адаптивного й сучасного дизайну;
+ • інтеграція генерації тестів через нейромережу потребувала глибшого розуміння API та механізмів обробки даних.
 
-#### Подальші перспективи проєкту:
-  * Оптимізувати роботу додатку createqr_app для більш ефективної роботи.
-  * Покращити дизайн та UX для зручнішої взаємодії користувачів.
-  * Додати оплату підписок через банкінг-сервіси
-  * Переробити усі post форми у проєкті на Django Forms за для більшої безпеки
-  * Додати підтримку двофакторної автентифікації.
+Ці проблеми уповільнили розробку, але водночас стали корисним досвідом, адже дозволили краще розібратися в роботі зі стилями та інтеграцією штучного інтелекту.
 
-  Ці підходи не були реалізовані в проєкті, оскільки спочатку його не планували розгортати на хості для безперервної роботи 24/7.
+⸻
+
+Подальші перспективи проєкту
+
+У майбутньому планується:
+ • оптимізувати процес генерації тестів для більшої точності та різноманітності;
+ • додати особистий кабінет користувача з історією результатів;
+ • реалізувати адаптивний дизайн для мобільних пристроїв;
+ • інтегрувати додаткові можливості, наприклад рейтинги чи гейміфікацію.
+
+Розвиток у цьому напрямку дозволить перетворити проєкт на повноцінний освітній веб-сервіс.
 
 ---
 
 ### EN
 
-This project has been an important milestone in our study of Django and web development in general. During the development process, we learned the basics of working with media files in Django, how to create and configure relationships between database models, and how to integrate third-party modules, including qrcode for code generation.
+Conclusions
 
-Special attention was given to user interface development. We used Figma for this purpose, which allowed us to design a convenient and intuitive UX/UI. We learned how to properly structure a project, break it down into logical parts, and apply modern development approaches.
+This project was an important stage for us in learning web development and practical application of modern tools. During the work, we created a website with tests generated using a neural network, and also developed an authorization page with our own CSS design.
 
-Additionally, we significantly improved our Git skills, learning how to effectively use version control for collaborative development, branch creation, and code management.
+We gained experience in:
+• creating and designing a user interface (CSS, working with layout);
+• writing a README file to document the project, which allows other developers to quickly familiarize themselves with its structure and capabilities;
+• using generative models to generate dynamic content (tests).
 
-This experience has been valuable, as it allowed us to apply our knowledge in practice and understand how to work with Django in real-world projects. We gained teamwork skills, improved our knowledge of web application development, and learned how to prepare them for real-world use.
+The project showed how to combine technical implementation with documentation, and also provided an understanding of the principles of building simple educational services.
 
-#### Development Challenges:
+⸻
 
-During the project, we encountered certain issues. One of the main challenges was the incorrect generation of QR codes with modified shapes and colors. This caused display problems on pages, making the development process more difficult. A significant amount of time was spent overcoming this issue, which considerably slowed down the project's progress. Additionally, we had to dive deeper into the qrcode module, which turned out to be beneficial for further development.
+Development difficulties
 
-#### Future prospects of the project:
-  * Optimize the createqr_app application for better efficiency.
-  * Improve the design and UX for a more user-friendly experience.
-  * Add subscription payments via banking services.
-  * Convert all post forms in the project to Django Forms for better security.
-  * Implement support for two-factor authentication.
+Some difficulties arose during the project implementation:
+• working with CSS required additional knowledge to create an adaptive and modern design;
+• integrating test generation via a neural network required a deeper understanding of the API and data processing mechanisms.
+
+These problems slowed down the development, but at the same time became a useful experience, as they allowed us to better understand working with styles and integrating artificial intelligence.
+
+⸻
+
+Further prospects of the project
+
+In the future, it is planned to:
+• optimize the test generation process for greater accuracy and diversity;
+• add a personal user account with a history of results;
+• implement adaptive design for mobile devices;
+• integrate additional features, such as ratings or gamification.
+
+Development in this direction will allow the project to be transformed into a full-fledged educational web service.
