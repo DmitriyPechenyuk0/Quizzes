@@ -22,6 +22,7 @@
 
       socket.on("room:state", (s) => {
         $("state").innerText = JSON.stringify(s, null, 2);
+        console.log(JSON.stringify(s))
         if (s.question) renderQuestion(s.question);
       });
 

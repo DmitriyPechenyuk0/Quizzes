@@ -43,3 +43,9 @@ def delete_quiz(quiz_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': f'Error deleting quiz: {str(e)}'}), 500
+    
+
+# def add_code_to_cookie(code):
+#     responce = redirect(url_for('home_app.show_home_page'))
+#     responce.set_cookie('code', code)
+#     return responce

@@ -1,0 +1,104 @@
+body{
+    overflow-y: hidden;
+}
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: hidden;
+}
+.main-window{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #607C94;
+    width: 1400px;
+    height: 800px;
+    border-radius: 60px;
+    padding: 20px 0px;
+    gap: 35px;
+}
+.main-window-quiz-name{
+    font-weight: 700;
+    font-size: 40px;
+    color: #fff;
+    background: none;
+}
+.main-window-main{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 1256px;
+    height: 130px;
+    padding: 0 95px;
+    border-radius: 20px;
+    background-color: rgb(40 40 50 / 50%);
+}
+.mwm-name{
+    font-size: 30px;
+    background: none;
+    font-weight: 600;
+    color: #fff;
+}
+.mwm-participants-count{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    height: 70px;
+    background: none;   
+}
+.mwm-participants-count-title{
+    font-size: 35px;
+    font-weight: 600;
+    color: #fff;
+    background:none;
+}
+.mwm-participants-count-count{
+    padding: 10px 15px;
+    background-color: rgb(0 0 0 / 50%);
+    border-radius: 123123px;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+}
+.main-window-other-participants{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 1256px;
+    height: 460px;
+    column-gap: 48.5px;
+    row-gap: 50px;
+    background: none;
+    overflow-y: auto;
+}
+.main-window-other-participants::-webkit-scrollbar{
+    width: 0;
+    visibility: hidden;
+}
+.mwop-user{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    width: max-content;
+    height: 100px;
+    padding: 28px 30px;
+    background-color: #fff;
+}
+.mwop-user p{
+    color: #000;
+    font-size: 25px;
+    font-weight: 600;
+    background: none;
+}
