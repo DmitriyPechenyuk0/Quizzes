@@ -3,10 +3,12 @@ import home_app, New_Quiz_App, registration, authorization, history, profile_app
 from .settings import project
 
 from project.settings import project, socketio
-
+from result import show_result_page
+from result import result
 from quiz_app.app import quiz
 from quiz_app import views as quiz_views
 from quiz_app import sockets as quiz_sockets
+result.add_url_rule("/result", view_func=show_result_page, methods=["GET"])
 
 quiz.add_url_rule("/sessions", view_func=quiz_views.create_session, methods=["POST"])
 quiz.add_url_rule("/join", view_func=quiz_views.join_page, methods=["GET"])
@@ -36,7 +38,7 @@ New_Quiz_App.New_Quiz.add_url_rule('/save_topic', view_func=New_Quiz_App.save_to
 
 New_Quiz_App.join.add_url_rule('/joinn', view_func=New_Quiz_App.views.render_join, methods=['POST', 'GET'])
 
-
+project.register_blueprint(blueprint=result)
 project.register_blueprint(blueprint=New_Quiz_App.join)
 project.register_blueprint(blueprint=home_app.home)
 project.register_blueprint(registration.registration)
