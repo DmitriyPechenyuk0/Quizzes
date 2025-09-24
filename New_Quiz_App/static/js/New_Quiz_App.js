@@ -83,30 +83,49 @@ $(document).ready(function() {
                 quizData.answers.push({ text: answerText, correct: true });
             }
         }
-
-        if (quizData.question && quizData.answers.length > 0) {
-            $.ajax({
-                url: '/save_quiz',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(quizData),
-                success: function() {
-                    console.log('Quiz data saved:', quizData);
-                    clearForm();
-                },
-                error: function(error) {
-                    console.error('Error saving quiz:', error);
-                }
-            });
-        } else {
-            console.log('No valid quiz data to save.');
-        }
     });
-
-    function clearForm() {
-        $('input[type="text"]').val('');
-        $('input[type="checkbox"]').prop('checked', false);
-    }
-
 });
 
+
+localStorage.setItem('qIndex', 1)
+
+
+function loadQuestionData() {
+    const qIndex = localStorage.getItem('qIndex')
+    const questionKey = `question${qIndex}`
+    const answerKey = `answer${qIndex}`
+
+    const questionValue = localStorage.getItem(questionKey) || ''
+    const answerValue = localStorage.getItem(answerKey) || ''
+
+    const questionInput = document.getElementById('questionInpt')
+    const answerInput = document.getElementById('answerInpt')
+
+    if (questionInput) questionInput.value = questionValue
+    if (answerInput) answerInput.value = answerValue
+}
+loadQuestionData()
+
+
+document.addEventListener('input', function(event) {
+    if (event.target && event.target.id === 'answerInpt') {
+        let value = event.target.value
+        localStorage.setItem(`answer${localStorage.getItem("qIndex")}`, value)
+    }
+});
+document.addEventListener('input', function(event) {
+    if (event.target && event.target.id === 'questionInpt') {
+        let vale = event.target.value
+        localStorage.setItem(`question${localStorage.getItem("qIndex")}`, vale)
+    }
+});
+document.addEventListener('click', function(event) {
+    if (event.target && event.target.classList.contains('question-bar-setter')) {
+        if(event.target.id != `qq${localStorage.getItem("qIndex")}`){
+            localStorage.setItem('qIndex', event.target.id.replace(/\D/g, ''))
+            loadQuestionData()
+        } else{
+            return
+        }
+    }
+})

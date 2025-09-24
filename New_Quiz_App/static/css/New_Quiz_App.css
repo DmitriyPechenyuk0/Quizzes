@@ -427,3 +427,6 @@ img {
     cursor: pointer;
     font-family: 'Quicksand', sans-serif;
 }
+.question-bar-setter{
+    cursor: pointer;
+}

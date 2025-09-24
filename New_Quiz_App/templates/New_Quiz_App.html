@@ -4,31 +4,31 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('New_Quiz.static', filename='css/New_Quiz_App.css') }}">
-<script src="{{ url_for('New_Quiz.static', filename='js/jquery-3.7.1.min.js') }}"></script>
-<script src="{{ url_for('New_Quiz.static', filename='js/New_Quiz_App.js') }}"></script>
+<script defer src="{{ url_for('New_Quiz.static', filename='js/jquery-3.7.1.min.js') }}"></script>
+<script defer src="{{ url_for('New_Quiz.static', filename='js/New_Quiz_App.js') }}"></script>
 {% endblock %}
 
 {% block main %}
 <div class="section">
     <div class="title-div">
-        <p class="title-p">New Quizzes</p>
+        <p class="title-p">{{ quiz_name }}</p>
     </div>
     
     <div class="div-content">
         <div class="side-bar-content">
             <button class="big-choice active">
                 <img src="{{ url_for('New_Quiz.static', filename='img/Big-Choice.svg') }}" alt="Big choice">
-                <p>Large selection</p>
+                <p>Великий вибір</p>
             </button>
             
             <button class="fill-form">
                 <img src="{{ url_for('New_Quiz.static', filename='img/Fill-Form.svg') }}" alt="Fill Form">
-                <p>Fill form</p>
+                <p>Заповнити форму</p>
             </button>
             
             <div class="scroll-frame">
                 {% for question in questions %}
-                    <div>{{ question }}</div>
+                    <div id="qq{{ question }}" class="question-bar-setter" >Запитання {{ question }}</div>
                 {% endfor %}
             </div>
         </div>
@@ -40,10 +40,9 @@
                     <div class="fill-form-frame">
                         <div class="ai-container">
                             <img class="ai-icon" src="{{ url_for('New_Quiz.static', filename='img/ai-icon.svg') }}" alt="AI Icon"/>
-                            <p class="ia-label">Generate a question</p>
+                            <p class="ia-label">Створити за допомогою ШІ</p>
                         </div>
-                        <input type="text" class="question-input" placeholder="Write a question:">
-                        <button class="enter-btn">Enter</button>
+                        <input type="text" class="question-input" placeholder="Напишіть запитання">
                     </div>
                     
                     <div class="answers-options-frame">
@@ -75,13 +74,11 @@
                             <img class="ai-icon" src="{{ url_for('New_Quiz.static', filename='img/ai-icon.svg') }}" alt="AI Icon"/>
                             <p class="ia-label">Generate a question</p>
                         </div>
-                        <input type="text" class="question-input" placeholder="Write a question:">
-                        <button class="enter-btn">Enter</button>
+                        <input id="questionInpt" type="text" class="question-input" placeholder="Напишіть запитання">
                     </div>
                     
                     <div class="fill-form-frame-2">
-                        <input type="text" class="answer-input" placeholder="Write the answer:">
-                        <button class="enter-btn">Enter</button>
+                        <input id="answerInpt" type="text" class="answer-input" placeholder="Напишіть відповідь">
                     </div>
                 </div>
             </div>

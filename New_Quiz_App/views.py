@@ -12,26 +12,22 @@ from quiz_app.models import Question
 DIR = os.path.dirname(os.path.abspath(__file__))
 
 @login_required
-
-def render_new_quiz(name):
+def render_new_quiz(id):
     if not current_user.is_admin:
         return render_template('error_403.html')
-    quiz_name = session.get('quiz_name') or request.args.get('quiz_name')
-    # quiz = db.one_or_404(db.select(Quiz).filter_by(name=name))
-    if not quiz_name:
+    
+    if not id:
         return redirect(url_for('New_Quiz.render_new_quiz_settigs'))
 
-    quiz = db.one_or_404(db.select(Quiz).filter_by(name=name))
-    num_questions = quiz.count_questions 
+    quiz = db.one_or_404(db.select(Quiz).filter_by(id=id))
 
-    questions = [f"Question #{i + 1}" for i in range(num_questions)]
-
+    questions = [f"{i + 1}" for i in range(quiz.count_questions )]
 
     context = {
         'page': 'home',
         'is_auth': current_user.is_authenticated,
         'name': current_user.name,
-        'quiz_name': quiz_name,
+        'quiz_name': quiz.name,
         'quiz': quiz,
         'questions': questions
     }
