@@ -25,36 +25,166 @@ The goal of the project is to reinforce knowledge after the AI intensive and pra
 
 ```mermaid
 flowchart TB
-A(Science_and_entertainment_quiz) --> Q(history.json)
-A(Science_and_entertainment_quiz) --> M(manage.py)
-A(Science_and_entertainment_quiz) --> G(.gitignore)
-A(Science_and_entertainment_quiz) --> R(requirements.txt)
-A(Science_and_entertainment_quiz) --> RM(README.md)
-A(Science_and_entertainment_quiz) --> P(project)
+CORE["Quizzes"] --> NEW["New_Quiz_App"]
+NEW --> ST["static"]
+
+ST --> CSS["css"]
+CSS --> CSS_NEW_APP["New_Quiz_App.css"]
+CSS --> CSS_NEW_APP_STUDENT["New_Quiz_App_Student.css"]
+CSS --> CSS_NEW_APP_STUDENT2["New_Quiz_App_Student_2.css"]
+CSS --> CSS_NEW_SETTINGS["New_Quiz_Settings.css"]
+CSS --> CSS_ERROR403["error_403.css"]
+CSS --> CSS_JOIN["join.css"]
+CSS --> CSS_JOIN_NEXT["join_next.css"]
+
+ST --> JS["js"]
+JS --> JS_NEW_APP["New_Quiz_App.js"]
+JS --> JS_NEW_SETTINGS["New_Quiz_Settings.js"]
+JS --> JS_JOINNEXT["joinnext.js"]
+JS --> JS_JQUERY["jquery-3.7.1.min.js"]
+
+ST --> QUIZ_DATA["quiz_data"]
+ST --> UPLOADS["uploads"]
+
+NEW --> TP["templates"]
+TP --> TPL_NEW_APP["New_Quiz_App.html"]
+TP --> TPL_NEW_APP_STUDENT["New_Quiz_App_Student.html"]
+TP --> TPL_NEW_APP_STUDENT2["New_Quiz_App_Student_2.html"]
+TP --> TPL_NEW_SETTINGS["New_Quiz_Settings.html"]
+TP --> TPL_ERROR403["error_403.html"]
+TP --> TPL_JOIN_NEXT["join_next.html"]
+
+NEW --> DSS[".DS_Store"]
+NEW --> INIT["__init__.py"]
+NEW --> APP["app.py"]
+NEW --> MOD["models.py"]
+NEW --> VIW["views.py"]
+
+CORE --> AUTH["authorization.py"]
+AUTH --> AUTH_STATIC["static/css"]
+AUTH_STATIC --> AUTH_CSS["authorization.css"]
+
+AUTH --> AUTH_TEMPLATES["templates"]
+AUTH_TEMPLATES --> AUTH_HTML["authorization.html"]
+
+AUTH --> AUTH_INIT["__init__.py"]
+AUTH --> AUTH_APP["app.py"]
+AUTH --> AUTH_VIEWS["views.py"]
+
+CORE --> HIS["history"]
+HIS --> HIS_STATIC["static"]
+HIS_STATIC --> HIS_CSS["css"]
+HIS_CSS --> CSS_HISTORY["history.css"]
+HIS_CSS --> CSS_QSR["quiz_student_result.css"]
+HIS_CSS --> CSS_QTR["quiz_teacher_result.css"]
+
+HIS --> HIS_TEMPLATES["templates"]
+HIS_TEMPLATES --> TPL_HISTORY["history.html"]
+HIS_TEMPLATES --> TPL_QSR["quiz_student_result.html"]
+HIS_TEMPLATES --> TPL_QTR["quiz_teacher_result.html"]
+
+HIS --> HIS_INIT["__init__.py"]
+HIS --> HIS_APP["app.py"]
+HIS --> HIS_VIEWS["views.py"]
+
+CORE --> HOME["home_app"]
+HOME --> HOME_STATIC["static"]
+HOME_STATIC --> HOME_CSS["css"]
+HOME_CSS --> CSS_HOME["home.css"]
+HOME_STATIC --> HOME_JS["js"]
+HOME_JS --> JS_HOME["home.js"]
+
+HOME --> HOME_TEMPLATES["templates"]
+HOME_TEMPLATES --> TPL_HOME["home.html"]
+
+HOME --> HOME_INIT["__init__.py"]
+HOME --> HOME_APP["app.py"]
+HOME --> HOME_VIEWS["views.py"]
+
+CORE --> MED["media"]
+
+CORE --> MIG["migrations"]
+MIG --> MIG_VERSIONS["versions"]
+MIG_VERSIONS --> MIG_FILE["3c6dcd8ecab8_.py"]
+MIG --> MIG_README["README"]
+MIG --> MIG_ALEMBIC["alembic.ini"]
+MIG --> MIG_ENV["env.py"]
+MIG --> MIG_SCRIPT["script.py.mako"]
+
+CORE --> PROF["profile_app"]
+PROF --> PROF_STATIC["static"]
+PROF_STATIC --> PROF_CSS["css"]
+PROF_CSS --> CSS_PROFILE["profile.css"]
+PROF_STATIC --> PROF_JS["js"]
+PROF_JS --> JS_PROFILE["profile.js"]
+
+PROF --> PROF_TEMPLATES["templates"]
+PROF_TEMPLATES --> TPL_PROFILE["profile.html"]
+
+PROF --> PROF_INIT["__init__.py"]
+PROF --> PROF_APP["app.py"]
+PROF --> PROF_MODELS["models.py"]
+PROF --> PROF_VIEWS["views.py"]
+
+CORE --> PROJ["project"]
+PROJ --> PROJ_STATIC["static"]
+PROJ_STATIC --> PROJ_CSS["css"]
+PROJ_CSS --> CSS_BASE["base.css"]
+
+PROJ_STATIC --> PROJ_JS["js"]
+PROJ_JS --> JS_BASE["base.js"]
+PROJ_JS --> JS_PARTICLES["particles.js"]
+
+PROJ_STATIC --> PROJ_FONTS["fonts"]
+PROJ_FONTS --> FONT_QB["Quicksand-Bold.ttf"]
+PROJ_FONTS --> FONT_QL["Quicksand-Light.ttf"]
+PROJ_FONTS --> FONT_QM["Quicksand-Medium.ttf"]
+PROJ_FONTS --> FONT_QR["Quicksand-Regular.ttf"]
+PROJ_FONTS --> FONT_QS["Quicksand-SemiBold.ttf"]
+PROJ_FONTS --> FONT_ROBOTO["Roboto-Regular.ttf"]
+
+PROJ --> PROJ_TEMPLATES["templates"]
+PROJ_TEMPLATES --> TPL_BASE["base.html"]
+
+PROJ --> PROJ_INIT["__init__.py"] 
+PROJ --> PROJ_DB["data.db"] 
+PROJ --> PROJ_LOGIN["login_manager.py"] 
+PROJ --> PROJ_SETTINGS["settings.py"] 
+PROJ --> PROJ_URLS["urls.py"] 
+
+CORE --> QUI["quiz_app"]
+QUI --> QUI_STATIC_JS["static/js"]
+QUI_STATIC_JS --> JS_JOIN["join.js"]
+QUI_STATIC_JS --> JS_TEACHER["teacher_room.js"]
+
+QUI --> QUI_TEMPLATES["templates"]
+QUI_TEMPLATES --> TPL_JOIN["join.html"]
+QUI_TEMPLATES --> TPL_TEACHER["teacher_room.html"]
+
+QUI --> QUI_INIT["__init__.py"]
+QUI --> QUI_APP["app.py"]
+QUI --> QUI_MODELS["models.py"]
+QUI --> QUI_SOCKETS["sockets.py"]
+QUI --> QUI_VIEWS["views.py"]
+
+CORE --> REG["registration"]
+REG --> STAT_CSS["static/css"]
+STAT_CSS --> REGCSS["registration.css"]
+
+REG --> TMPL["templates"]
+TMPL --> REGHTML["registration.html"]
+
+REG --> INITPY["__init__.py"]
+REG --> APPPY["app.py"]
+REG --> VIEWSPY["views.py"]
 
 
-P(project) --> TP(templates)
-TP(templates) --> BH(base.html)
-TP(templates) --> DT(data.db)
-TP(templates) --> LM(login_manager.py)
-TP(templates) --> SE(settings.py)
-TP(templates) --> URL(urls.py)
+CORE --> DS[".DS_Store"]
+CORE --> GIT[".gitignore"]
+CORE --> RM["README.md"]
+CORE --> MAN["manage.py"]
+CORE --> REQ["requirements.txt"]
 
-P(project) --> IT(__init__.py)
-P(project) --> ST(settings.py)
-P(project) --> UR(urls.py)
-P(project) --> DT(data.db)
-P(project) --> LM(login_manager.py)
-P(project) --> SC(static)
-
-A(Science_and_entertainment_quiz) --> H(home_app)
-
-
-A(Science_and_entertainment_quiz) --> PF(profile)
-A(Science_and_entertainment_quiz) --> HS(history)
-A(Science_and_entertainment_quiz) --> A(authorization)
-A(Science_and_entertainment_quiz) --> RG(registration)
-A(Science_and_entertainment_quiz) --> N(New_Quiz_App)
 
 
 ```
