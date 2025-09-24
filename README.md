@@ -23,7 +23,41 @@ The goal of the project is to reinforce knowledge after the AI intensive and pra
 
 ## __Project structure__ | __Структура проєкту__
 
-https://www.figma.com/board/sQZvPAayhwa3TmFQoXvf4z/Web-app?node-id=0-1&p=f
+```mermaid
+flowchart TB
+A(Science_and_entertainment_quiz) --> Q(history.json)
+A(Science_and_entertainment_quiz) --> M(manage.py)
+A(Science_and_entertainment_quiz) --> G(.gitignore)
+A(Science_and_entertainment_quiz) --> R(requirements.txt)
+A(Science_and_entertainment_quiz) --> RM(README.md)
+A(Science_and_entertainment_quiz) --> P(project)
+
+
+P(project) --> TP(templates)
+TP(templates) --> BH(base.html)
+TP(templates) --> DT(data.db)
+TP(templates) --> LM(login_manager.py)
+TP(templates) --> SE(settings.py)
+TP(templates) --> URL(urls.py)
+
+P(project) --> IT(__init__.py)
+P(project) --> ST(settings.py)
+P(project) --> UR(urls.py)
+P(project) --> DT(data.db)
+P(project) --> LM(login_manager.py)
+P(project) --> SC(static)
+
+A(Science_and_entertainment_quiz) --> H(home_app)
+
+
+A(Science_and_entertainment_quiz) --> PF(profile)
+A(Science_and_entertainment_quiz) --> HS(history)
+A(Science_and_entertainment_quiz) --> A(authorization)
+A(Science_and_entertainment_quiz) --> RG(registration)
+A(Science_and_entertainment_quiz) --> N(New_Quiz_App)
+
+
+```
 
 ## __Project design__ | __Дизайн проєкту__
 
