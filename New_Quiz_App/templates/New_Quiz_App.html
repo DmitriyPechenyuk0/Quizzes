@@ -27,8 +27,11 @@
             </button>
             
             <div class="scroll-frame">
+                <button id="finish-editing" type="button">
+                    Закінчити редагування
+                </button>
                 {% for question in questions %}
-                    <div id="qq{{ question }}" class="question-bar-setter" >Запитання {{ question }}</div>
+                    <div id="qq{{ question }}" class="question-bar-setter" >№{{ question }} Заповнити форму</div>
                 {% endfor %}
             </div>
         </div>

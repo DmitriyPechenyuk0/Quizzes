@@ -106,6 +106,9 @@ function loadQuestionData() {
 }
 loadQuestionData()
 
+const totalQuestions = document.querySelectorAll('.question-bar-setter').length
+const questionsData = [];
+
 
 document.addEventListener('input', function(event) {
     if (event.target && event.target.id === 'answerInpt') {
@@ -127,5 +130,34 @@ document.addEventListener('click', function(event) {
         } else{
             return
         }
+    }
+})
+
+document.addEventListener('click', function(event) {
+    if (event.target && event.target.id === 'finish-editing'){
+        
+        for (let counter = 1; counter <= totalQuestions; counter++) {
+            const question = localStorage.getItem(`question${counter}`)
+            const answer = localStorage.getItem(`answer${counter}`)
+
+            if (question || answer) {
+                questionsData.push({
+                    id: counter,
+                    question: question || '',
+                    answer: answer || ''
+                })
+            }
+        }
+        let otvet = JSON.stringify(questionsData)
+        fetch(`/new-quiz/questions/save/${window.location.href.split('/')[4]}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ questions: questionsData })
+        })
+
+        localStorage.clear()
+        window.location.href = `http://127.0.0.1:5000/profile/`
     }
 })

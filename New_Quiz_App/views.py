@@ -90,19 +90,11 @@ def render_new_quiz_settigs():
             )
             db.session.add(quiz)
             db.session.flush()
-            for question in range(q_count):
-                quest = Question(
-                    quiz_id = quiz.id,
-                    order_index = question + 1,
-                    text = "Столиця України",
-                    correct_answer = "Київ"
-                )
-                db.session.add(quest)
             db.session.commit()
 
 
             session['quiz_name'] = quiz_name
-            return redirect(url_for('home_app.show_home_page'))
+            return redirect(f'/new-quiz/{quiz.id}')
 
 
         except Exception as e:
@@ -173,3 +165,21 @@ def join_next_page():
         'name': current_user.name
     }
     return render_template('join_next.html', **context)
+
+def save_questions(quiz_id):
+    data = request.get_json()
+    data = data["questions"]
+
+    for item in data:
+
+        quest = Question(
+            quiz_id = quiz_id,
+            order_index = item['id'],
+            text = item['question'],
+            correct_answer = item['answer']
+        )
+        db.session.add(quest)
+        
+    db.session.commit()
+
+    return redirect(('/profile'))
