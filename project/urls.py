@@ -25,7 +25,7 @@ history.history.add_url_rule(rule='/history_tr', view_func=history.show_qtr_page
 history.history.add_url_rule(rule='/history_sr', view_func=history.show_qsr_page, methods= ['POST', 'GET'])
 
 New_Quiz_App.New_Quiz.add_url_rule('/joinnext', view_func=New_Quiz_App.join_next_page, methods = ['POST', 'GET'])
-New_Quiz_App.New_Quiz.add_url_rule(rule= '/new-quiz/<name>', view_func=New_Quiz_App.render_new_quiz, methods = ['POST', 'GET'])
+New_Quiz_App.New_Quiz.add_url_rule(rule= '/new-quiz/<int:id>', view_func=New_Quiz_App.render_new_quiz, methods = ['POST', 'GET'])
 New_Quiz_App.New_Quiz.add_url_rule(rule= '/new-quiz-settings', view_func=New_Quiz_App.render_new_quiz_settigs, methods = ['POST', 'GET'])
 New_Quiz_App.New_Quiz.add_url_rule(rule= '/new-quiz-student', view_func=New_Quiz_App.render_new_quiz_student, methods = ['POST', 'GET'])
 New_Quiz_App.New_Quiz.add_url_rule(rule= '/new-quiz-student-2', view_func=New_Quiz_App.render_new_quiz_2_student, methods = ['POST', 'GET'])
