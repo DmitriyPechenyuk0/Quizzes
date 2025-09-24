@@ -11,7 +11,7 @@
     <div class="join-page">
         <form method="post" class="join-form">
             <div class="input-wrapper">
-                <input name="join_code" type="text" maxlength="6" placeholder="Enter join code" id="code" value="{{ code or '' }}"/>
+                <input name="join_code" type="text" maxlength="6" placeholder="Введіть код для приєднання" id="code" value="{{ code or '' }}"/>
                 <button type="button" id="joinBtn">⏎</button>
             </div>
         </form>
@@ -21,7 +21,7 @@
         <div id="progress"></div>
         
         <div class="passed-quizzes">
-            <h2>All Quizzes</h2>
+            <h2>Пройдені тести</h2>
             <div class="scroll-quizzes">
                 {% for quiz in quizzes %}
                     <div class="quiz-pcs">

@@ -10,7 +10,7 @@ main{
 h1{
     font-size: 50px;
     font-weight: bold;
-    width: 593px;
+    width: max-content;
     height: 63px;
 }
 h3{
