@@ -13,10 +13,10 @@ main{
 .main-window{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     background-color: #607C94;
-    width: 1400px;
+    width: 1850px;
     height: 800px;
     border-radius: 60px;
     padding: 20px 0px;
@@ -33,14 +33,14 @@ main{
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 1256px;
+    width: 1810px;
     height: 130px;
     padding: 0 95px;
-    border-radius: 20px;
+    border-radius: 40px;
     background-color: rgb(40 40 50 / 50%);
 }
 .mwm-name{
-    font-size: 30px;
+    font-size: 35px;
     background: none;
     font-weight: 600;
     color: #fff;
@@ -74,10 +74,13 @@ main{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 1256px;
-    height: 460px;
-    column-gap: 48.5px;
-    row-gap: 50px;
+    flex-shrink: none;
+    width: 1810px;
+    height: fit-content;
+    max-height: 609px;
+    row-gap: 20px;
+    justify-content: space-around;
+    align-items: start;
     background: none;
     overflow-y: auto;
 }
