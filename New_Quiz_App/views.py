@@ -12,26 +12,22 @@ from quiz_app.models import Question
 DIR = os.path.dirname(os.path.abspath(__file__))
 
 @login_required
-
 def render_new_quiz(id):
     if not current_user.is_admin:
         return render_template('error_403.html')
-    quiz_name = session.get('quiz_name') or request.args.get('quiz_name')
-    # quiz = db.one_or_404(db.select(Quiz).filter_by(name=name))
-    if not quiz_name:
+    
+    if not id:
         return redirect(url_for('New_Quiz.render_new_quiz_settigs'))
 
     quiz = db.one_or_404(db.select(Quiz).filter_by(id=id))
-    num_questions = quiz.count_questions 
 
-    questions = [f"Question #{i + 1}" for i in range(num_questions)]
-
+    questions = [f"{i + 1}" for i in range(quiz.count_questions )]
 
     context = {
         'page': 'home',
         'is_auth': current_user.is_authenticated,
         'name': current_user.name,
-        'quiz_name': quiz_name,
+        'quiz_name': quiz.name,
         'quiz': quiz,
         'questions': questions
     }
@@ -94,19 +90,11 @@ def render_new_quiz_settigs():
             )
             db.session.add(quiz)
             db.session.flush()
-            for question in range(q_count):
-                quest = Question(
-                    quiz_id = quiz.id,
-                    order_index = question + 1,
-                    text = "Столиця України",
-                    correct_answer = "Київ"
-                )
-                db.session.add(quest)
             db.session.commit()
 
 
             session['quiz_name'] = quiz_name
-            return redirect(url_for('home_app.show_home_page'))
+            return redirect(f'/new-quiz/{quiz.id}')
 
 
         except Exception as e:
@@ -177,3 +165,21 @@ def join_next_page():
         'name': current_user.name
     }
     return render_template('join_next.html', **context)
+
+def save_questions(quiz_id):
+    data = request.get_json()
+    data = data["questions"]
+
+    for item in data:
+
+        quest = Question(
+            quiz_id = quiz_id,
+            order_index = item['id'],
+            text = item['question'],
+            correct_answer = item['answer']
+        )
+        db.session.add(quest)
+        
+    db.session.commit()
+
+    return redirect(('/profile'))
