@@ -23,6 +23,8 @@ body{
 .quiz-text{
     width: 728px;
     height: 63px;
+
+    text-align: center;
     
     font-family: 'Quicksand', sans-serif;
     font-style: normal;
@@ -40,7 +42,7 @@ body{
     padding: 0px;
     
     width: 1800px;
-    height: 1474px;
+    height: 1490px;
     
     background: #607C94;
     border: 1px solid #FFFFFF;
@@ -56,8 +58,8 @@ body{
     align-items: flex-start;
     padding: 0px;
 
-    width: 1200px;
-    height: 1474px;
+    width: 816px;
+    height: 1490px;
 
     border: 2px solid #000000;
     background: #607C94;
@@ -81,8 +83,7 @@ body{
     width: 816px;
     height: 74px;
 
-    border-left: 2px solid #000000;
-    border-top: 2px solid #000000;
+
     border-bottom: 2px solid #000000;
     background: #607C94;
 
@@ -162,190 +163,200 @@ body{
 }
 
 .student-quiz-info-1{
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-align-items: center;
-padding: 0px;
-gap: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    gap: 10px;
 
-width: 816px;
-height: 100px;
-background: #607C94;
+    width: 816px;
+    height: 100px;
+    background: #607C94;
 
 
-order: 1;
-align-self: stretch;
+    order: 1;
+    align-self: stretch;
 }
 
 .quiz-student-name-1{
-display: flex;
-flex-direction: row;
-align-items: center;
-padding: 0px 0px 0px 20px;
-gap: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px 0px 0px 20px;
+    gap: 10px;
 
-margin: 0 auto;
-width: 408px;
-height: 100px;
+    margin: 0 auto;
+    width: 408px;
+    height: 100px;
 
-align-self: stretch;
-flex-grow: 1;
+    align-self: stretch;
+    flex-grow: 1;
 
-background: #607C94;
+    background: #607C94;
 
 }
 
 .quiz-student-name-text-1{
-width: 388px;
-height: 50px;
+    width: 388px;
+    height: 50px;
 
-font-family: 'Quicksand', sans-serif;
-font-style: normal;
-font-weight: 700;
-font-size: 40px;
-line-height: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 50px;
 
-color: #FFFFFF;
-background: #607C94;
+    color: #FFFFFF;
+    background: #607C94;
 
-flex-grow: 1;
+    flex-grow: 1;
 
 }
 
 .quiz-student-accuracy-1{
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
-padding: 8px 0px;
-gap: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0px;
+    gap: 10px;
 
-margin: 0 auto;
-width: 408px;
-height: 100px;
+    margin: 0 auto;
+    width: 408px;
+    height: 100px;
 
-order: 1;
-align-self: stretch;
-flex-grow: 1;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 1;
 
-background: #607C94;
+    background: #607C94;
 
 }
 
 .quiz-student-accuracy-text-1{
-width: 229px;
-height: 50px;
+    width: 229px;
+    height: 50px;
 
-font-family: 'Quicksand', sans-serif;
-font-style: normal;
-font-weight: 700;
-font-size: 40px;
-line-height: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 50px;
 
-color: #FFFFFF;
-background: #607C94;
+    color: #FFFFFF;
+    background: #607C94;
 }
 
 .accuracy-info{
-display: flex;
-flex-direction: row;
-align-items: flex-start;
-padding: 0px;
-gap: 10px;
-isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    gap: 10px;
 
-width: 1322px;
-height: 1474px;
+    width: 984px;
+    height: 1490px;
 
-background: #607C94;
+    background: #FFFFFF;
 
-border-radius: 60px;
+    border-radius: 0px 60px 60px 0px;
 
-order: 1;
-align-self: stretch;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 1;
 
-overflow-x: scroll;
-overflow-y: scroll;
+    overflow-x: scroll;
+    overflow-y: scroll;
+
+
 }
+
+.first-text{
+    width: 963px;
+    height: 53px;
+
+    text-align: center;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 52px;
+
+    color: #000000;
+
+    flex: none;
+    order: 1;
+}
+
+.main-div{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 10px;
+
+    width: 944px;
+    height: 625px;
+
+    background: #FFFFFF;
+
+    align-self: stretch;
+    flex-grow: 1;
+
+    order: 2;
+}
+
+#main{
+    width: 900px;
+    height: 600px;
+}
+
+.second-text{
+    width: 963px;
+    height: 72px;
+
+    text-align: center;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 52px;
+
+    color: #000000;
+
+    flex: none;
+    order: 3;
+
+}
+
+
+.main-div-2{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 10px;
+    gap: 10px;
+
+    width: 964px;
+    height: 670px;
+
+    align-self: stretch;
+    flex-grow: 0;
+
+    order: 4;
+}
+
+#main-2{
+    width: 966px;
+    height: 605px;
+}
+
 
 .accuracy-info::-webkit-scrollbar{
     width: 0;
     background: transparent;
 }
 
-.question-accuracy-1{
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 20px 30px;
-gap: 33px;
-
-width: 110px;
-height: 1174px;
-
-align-self: stretch;
-
-background: #607C94;
-}
-
-.question-number-1{
-width: 41px;
-height: 44px;
-
-font-family: 'Quicksand', sans-serif;
-font-style: normal;
-font-weight: 700;
-font-size: 35px;
-line-height: 44px;
-
-color: #FFFFFF;
-background: #607C94;
-}
-
-.questions-accuracy-1{
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-padding: 0px;
-gap: 50px;
-
-width: 50px;
-height: 1057px;
-
-order: 1;
-align-self: stretch;
-flex-grow: 1;
-
-background: #607C94;
-}
-
-.question-state-1{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0px;
-    gap: 5px;
-    
-    width: 50px;
-    height: 50px;
-
-    background: #00C985;
-    border-radius: 50px;
-
-}
-
-.question-state-2{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0px;
-    gap: 5px;
-    
-    width: 50px;
-    height: 50px;
-
-    background: #EF3C69;
-    border-radius: 50px;
-
-}

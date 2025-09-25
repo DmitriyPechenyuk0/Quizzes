@@ -14,7 +14,7 @@
                 <input hidden type="file" id="fileInput" accept="image/*" enctype="multipart/form-data" action="/upload">
                 {% if my_avatar %}
                     <label for="fileInput" class="label-img">
-                        <img src="{{ url_for('profile.static', filename='img/' + name + '.png') }}" alt="" class="user-img">
+                        <img src="{{ url_for('profile.static', filename='user_avatars/' + name + '.png') }}" alt="" class="user-img">
                     </label>
                 {% else %}
                     <label for="fileInput" class="label-img">
