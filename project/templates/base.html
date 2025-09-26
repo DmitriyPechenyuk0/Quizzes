@@ -13,22 +13,22 @@
                 {% if page == 'home' and is_auth != True %}
                 <div class="urls">
                     <div class="login-div">
-                        <a class="login-a" href="/login">Log in</a>
+                        <a class="login-a" href="/login">Увійти</a>
                     </div>
                     <div class="signup-div">
-                        <a class="signup-a" href="/registration">Sign up</a>
+                        <a class="signup-a" href="/registration">Зареєструватися</a>
                     </div>
                 </div>
                 {% elif page == 'home' and is_auth == True %}
                 <div class="urls">
                     <div class="quiz-history-div">
-                        <a class="history-a text-decoration" href="/quiz/join">Join to quiz</a>
+                        <a class="history-a text-decoration" href="/quiz/join">Приєднатися до тесту</a>
                     </div>
                     <div class="quiz-history-div">
-                        <a class="history-a text-decoration" href="/history">Quiz History</a>
+                        <a class="history-a text-decoration" href="/history">Історія вікторин</a>
                     </div>
                     <div class="new-quiz-div">
-                        <a class="new-quiz-a text-decoration" href="/new-quiz-settings">New Quiz</a>
+                        <a class="new-quiz-a text-decoration" href="/new-quiz-settings">Новий тест</a>
                     </div>
                     <div class="account-a">
                         <a class="username-a text-decoration" href="/profile">{{ name }}</a>
@@ -38,10 +38,10 @@
                 {% elif page == 'profile' %}
                 <div class="urls">
                     <div class="quiz-history-div">
-                        <a class="history-a text-decoration" href="/history">Quiz History</a>
+                        <a class="history-a text-decoration" href="/history">Історія тестiв</a>
                     </div>
                     <div class="new-quiz-div">
-                        <a class="new-quiz-a text-decoration" href="/new-quiz-settings">New Quiz</a>
+                        <a class="new-quiz-a text-decoration" href="/new-quiz-settings">Новий тест</a>
                     </div>
                     <div class="account-a">
                         <a class="username-a text-decoration" href="/profile">{{ name }}</a>
@@ -51,19 +51,19 @@
                 {% elif page == 'history' and is_auth != True %}
                 <div class="urls">
                     <div class="login-div">
-                        <a class="login-a" href="/login">Log in</a>
+                        <a class="login-a" href="/login">Увійти</a>
                     </div>
                     <div class="signup-div">
-                        <a class="signup-a" href="/registration">Sign up</a>
+                        <a class="signup-a" href="/registration">Зареєструватися</a>
                     </div>
                 </div>
                 {% elif page == 'history' and is_auth == True %}
                 <div class="urls">
                     <div class="quiz-history-div">
-                        <a class="history-a text-decoration" href="/history">Quiz History</a>
+                        <a class="history-a text-decoration" href="/history">Історія тестiв</a>
                     </div>
                     <div class="new-quiz-div">
-                        <a class="new-quiz-a text-decoration" href="/new-quiz ">New Quiz</a>
+                        <a class="new-quiz-a text-decoration" href="/new-quiz ">Новий тест</a>
                     </div>
                     <div class="account-a">
                         <a class="username-a text-decoration" href="/profile">{{ name }}</a>
@@ -73,19 +73,19 @@
                 {% elif page == 'authorization' and is_auth != True %}
                 <div class="urls">
                     <div class="login-div">
-                        <a class="login-a" href="/login">Log in</a>
+                        <a class="login-a" href="/login">Вийти</a>
                     </div>
                     <div class="signup-div">
-                        <a class="signup-a" href="/registration">Sign up</a>
+                        <a class="signup-a" href="/registration">Зареєструватися</a>
                     </div>
                 </div>
                 {% elif page == 'authorization' and is_auth == True %}
                 <div class="urls">
                     <div class="quiz-history-div">
-                        <a class="history-a text-decoration" href="/history">Quiz History</a>
+                        <a class="history-a text-decoration" href="/history">Історія тестiв</a>
                     </div>
                     <div class="new-quiz-div">
-                        <a class="new-quiz-a text-decoration" href="/new-quiz ">New Quiz</a>
+                        <a class="new-quiz-a text-decoration" href="/new-quiz ">Новий тест</a>
                     </div>
                     <div class="account-a">
                         <a class="username-a text-decoration" href="/profile">{{ name }}</a>
@@ -104,10 +104,10 @@
                 {% elif page == 'registration' and is_auth == True %}
                 <div class="urls">
                     <div class="quiz-history-div">
-                        <a class="history-a text-decoration" href="/history">Quiz History</a>
+                        <a class="history-a text-decoration" href="/history">Історія тестiв</a>
                     </div>
                     <div class="new-quiz-div">
-                        <a class="new-quiz-a text-decoration" href="/new-quiz ">New Quiz</a>
+                        <a class="new-quiz-a text-decoration" href="/new-quiz ">Новий тест</a>
                     </div>
                     <div class="account-a">
                         <a class="username-a text-decoration" href="/profile">{{ name }}</a>
@@ -126,10 +126,10 @@
                 {% elif page == 'new_quiz' and is_auth == True and is_admin == True %}
                 <div class="urls">
                     <div class="quiz-history-div">
-                        <a class="history-a text-decoration" href="/history">Quiz History</a>
+                        <a class="history-a text-decoration" href="/history">Історія тестiв</a>
                     </div>
                     <div class="new-quiz-div">
-                        <a class="new-quiz-a text-decoration" href="/new-quiz ">New Quiz</a>
+                        <a class="new-quiz-a text-decoration" href="/new-quiz ">Новий тест</a>
                     </div>
                         <div class="account-a">
                             <a class="username-a text-decoration" href="/profile">{{ name }}</a>
@@ -139,10 +139,10 @@
                     {% elif page == 'new_quiz' and is_auth == True and is_admin != True %}
                     <div class="urls">
                         <div class="quiz-history-div">
-                            <a class="history-a text-decoration" href="/history">Quiz History</a>
+                            <a class="history-a text-decoration" href="/history">Історія тестiв</a>
                         </div>
                         <div class="new-quiz-div">
-                            <a class="new-quiz-a text-decoration" href="/new-quiz ">New Quiz</a>
+                            <a class="new-quiz-a text-decoration" href="/new-quiz ">Новий тест</a>
                         </div>
                         <div class="account-a">
                             <a class="username-a text-decoration" href="/profile">{{ name }}</a>
@@ -152,10 +152,10 @@
                     {% elif page == 'join' and is_auth == True %}
                     <div class="urls">
                         <div class="quiz-history-div">
-                            <a class="history-a text-decoration" href="/history">Quiz History</a>
+                            <a class="history-a text-decoration" href="/history">Історія тестiв</a>
                         </div>
                         <div class="new-quiz-div">
-                            <a class="new-quiz-a text-decoration" href="/new-quiz ">New Quiz</a>
+                            <a class="new-quiz-a text-decoration" href="/new-quiz ">Новий тест</a>
                         </div>
                         <div class="account-a">
                             <a class="username-a text-decoration" href="/profile">{{ name }}</a>

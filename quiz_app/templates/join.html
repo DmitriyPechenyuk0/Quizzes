@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}Join{% endblock %}
@@ -12,7 +11,7 @@
         <form method="post" class="join-form">
             <div class="input-wrapper">
                 <input name="join_code" type="text" maxlength="6" placeholder="Введіть код для приєднання" id="code" value="{{ code or '' }}"/>
-                <button type="button" id="joinBtn">⏎</button>
+                <button type="button" id="joinBtn">Приєднатися</button>
             </div>
         </form>
         
@@ -21,7 +20,7 @@
         <div id="progress"></div>
         
         <div class="passed-quizzes">
-            <h2>Пройдені тести</h2>
+            <h2 class="scroll-title">Пройдені тести</h2>
             <div class="scroll-quizzes">
                 {% for quiz in quizzes %}
                     <div class="quiz-pcs">
@@ -31,8 +30,8 @@
                 {% endfor %}
             </div>
         </div>
+    </div>
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
-
     <script src="{{ url_for('quiz_app.static', filename='js/join.js') }}?v=1"></script>
 {% endblock %}
