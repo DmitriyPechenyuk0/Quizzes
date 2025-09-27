@@ -13,3 +13,5 @@ class User(db.Model, UserMixin):
 
     def __repr__(self) -> str:
         return f"name: {self.name}, email: {self.email}, is_admin: {self.is_admin}"
+    
+

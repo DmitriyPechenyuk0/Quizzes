@@ -1,3 +1,13 @@
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; 
+    background-color: #ffffff;
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -118,6 +128,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    background-color: white;
 }
 
 .participants-frame p {

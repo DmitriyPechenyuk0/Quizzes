@@ -1,4 +1,24 @@
+#particles-js {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: #1e1e1e;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
 .join-page {
+    position: relative;
+    z-index: 1;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
@@ -20,9 +40,9 @@
 }
 
 .input-wrapper input {
-    width: 100%; 
+    width: 100%;
     height: 76px;
-    padding: 10px 170px 10px 15px; 
+    padding: 10px 170px 10px 15px;
     font-size: 25px;
     font-weight: bold;
     border: 2px solid #000000;
@@ -32,7 +52,7 @@
 }
 
 .input-wrapper input::placeholder {
-  color: #000000; 
+    color: #000000;
 }
 
 .input-wrapper button {
@@ -53,7 +73,6 @@
 
 .passed-quizzes {
     width: 100%;
-    height: hug content;
     max-width: 1500px;
     background-color: #DCDCDC;
     border: 2px solid #000000;
@@ -75,7 +94,6 @@
 .scroll-quizzes {
     position: relative;
     width: 100%;
-    height: auto;
     display: flex;
     flex-direction: row;
     gap: 20px;
@@ -104,9 +122,8 @@
     align-items: center;
     border-radius: 20px;
     background-color: #ffffff;
-    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
     overflow: hidden;
-    background-color: white;
 }
 
 .quiz-pcs img {
@@ -122,4 +139,8 @@
     text-align: center;
     margin: 0;
     background-color: transparent;
+}
+
+.hidden {
+    display: none !important;
 }
