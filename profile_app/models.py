@@ -6,7 +6,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(30), nullable=False)
-
+    class_id = db.Column(db.Integer, db.ForeignKey('classes.id'))
 
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
 

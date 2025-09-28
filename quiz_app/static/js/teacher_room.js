@@ -20,10 +20,11 @@
       $("next").onclick = () => socket.emit("teacher:next", { code });
       $("finish").onclick = () => socket.emit("teacher:finish", { code });
 
-      socket.on("room:state", (s) => {
-        $("state").innerText = JSON.stringify(s, null, 2);
-        console.log(JSON.stringify(s))
-        if (s.question) renderQuestion(s.question);
+      socket.on("room:state", (info) => {
+        $("state").innerText = JSON.stringify(info, null, 2);
+        console.log(JSON.stringify(info))
+        console.log(JSON.stringify(info.participants))
+        if (info.question) renderQuestion(info.question);
       });
 
       socket.on("room:question", (q) => {
@@ -49,7 +50,7 @@
         $("stats").innerHTML = `<pre>${JSON.stringify(res, null, 2)}</pre>`
       });
     }
-
+    
     document.addEventListener("DOMContentLoaded", () => {
         const hostRoot = document.getElementById("host-root");
         code = hostRoot?.dataset?.code || "";
