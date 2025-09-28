@@ -144,3 +144,17 @@ html, body {
 .hidden {
     display: none !important;
 }
+
+.content-visible {
+    display: block !important;
+}
+
+.content-hidden {
+    display: none !important;
+}
+
+.join-page,
+#joinNextContainer,
+#student2Block {
+    transition: opacity 0.3s ease;
+}

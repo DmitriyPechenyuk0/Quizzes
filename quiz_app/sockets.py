@@ -35,12 +35,23 @@ def broadcast_state(code: str):
         return
     participants = [{"user_id": p.user_id, "nickname": p.nickname}
                     for p in SessionParticipant.query.filter_by(session_id=sess.id)]
-    data = {"status": sess.status, "participants": participants, "current_order": sess.current_order}
+    data = {
+        "status": sess.status, 
+        "participants": participants, 
+        "current_order": sess.current_order,
+        "participants_count": len(participants) 
+    }
     if sess.status == "IN_PROGRESS":
         quest = current_question(sess)
         if quest:
             data["question"] = serialize_question(quest)
     emit("room:state", data, to=code)
+    
+
+    emit("room:participants_list", {
+        "participants": participants,
+        "count": len(participants)
+    }, to=code)
 
 
 @socketio.on("join")
@@ -208,3 +219,138 @@ def switch(data):
     code = str(data.get("code", "")).strip()
     emit('student:switch_content', to=code)
 
+
+
+
+
+
+
+
+
+
+
+
+
+@socketio.on("join")
+def on_join(data):
+    code = str(data.get("code", "")).strip()
+    as_host = bool(data.get("as_host"))
+
+    if not code:
+        return emit("error", {"message": "need code"})
+    if not getattr(current_user, "is_authenticated", False):
+        return emit("error", {"message": "Please Login to account"})
+
+    sess = QuizSession.query.filter_by(code=code).first()
+    if not sess or sess.status == "FINISHED":
+        return emit("error", {"message": "Session unavailable"})
+
+    if getattr(current_user, "is_admin", False) and not as_host:
+        return emit("error", {"message": "The host cannot connect as a participant"})
+
+    if as_host and getattr(current_user, "is_admin", False):
+        SessionParticipant.query.filter_by(session_id=sess.id, user_id=current_user.id).delete()
+        db.session.commit()
+        join_room(code)
+        broadcast_state(code)
+        return
+
+    display_name = (getattr(current_user, "nickname", None) or
+                    getattr(current_user, "username", None) or
+                    str(current_user.name))
+
+    p = SessionParticipant.query.filter_by(session_id=sess.id, user_id=current_user.id).first()
+    if not p:
+        p = SessionParticipant(session_id=sess.id, user_id=current_user.id, nickname=display_name)
+        db.session.add(p)
+        try:
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+
+    join_room(code)
+    
+
+    emit("room:joined", {"code": code, "nickname": display_name})
+    
+
+    broadcast_participants(code)
+    broadcast_state(code)
+
+def broadcast_participants(code):
+
+    sess = QuizSession.query.filter_by(code=code).first()
+    if not sess:
+        return
+    
+    participants = SessionParticipant.query.filter_by(session_id=sess.id).all()
+    participants_list = [{"id": p.user_id, "nickname": p.nickname} for p in participants]
+    
+
+    emit("room:participants_list", {
+        "participants": participants_list,
+        "count": len(participants_list)
+    }, to=code)
+
+@socketio.on("request_participants")
+def on_request_participants(data):
+
+    code = str(data.get("code", "")).strip()
+    broadcast_participants(code)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+@socketio.on("teacher:remove_participant")
+def on_remove_participant(data):
+    code = str(data.get("code", "")).strip()
+    user_id = data.get("user_id")
+    
+    if not code or not user_id:
+        return emit("error", {"message": "Need code and user_id"})
+    
+    sess = QuizSession.query.filter_by(code=code).first()
+    if not sess:
+        return emit("error", {"message": "Session not found"})
+    
+
+    participant = SessionParticipant.query.filter_by(
+        session_id=sess.id, 
+        user_id=user_id
+    ).first()
+    
+    if participant:
+
+        SessionAnswer.query.filter_by(
+            session_id=sess.id,
+            user_id=user_id
+        ).delete()
+        
+        db.session.delete(participant)
+        db.session.commit()
+        
+
+        broadcast_participants(code)
+        broadcast_state(code)
+        
+        emit("teacher:participant_removed", {
+            "user_id": user_id,
+            "message": "Participant removed successfully"
+        })
+    else:
+        emit("error", {"message": "Participant not found"})
+
+@socketio.on("request_participants")
+def on_request_participants(data):
+
+    code = str(data.get("code", "")).strip()
+    broadcast_participants(code)

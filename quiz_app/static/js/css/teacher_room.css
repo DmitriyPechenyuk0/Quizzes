@@ -175,3 +175,6 @@ body {
     font-size: 18px;
     font-family: quicksand, sans-serif;
 }
+.hidden {
+    display: none !important;
+}
