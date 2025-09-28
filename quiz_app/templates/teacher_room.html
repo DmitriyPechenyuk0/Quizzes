@@ -57,11 +57,5 @@
         <div id="participants-list"></div>
     </div>
 
-    <script>
-document.getElementById('start').addEventListener('click', () => {
-    const code = document.getElementById('quiz-code').textContent.trim();
-    socket.emit('admin:start', { code });
-});
-</script>
 </body>
 </html>
