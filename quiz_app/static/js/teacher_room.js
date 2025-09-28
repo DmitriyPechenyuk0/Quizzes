@@ -16,7 +16,10 @@
     }
 
         function attachEvents() {
-      $("start").onclick = () => socket.emit("teacher:start", { code });
+      $("start").onclick = () => {
+        socket.emit("teacher:start", { code })
+        socket.emit('switch_content', { code })
+      };
       $("next").onclick = () => socket.emit("teacher:next", { code });
       $("finish").onclick = () => socket.emit("teacher:finish", { code });
 
