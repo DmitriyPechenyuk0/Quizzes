@@ -15,39 +15,20 @@
       $("question").innerHTML = `<div><strong>${q.text}</strong></div>`;
     }
 
-    function renderParticipants(participants) {
-      const listEl = $("participants-list");
-      const countEl = $("participants-count");
-      listEl.innerHTML = "";
-      countEl.textContent = `Учасники (${participants.length})`;
-      participants.forEach(p => {
-        const name = (p && typeof p === "object")
-          ? (p.nickname || p.name || p.username || p.displayName || "Без имени")
-          : (p || "Без имени");
-        const div = document.createElement("div");
-        div.className = "participant-item-remove-btn";
-        div.innerHTML = `
-          <div class="participant-item">
-            <img src="/quiz/quiz_static/images/profile-avatar.svg" alt="User">
-            <h3>${name}</h3>
-          </div>
-          <img src="/quiz/quiz_static/images/remove-btn.svg" alt="Remove-btn" data-id="${p.id}">
-        `;
-        div.querySelector("img[data-id]").onclick = () => socket.emit("teacher:remove_participant", { code, id: p.id });
-        listEl.appendChild(div);
-      });
-    }
-
-    function attachEvents() {
-      $("start").onclick = () => socket.emit("teacher:start", { code });
+        function attachEvents() {
+      $("start").onclick = () => {
+        socket.emit("teacher:start", { code })
+        socket.emit('switch_content', { code })
+      };
       $("next").onclick = () => socket.emit("teacher:next", { code });
       $("finish").onclick = () => socket.emit("teacher:finish", { code });
 
-      socket.on("room:state", (s) => {
-        $("state").innerText = JSON.stringify(s, null, 2);
-        console.log(JSON.stringify(s))
-        if (s.question) renderQuestion(s.question);
-        if (s.participants) renderParticipants(s.participants);
+      socket.on("room:state", (info) => {
+        $("state").innerText = JSON.stringify(info, null, 2);
+        console.log(JSON.stringify(info))
+        console.log(JSON.stringify(info.participants))
+        if (info.question) renderQuestion(info.question);
+
       });
 
       socket.on("room:question", (q) => {
@@ -76,7 +57,7 @@
         renderParticipants(participants);
       });
     }
-
+    
     document.addEventListener("DOMContentLoaded", () => {
         const hostRoot = document.getElementById("host-root");
         code = hostRoot?.dataset?.code || "";

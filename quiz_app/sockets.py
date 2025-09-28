@@ -103,7 +103,9 @@ def on_admin_start(data):
     sess.current_order = first_q.order_index
     db.session.commit()
 
-    emit("admin:start", {}, to=code)               
+
+    emit("delete_user", {"id": 1}, to=code)
+
     emit("room:question", serialize_question(first_q), to=code)
     broadcast_state(code)
 
@@ -196,8 +198,13 @@ def on_answer(data):
     db.session.commit()
 
     total = SessionParticipant.query.filter_by(session_id=session.id).count()
-    answered = SessionAnswer.query.filter_by(session_id=session.id,
-                                           question_id=cur_quest.id).count()
-    emit("room:answers_progress",
-         {"question_id": cur_quest.id, "answered": answered, "total": total},
-         to=code)
+
+
+    answered = SessionAnswer.query.filter_by(session_id=session.id, question_id=cur_quest.id).count()
+    emit("room:answers_progress", {"question_id": cur_quest.id, "answered": answered, "total": total}, to=code)
+
+@socketio.on("switch_content")
+def switch(data):
+    code = str(data.get("code", "")).strip()
+    emit('student:switch_content', to=code)
+

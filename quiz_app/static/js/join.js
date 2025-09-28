@@ -131,8 +131,9 @@
       if ($("question")) $("question").innerHTML = `<h3>Results</h3><pre>${JSON.stringify(res, null, 2)}</pre>`;
     });
 
-    socket.on("admin:start", () => showStudent2Screen());
-  }
+    socket.on("student:switch_content", (d) => {
+      
+    })
 
   document.addEventListener("DOMContentLoaded", () => {
     socket = io();
@@ -140,4 +141,4 @@
     const codeFromQuery = getCodeFromQuery();
     if (codeFromQuery && $("code")) $("code").value = codeFromQuery;
   });
-})();
+}});
