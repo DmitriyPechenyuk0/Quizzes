@@ -4,12 +4,10 @@
     <meta charset="utf-8">
     <title>Комната ведущего</title>
     <link rel="stylesheet" href="{{ url_for('quiz_app.static', filename='js/css/teacher_room.css') }}">
-
 </head>
 <body>
     <div id="particles-js"></div>
     <div class="main-info-frame">
-
         <div class="quiz-link-frame">
             <div class="frame-left">
                 <div class="func-number-frame">
@@ -42,7 +40,6 @@
             <button id="next">Next</button>
             <button id="finish">Complete</button>
         </div>
-
     </div>
 
     <div id="state"></div>
@@ -51,82 +48,15 @@
     <div id="stats"></div>
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
-
     <script src="{{ url_for('quiz_app.static', filename='js/teacher_room.js') }}?v=1"></script>
-
     <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
     <script src="{{ url_for('static', filename='js/base.js') }}"></script>
 
-
     <div class="participants-frame">
-        <p>Учасники (0)</p>
-        <div class="participant-item-remove-btn">
-            <div class="participant-item">
-                <img src="{{ url_for('quiz_app.static', filename='images/profile-avatar.svg') }}" alt="User">
-                <h3>Ім'я учасника</h3>
-            </div>
-            <img src="{{ url_for('quiz_app.static', filename='images/remove-btn.svg') }}" alt="Remove-btn">
-        </div>
-
-        <div class="participant-item-remove-btn">
-            <div class="participant-item">
-                <img src="{{ url_for('quiz_app.static', filename='images/profile-avatar.svg') }}" alt="User">
-                <h3>Ім'я учасника</h3>
-            </div>
-            <img src="{{ url_for('quiz_app.static', filename='images/remove-btn.svg') }}" alt="Remove-btn">
-        </div>
-
-        <div class="participant-item-remove-btn">
-            <div class="participant-item">
-                <img src="{{ url_for('quiz_app.static', filename='images/profile-avatar.svg') }}" alt="User">
-                <h3>Ім'я учасника</h3>
-            </div>
-            <img src="{{ url_for('quiz_app.static', filename='images/remove-btn.svg') }}" alt="Remove-btn">
-        </div>
-
-        <div class="participant-item-remove-btn">
-            <div class="participant-item">
-                <img src="{{ url_for('quiz_app.static', filename='images/profile-avatar.svg') }}" alt="User">
-                <h3>Ім'я учасника</h3>
-            </div>
-            <img src="{{ url_for('quiz_app.static', filename='images/remove-btn.svg') }}" alt="Remove-btn">
-        </div>
-
-        <div class="participant-item-remove-btn">
-            <div class="participant-item">
-                <img src="{{ url_for('quiz_app.static', filename='images/profile-avatar.svg') }}" alt="User">
-                <h3>Ім'я учасника</h3>
-            </div>
-            <img src="{{ url_for('quiz_app.static', filename='images/remove-btn.svg') }}" alt="Remove-btn">
-        </div>
-
-        <div class="participant-item-remove-btn">
-            <div class="participant-item">
-                <img src="{{ url_for('quiz_app.static', filename='images/profile-avatar.svg') }}" alt="User">
-                <h3>Ім'я учасника</h3>
-            </div>
-            <img src="{{ url_for('quiz_app.static', filename='images/remove-btn.svg') }}" alt="Remove-btn">
-        </div>
-
-        <div class="participant-item-remove-btn">
-            <div class="participant-item">
-                <img src="{{ url_for('quiz_app.static', filename='images/profile-avatar.svg') }}" alt="User">
-                <h3>Ім'я учасника</h3>
-            </div>
-            <img src="{{ url_for('quiz_app.static', filename='images/remove-btn.svg') }}" alt="Remove-btn">
-        </div>
-
-        <div class="participant-item-remove-btn">
-            <div class="participant-item">
-                <img src="{{ url_for('quiz_app.static', filename='images/profile-avatar.svg') }}" alt="User">
-                <h3>Ім'я учасника</h3>
-            </div>
-            <img src="{{ url_for('quiz_app.static', filename='images/remove-btn.svg') }}" alt="Remove-btn">
-        </div>
-
-
-        
+        <p id="participants-count">Учасники (0)</p>
+        <div id="participants-list"></div>
     </div>
+
     <script>
 document.getElementById('start').addEventListener('click', () => {
     const code = document.getElementById('quiz-code').textContent.trim();
