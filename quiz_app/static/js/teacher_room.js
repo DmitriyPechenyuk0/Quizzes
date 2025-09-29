@@ -363,7 +363,7 @@
         }
     }
 
-    // Функция переключения на студенческий интерфейс
+
     function switchToStudentInterface() {
         const teacherContent = document.getElementById('teacherRoomContent');
         const studentContent = document.getElementById('studentContent');
@@ -388,7 +388,7 @@
       $("start").onclick = () => {
         socket.emit("teacher:start", { code });
         socket.emit("switch_content", { code });
-        // Переключаем интерфейс учителя
+  
         switchToStudentInterface();
       };
       
@@ -462,6 +462,21 @@
         }, 1000);
     });
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

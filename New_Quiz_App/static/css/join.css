@@ -158,3 +158,8 @@ html, body {
 #student2Block {
     transition: opacity 0.3s ease;
 }
+
+#student2Block {
+    margin-top: 35px;   
+
+}

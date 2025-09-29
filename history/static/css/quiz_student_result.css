@@ -29,6 +29,8 @@ main{
 
 .result-frame{
     display: flex;
+    width: 1818px;
+    height: 2052px;
     flex-direction: column;
     align-items: center;
     padding: 20px 55px;

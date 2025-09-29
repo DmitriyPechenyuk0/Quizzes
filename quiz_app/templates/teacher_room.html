@@ -9,94 +9,97 @@
 </head>
 <body>
 
-    <div id="particles-js" class="particles-visible"></div>
     
     <div id="static-urls" 
-         data-profile-avatar="{{ url_for('quiz_app.static', filename='images/profile-avatar.svg') }}"
-         data-remove-btn="{{ url_for('quiz_app.static', filename='images/remove-btn.svg') }}"
-         style="display: none;">
-    </div>
+    data-profile-avatar="{{ url_for('quiz_app.static', filename='images/profile-avatar.svg') }}"
+    data-remove-btn="{{ url_for('quiz_app.static', filename='images/remove-btn.svg') }}"
+    style="display: none;">
+</div>
+<div class="main-frame">
+        <!-- <div id="particles-js" class="particles-visible"></div> -->
+        <div class="main-content" id="teacherRoomContent">
+            
+            
+            <div class="main-info-frame">
+                <div class="participants-frame">
+                    <p id="participants-count">Учасники (0)</p>
+                    <div id="participants-list"></div>
+                </div>
+                <div class="quiz-link-frame">
+                    <div class="frame-left">
+                        <div class="func-number-frame">
+                            <h1>1</h1>
+                        </div>
+                        <div class="func-text-frame">
+                            <h3>Приєднуйтесь з будь-якого пристрою</h3>
+                        </div>
+                        <h3 id="quiz-link">{{ url_for('quiz_app.host_page', code=code, _external=True) }}</h3>
+                        <img src="{{ url_for('quiz_app.static', filename='images/copy-icon.svg') }}" alt="Copy" id="copy-link-icon">
+                    </div>
+                </div>
 
-    <div class="main-content" id="teacherRoomContent">
-        <div class="main-info-frame">
-            <div class="quiz-link-frame">
-                <div class="frame-left">
-                    <div class="func-number-frame">
-                        <h1>1</h1>
+                <div class="quiz-code-frame">
+                    <div class="frame-left">
+                        <div class="func-number-frame">
+                            <h1>2</h1>
+                        </div>
+                        <div class="func-text-frame">
+                            <h3>Введіть код підключення:</h3>
+                        </div>
+                        <h3 class="connect-code" id="quiz-code">{{ code }}</h3>
+                        <img src="{{ url_for('quiz_app.static', filename='images/copy-icon.svg') }}" alt="Copy" id="copy-code-icon">
                     </div>
-                    <div class="func-text-frame">
-                        <h3>Приєднуйтесь з будь-якого пристрою</h3>
-                    </div>
-                    <h3 id="quiz-link">{{ url_for('quiz_app.host_page', code=code, _external=True) }}</h3>
-                    <img src="{{ url_for('quiz_app.static', filename='images/copy-icon.svg') }}" alt="Copy" id="copy-link-icon">
+                    <div id="host-root" data-code="{{ code }}"></div>
+                </div>
+
+                <div class="start-btn-frame">
+                    <button id="start">Почати зараз</button>
+                    <button id="next">Next</button>
+                    <button id="finish">Complete</button>
                 </div>
             </div>
 
-            <div class="quiz-code-frame">
-                <div class="frame-left">
-                    <div class="func-number-frame">
-                        <h1>2</h1>
-                    </div>
-                    <div class="func-text-frame">
-                        <h3>Введіть код підключення:</h3>
-                    </div>
-                    <h3 class="connect-code" id="quiz-code">{{ code }}</h3>
-                    <img src="{{ url_for('quiz_app.static', filename='images/copy-icon.svg') }}" alt="Copy" id="copy-code-icon">
-                </div>
-                <div id="host-root" data-code="{{ code }}"></div>
-            </div>
 
-            <div class="start-btn-frame">
-                <button id="start">Почати зараз</button>
-                <button id="next">Next</button>
-                <button id="finish">Complete</button>
-            </div>
+            <div id="question"></div>
+            <div id="progress"></div>
+            <div id="stats"></div>
         </div>
 
-        <div id="state"></div>
-        <div id="question"></div>
-        <div id="progress"></div>
-        <div id="stats"></div>
-    </div>
+        <div id="studentContent" class="content-hidden">
+            <div class="section">
+                <div class="title-div">
+                    <p class="title-p">Нові вікторини</p>
+                </div>
+                <div class="div-content">
+                    <div class="new-quiz-content">
+                        <div class="fill-form-frame">
+                            <h1>Інформація про запитання</h1>
+                        </div>
 
-    <div id="studentContent" class="content-hidden">
-        <div class="section">
-            <div class="title-div">
-                <p class="title-p">Нові вікторини</p>
-            </div>
-            <div class="div-content">
-                <div class="new-quiz-content">
-                    <div class="fill-form-frame">
-                        <h1>Інформація про запитання</h1>
-                    </div>
-
-                    <div class="answers-options-frame">
-                        <div class="answer-container">
-                            <p class="answers-options-frame-blue">Відповідь 1</p>
-                            <input type="checkbox" class="answer-checkbox">
-                        </div>
-                        <div class="answer-container">
-                            <p class="answers-options-frame-green">Відповідь 2</p>
-                            <input type="checkbox" class="answer-checkbox">
-                        </div>
-                        <div class="answer-container">
-                            <p class="answers-options-frame-yellow">Відповідь 3</p>
-                            <input type="checkbox" class="answer-checkbox">
-                        </div>
-                        <div class="answer-container">
-                            <p class="answers-options-frame-red">Відповідь 4</p>
-                            <input type="checkbox" class="answer-checkbox">
+                        <div class="answers-options-frame">
+                            <div class="answer-container">
+                                <p class="answers-options-frame-blue">Відповідь 1</p>
+                                <input type="checkbox" class="answer-checkbox">
+                            </div>
+                            <div class="answer-container">
+                                <p class="answers-options-frame-green">Відповідь 2</p>
+                                <input type="checkbox" class="answer-checkbox">
+                            </div>
+                            <div class="answer-container">
+                                <p class="answers-options-frame-yellow">Відповідь 3</p>
+                                <input type="checkbox" class="answer-checkbox">
+                            </div>
+                            <div class="answer-container">
+                                <p class="answers-options-frame-red">Відповідь 4</p>
+                                <input type="checkbox" class="answer-checkbox">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="participants-frame">
-        <p id="participants-count">Учасники (0)</p>
-        <div id="participants-list"></div>
-    </div>
+    
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
     <script src="{{ url_for('quiz_app.static', filename='js/teacher_room.js') }}?v=4"></script>
