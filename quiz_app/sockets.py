@@ -5,7 +5,12 @@ from project.settings import socketio, db
 from .models import QuizSession, Question, SessionParticipant, SessionAnswer
 
 def serialize_question(q: Question):
-    return {"id": q.id, "text": q.text, "order_index": q.order_index}
+    return {
+        "id": q.id, 
+        "text": q.text, 
+        "order_index": q.order_index,
+        "correct_answer": q.correct_answer
+    }
 
 def normalize(text: str) -> str:
     if not text:
@@ -215,9 +220,10 @@ def on_answer(data):
     emit("room:answers_progress", {"question_id": cur_quest.id, "answered": answered, "total": total}, to=code)
 
 @socketio.on("switch_content")
-def switch(data):
+def switch_content(data):
     code = str(data.get("code", "")).strip()
-    emit('student:switch_content', to=code)
+
+    emit('student:switch_content', {}, to=code)
 
 
 
@@ -354,3 +360,21 @@ def on_request_participants(data):
 
     code = str(data.get("code", "")).strip()
     broadcast_participants(code)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

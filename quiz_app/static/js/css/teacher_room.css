@@ -178,3 +178,18 @@ body {
 .hidden {
     display: none !important;
 }
+
+
+.content-visible {
+    display: block;
+}
+
+.content-hidden {
+    display: none;
+}
+
+
+.participants-frame {
+    display: block !important;
+}
+
