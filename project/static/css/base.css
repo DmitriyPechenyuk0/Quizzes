@@ -36,6 +36,10 @@
     background-color: #FAF1F1;
 }
 body{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
     width: 100vw;
     height: 100vh;
     overflow-x: hidden;
@@ -189,8 +193,4 @@ header{
 .log-out-img{
     width: 13px;
     height: 13px;
-}
-#particles-js{
-    width: 1920px;
-    height: 1080px;
 }
