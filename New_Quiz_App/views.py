@@ -169,3 +169,11 @@ def save_topic():
     else:
         return jsonify({"status": "error", "message": "No topic provided"}), 400
 
+
+def join_next_page():
+    context = {
+        'page': 'join',
+        'is_auth': current_user.is_authenticated,
+        'name': current_user.name
+    }
+    return render_template('join_next.html', **context)
