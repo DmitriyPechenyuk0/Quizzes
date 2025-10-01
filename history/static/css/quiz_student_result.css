@@ -924,21 +924,21 @@ main {
     flex-grow: 0;
 }
 
-.frame-img-answer-choice-22{
+.frame-img-answer-choice-22 {
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    padding: 0px;
-    gap: 5px;
-    width: auto;
-    height: 30px;
-}
-
-.img-answer-choice-22{
-    width: 30px;
+    width: 31px;
     height: 30px;
     background: #EF3C69;
     border-radius: 50px;
+}
+
+.img-answer-choice-22 {
+    width: 20px;
+    height: 20px;
+    object-fit: contain; 
+    background-color: transparent;
 }
 
 .text-answer-choice-22{
