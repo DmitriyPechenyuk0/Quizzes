@@ -7,8 +7,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(30), nullable=False)
 
-
+    group = db.Column(db.Integer, nullable=False)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
+    is_teacher = db.Column(db.Boolean, default=False)  
 
 
     def __repr__(self) -> str:
