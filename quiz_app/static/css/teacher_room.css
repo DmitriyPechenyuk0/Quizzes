@@ -7,9 +7,15 @@ main{
     min-height: 1000px;
     width: 1884px;
 }
+
+.display-flex{
+    display: flex;
+}
+.display-none{
+    display: none;
+}
 #particles-js{
     position: relative;
-    display: flex;
     flex-direction: column;
     width: 1447px;
     height: 1000px;

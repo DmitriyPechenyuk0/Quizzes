@@ -10,7 +10,8 @@
 {% endblock %}
 
 {% block main %}
-<div id="particles-js" class="left-content">
+<div id="host-root" data-code="{{ code }}"></div>
+<div id="particles-js" class="left-content display-flex">
     <div class="main-left-content">
         <div class="main-left-content-connection-link">
             <span class="main-left-content-connection-link-icn" >1</span>
@@ -21,11 +22,11 @@
         <div class="main-left-content-connection-code">
             <span class="main-left-content-connection-link-icn" >2</span>
             <span class="main-left-content-cnt" >Введіть код підключення</span>
-            <span class="main-left-content-code" >228375</span>
+            <span class="main-left-content-code" >{{ code }}</span>
             <img src="{{ url_for('quiz_app.static', filename='images/copy-icon.svg') }}">
         </div>
         <div class="main-left-content-connection-btn">
-            <button class="main-left-content-button-start" type="button" >
+            <button id="start" class="main-left-content-button-start" >
                 Почати зараз
             </button>
         </div>

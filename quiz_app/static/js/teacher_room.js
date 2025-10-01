@@ -17,14 +17,16 @@
 
         function attachEvents() {
       $("start").onclick = () => {
+        document.querySelector('.left-content').classList.remove('display-flex')
+        document.querySelector('.left-content').classList.add('display-none')
         socket.emit("teacher:start", { code })
         socket.emit('switch_content', { code })
       };
-      $("next").onclick = () => socket.emit("teacher:next", { code });
-      $("finish").onclick = () => socket.emit("teacher:finish", { code });
+      // $("next").onclick = () => socket.emit("teacher:next", { code });
+      // $("finish").onclick = () => socket.emit("teacher:finish", { code });
 
       socket.on("room:state", (info) => {
-        $("state").innerText = JSON.stringify(info, null, 2);
+        // $("state").innerText = JSON.stringify(info, null, 2);
         console.log(JSON.stringify(info))
         console.log(JSON.stringify(info.participants))
         if (info.question) renderQuestion(info.question);
