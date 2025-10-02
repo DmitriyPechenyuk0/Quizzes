@@ -5,20 +5,22 @@
     function $(id) { return document.getElementById(id); }
 
     function clearUI({ keepState = false } = {}) {
-      $("question").innerHTML = "";
-      $("progress").innerText = "";
-      if (!keepState) $("state").innerText = "";
+      // $("question").innerHTML = "";
+      // $("progress").innerText = "";
+      // if (!keepState) $("state").innerText = "";
     }
 
     function renderQuestion(q) {
       clearUI({ keepState: false });
-      $("question").innerHTML = `<div><strong>${q.text}</strong></div>`;
+
     }
 
         function attachEvents() {
       $("start").onclick = () => {
         document.querySelector('.left-content').classList.remove('display-flex')
         document.querySelector('.left-content').classList.add('display-none')
+        document.querySelector('.left-content-afterstart').classList.remove('display-none')
+        document.querySelector('.left-content-afterstart').classList.add('display-flex')
         socket.emit("teacher:start", { code })
         socket.emit('switch_content', { code })
       };
@@ -26,10 +28,13 @@
       // $("finish").onclick = () => socket.emit("teacher:finish", { code });
 
       socket.on("room:state", (info) => {
-        // $("state").innerText = JSON.stringify(info, null, 2);
-        console.log(JSON.stringify(info))
-        console.log(JSON.stringify(info.participants))
-        if (info.question) renderQuestion(info.question);
+        if ($("lcaTitleElement").textContent != info.quiz_name) $("lcaTitleElement").textContent = info.quiz_name
+
+        if (info.question){
+          renderQuestion(info.question)
+          console.log(info)
+          document.getElementById('lcacQQuantity').textContent = `${ info.current_order } / ${info.question.q_quantity}`
+        };
       });
 
       socket.on("room:question", (q) => {

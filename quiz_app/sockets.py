@@ -3,9 +3,12 @@ from flask_login import current_user
 from sqlalchemy import func, case
 from project.settings import socketio, db
 from .models import QuizSession, Question, SessionParticipant, SessionAnswer
+from New_Quiz_App.models import Quiz
 
 def serialize_question(q: Question):
-    return {"id": q.id, "text": q.text, "order_index": q.order_index}
+    qz = Quiz.query.filter_by(id = q.quiz_id).first()
+    print(qz)
+    return {"id": q.id, "text": q.text, "order_index": q.order_index, "q_quantity": qz.count_questions}
 
 def normalize(text: str) -> str:
     if not text:
@@ -29,7 +32,7 @@ def next_question(session: QuizSession):
 def broadcast_state(code: str):
 
     sessio = QuizSession.query.filter_by(code=code).first()
-
+    quiz = Quiz.query.filter_by(id=sessio.quiz_id).first()
     if not sessio:
         return
     
@@ -38,7 +41,7 @@ def broadcast_state(code: str):
     for partici in SessionParticipant.query.filter_by(session_id=sessio.id):
         participants.append({"user_id": partici.user_id, "nickname": partici.nickname})
     
-    data = {"status": sessio.status, "participants": participants, "current_order": sessio.current_order}
+    data = {"status": sessio.status, "participants": participants, "current_order": sessio.current_order, "quiz_name": quiz.name}
 
     if sessio.status == "IN_PROGRESS":
         
@@ -109,7 +112,6 @@ def on_teacher_start(data):
     sess.status = "IN_PROGRESS"
     sess.current_order = first_q.order_index
     db.session.commit()
-
     emit("delete_user", {"id": 1}, to=code)
     emit("room:question", serialize_question(first_q), to=code)
     broadcast_state(code)

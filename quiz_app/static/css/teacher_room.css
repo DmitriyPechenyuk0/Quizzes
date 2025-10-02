@@ -6,6 +6,7 @@ main{
     height: fit-content;
     min-height: 1000px;
     width: 1884px;
+    gap: 17px;
 }
 
 .display-flex{
@@ -174,4 +175,84 @@ main{
 }
 .remove-user-button{
     cursor: pointer;
+}
+.left-content-afterstart{
+    width: 1406px;
+    height: 900px;
+    justify-content: start;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+.lca-title{
+    width: 1406px;
+    height: 63px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 10px;
+    gap: 10px;
+    border-bottom: 1px solid black;
+    background: none;
+}
+#lcaTitleElement{
+    font-size: 34px;
+    font-weight: 500;
+    color: #000;
+}
+.lca-content{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 10px;
+    width: 1406px;
+    height: 837px;
+    background: none;
+}
+.lcac-content{
+    padding: 28px 28px;
+    gap: 20px;
+    width: 1386px;
+    height: 817px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #000;
+    border-radius: 10px;
+}
+.lcac-content-info{
+    width: 257px;
+    height: 761px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.lcac-content-info span{
+    width: 201px;
+    height: 80px;
+    font-weight: 700;
+    font-size: 32px;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.lcac-content-main{
+    width: 1053px;
+    height: 761px;
+    gap: 20px;
+    padding: 110px 180px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
