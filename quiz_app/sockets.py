@@ -81,6 +81,7 @@ def on_join(data):
 
     display_name = getattr(current_user, "nickname", None) or \
                    getattr(current_user, "username", None) or f"{current_user.name}"
+    display_id = current_user.id 
 
     p = SessionParticipant.query.filter_by(session_id=sess.id, user_id=current_user.id).first()
     if not p:
@@ -93,7 +94,7 @@ def on_join(data):
 
     join_room(code)
 
-    emit("room:participants_update", {"nickname": display_name}, to=code)
+    emit("room:participants_update", {"nickname": display_name, "id": display_id}, to=code)
     broadcast_state(code)
 
 @socketio.on("teacher:start")

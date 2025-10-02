@@ -21,7 +21,7 @@
                 <span>Запитання: <p id="lcacQQuantity" >6/12</p></span>
             </div>
             <div class="lcac-content-main" >
-                <span>
+                <span id="lcaccmQuestion" >
 
                 </span>
             </div>
@@ -50,14 +50,14 @@
     </div>
 </div>
 <div class="right-content">
-    <p class="right-content-title">Учасники (<span class="right-content-title-count">4</span>)</p>
-    <div class="right-content-user">
+    <p class="right-content-title">Учасники (<span class="right-content-title-count"></span>)</p>
+    <!-- <div class="right-content-user">
         <div class="right-content-user-more">
             <img class="right-content-user-more-profile-avatar" src="{{ url_for('quiz_app.static', filename='images/profile-avatar.svg') }}">
             <span class="right-content-user-more-name" >Dmitriy Pecheniuk</span>
         </div>
         <img class="remove-user-button" src="{{ url_for('quiz_app.static', filename='images/remove-btn.svg') }}">
-    </div>
+    </div> -->
 </div>
 {% endblock %}
 

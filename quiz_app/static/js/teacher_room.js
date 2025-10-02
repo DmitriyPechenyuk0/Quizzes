@@ -9,7 +9,12 @@
       // $("progress").innerText = "";
       // if (!keepState) $("state").innerText = "";
     }
+    function updateUserCounter(){
+      let counter = document.querySelector('.right-content-title-count');
+      counter.textContent = document.querySelectorAll('.right-content-user').length
 
+    }
+    
     function renderQuestion(q) {
       clearUI({ keepState: false });
 
@@ -17,6 +22,7 @@
 
         function attachEvents() {
       $("start").onclick = () => {
+        updateUserCounter()
         document.querySelector('.left-content').classList.remove('display-flex')
         document.querySelector('.left-content').classList.add('display-none')
         document.querySelector('.left-content-afterstart').classList.remove('display-none')
@@ -34,6 +40,8 @@
           renderQuestion(info.question)
           console.log(info)
           document.getElementById('lcacQQuantity').textContent = `${ info.current_order } / ${info.question.q_quantity}`
+          document.getElementById('lcaccmQuestion').textContent = info.question.text
+          
         };
       });
 
@@ -59,6 +67,21 @@
         $("question").innerHTML = `<h3>Results</h3>`;
         $("stats").innerHTML = `<pre>${JSON.stringify(res, null, 2)}</pre>`
       });
+
+      socket.on("room:participants_update", (info) => {
+        console.log(info)
+        let div = document.createElement("div");  div.id = `usr_${info.id}`; div.className = "right-content-user";
+        let morediv = document.createElement("div"); morediv.className = "right-content-user-more";
+        let rmusrButton = document.createElement("img"); rmusrButton.className = "remove-user-button"; rmusrButton.id = `rmusr_${info.id}`; rmusrButton.src = 'http://127.0.0.1:5000/quiz/quiz_static/images/remove-btn.svg'
+
+        let profimg = document.createElement("img"); profimg.className = "right-content-user-more-profile-avatar"; profimg.src = "http://127.0.0.1:5000/quiz/quiz_static/images/profile-avatar.svg"
+        let spanName = document.createElement("span"); spanName.className = "right-content-user-more-name"; spanName.textContent = info.nickname
+
+        morediv.appendChild(profimg); morediv.appendChild(spanName)
+        div.appendChild(morediv); div.appendChild(rmusrButton)
+        document.querySelector('.right-content').append(div)
+        updateUserCounter()
+      })
     }
     
     document.addEventListener("DOMContentLoaded", () => {
@@ -71,5 +94,6 @@
       socket = io();
       socket.emit("join", { code, as_host: true });
       attachEvents();
+      updateUserCounter()
     });
 })();
