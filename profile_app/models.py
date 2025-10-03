@@ -10,7 +10,7 @@ class User(db.Model, UserMixin):
     group = db.Column(db.Integer, nullable=False)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
     is_teacher = db.Column(db.Boolean, default=False)  
-
+    is_approved = db.Column(db.Boolean, default=False) 
 
     def __repr__(self) -> str:
         return f"name: {self.name}, email: {self.email}, is_admin: {self.is_admin}"
