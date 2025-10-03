@@ -4,6 +4,7 @@ from sqlalchemy import func, case
 from project.settings import socketio, db
 from .models import QuizSession, Question, SessionParticipant, SessionAnswer
 from New_Quiz_App.models import Quiz
+from flask import request
 
 def serialize_question(q: Question):
     qz = Quiz.query.filter_by(id = q.quiz_id).first()
@@ -196,6 +197,57 @@ def on_answer(data):
     emit("room:answers_progress", {"question_id": cur_quest.id, "answered": answered, "total": total}, to=code)
 
 @socketio.on("switch_content")
-def switch(data):
+def switch_content(data):
+    print(1234123)
     code = str(data.get("code", "")).strip()
-    emit('student:switch_content', to=code)
+    emit('student:switch_content', {}, to=code)
+
+
+@socketio.on("rm_user_from_session")
+def on_remove_user(data):
+    code = str(data.get("code", "")).strip()
+    user_id = data.get("user_id")
+    
+    if not code:
+        return emit("error", {"message": "need code"})
+    
+    if not user_id:
+        return emit("error", {"message": "need user_id"})
+
+    if not getattr(current_user, "is_authenticated", False):
+        return emit("error", {"message": "Please Login to account"})
+    
+    if not getattr(current_user, "is_admin", False):
+        return emit("error", {"message": "Only host can remove participants"})
+
+    sess = QuizSession.query.filter_by(code=code).first()
+    if not sess:
+        return emit("error", {"message": "Session not found"})
+
+    participant = SessionParticipant.query.filter_by(session_id=sess.id, user_id=user_id).first()
+    
+    if not participant:
+        return emit("error", {"message": "Participant not found"})
+    
+    removed_id = participant.user_id
+    removed_nickname = participant.nickname
+    
+    db.session.delete(participant)
+    print('successfuly deleted')
+    
+
+    SessionAnswer.query.filter_by(session_id=sess.id, user_id=user_id).delete()
+    
+    try:
+        db.session.commit()
+        
+        emit("room:user_kicked", {
+            "id": removed_id,
+            "nickname": removed_nickname
+        }, to=code)
+        
+        broadcast_state(code)
+        
+    except Exception as e:
+        db.session.rollback()
+        return emit("error", {"message": f"Failed to remove user: {str(e)}"})

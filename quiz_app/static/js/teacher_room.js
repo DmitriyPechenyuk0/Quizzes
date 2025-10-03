@@ -18,6 +18,10 @@
       clearUI({ keepState: false });
 
     }
+    function userRemover(user_id){
+      let div = document.querySelector(`#usr_${user_id}`)
+      div.remove()
+    }
 
     function attachEvents() {
       $("start").onclick = () => {
@@ -84,7 +88,9 @@
         updateUserCounter()
         for (let btn of document.querySelectorAll('.remove-user-button')){
           btn.addEventListener('click', () => {
-            console.log(btn.id.split('_')[1])
+            userRemover(btn.id.split('_')[1])
+            socket.emit('rm_user_from_session', {code, user_id: btn.id.split('_')[1]})
+            updateUserCounter()
           })
         }
       })

@@ -85,9 +85,6 @@
       clearUI();
       $("question").innerHTML = `<h3>Results</h3><pre>${JSON.stringify(res, null, 2)}</pre>`;
     });
-    socket.on("student:switch_content", (d) => {
-      
-    })
   }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -421,6 +418,7 @@
   }
 
   function switchToStudentInterface() {
+    console.log(12321)
     const joinPage = document.getElementById('joinPage');
     const joinNextContainer = document.getElementById('joinNextContainer');
     const student2Block = document.getElementById('student2Block');
@@ -547,11 +545,6 @@
       $("question").innerHTML = `<h3>Results</h3><pre>${JSON.stringify(res, null, 2)}</pre>`;
     });
 
-    socket.on("student:switch_content", (d) => {
-
-      switchToStudentInterface();
-    });
-
     socket.on("room:participants_update", (data) => {
       if (state.code) {
         socket.emit("request_participants", { code: state.code });
@@ -566,17 +559,3 @@
     if (codeFromQuery && $("code")) $("code").value = codeFromQuery;
   });
 })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
