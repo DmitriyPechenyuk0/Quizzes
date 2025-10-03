@@ -43,6 +43,7 @@ main{
     z-index: 100;
 }
 .right-content{
+    position: relative;
     width: 437px;
     height: 900px;
     display: flex;
@@ -107,6 +108,10 @@ main{
     justify-content: start;
     align-items: center;
     background: none;
+}
+.main-left-content-connection-code img, .main-left-content-connection-link img{
+    background: none;
+    cursor: pointer;
 }
 .main-left-content-connection-btn{
     display: flex;
@@ -260,4 +265,50 @@ main{
     font-size: 28px;
     font-weight: 700;
     color: #000;
+}
+.right-content-users-div{
+    width: 377px;
+    height: 751px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px;
+    gap: 20px;
+    overflow-x: none;
+    overflow-y: auto;
+}
+.right-content-q-skipper{
+    width: 377px;
+    height: 98px;
+    gap: 15px;
+    flex-direction: column;
+    padding: 10px 15px;
+    justify-content: end;
+    align-items: center;
+}
+#nextQ{
+    width: 190px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #2382FF;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+.rcqsTitle{
+    font-size: 18px;
+    font-weight: 500;
+}
+.rcqsCount{
+    font-weight: 700;
+    font-size: 18px;
+    
 }

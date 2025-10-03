@@ -12,24 +12,25 @@
     function updateUserCounter(){
       let counter = document.querySelector('.right-content-title-count');
       counter.textContent = document.querySelectorAll('.right-content-user').length
-
     }
-    
+   
     function renderQuestion(q) {
       clearUI({ keepState: false });
 
     }
 
-        function attachEvents() {
+    function attachEvents() {
       $("start").onclick = () => {
         updateUserCounter()
-        document.querySelector('.left-content').classList.remove('display-flex')
-        document.querySelector('.left-content').classList.add('display-none')
-        document.querySelector('.left-content-afterstart').classList.remove('display-none')
-        document.querySelector('.left-content-afterstart').classList.add('display-flex')
+
+        document.querySelector('.left-content').classList.remove('display-flex'); document.querySelector('.left-content').classList.add('display-none')
+        document.querySelector('.left-content-afterstart').classList.remove('display-none'); document.querySelector('.left-content-afterstart').classList.add('display-flex')
+        document.querySelector('.right-content-q-skipper').classList.remove('display-none'); document.querySelector('.right-content-q-skipper').classList.add('display-flex')
+
         socket.emit("teacher:start", { code })
         socket.emit('switch_content', { code })
       };
+      
       // $("next").onclick = () => socket.emit("teacher:next", { code });
       // $("finish").onclick = () => socket.emit("teacher:finish", { code });
 
@@ -50,7 +51,7 @@
       });
 
       socket.on("room:answers_progress", (p) => {
-        $("progress").innerText = `Passed: ${p.answered}/${p.total}`;
+        document.querySelector('.rcqsCount').textContent = `${p.answered}/${p.total}`
       });
 
       socket.on("room:question_closed", (d) => {
@@ -79,8 +80,13 @@
 
         morediv.appendChild(profimg); morediv.appendChild(spanName)
         div.appendChild(morediv); div.appendChild(rmusrButton)
-        document.querySelector('.right-content').append(div)
+        document.querySelector('.right-content-users-div').append(div)
         updateUserCounter()
+        for (let btn of document.querySelectorAll('.remove-user-button')){
+          btn.addEventListener('click', () => {
+            console.log(btn.id.split('_')[1])
+          })
+        }
       })
     }
     
@@ -94,6 +100,6 @@
       socket = io();
       socket.emit("join", { code, as_host: true });
       attachEvents();
-      updateUserCounter()
     });
 })();
+
