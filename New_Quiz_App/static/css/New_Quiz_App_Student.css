@@ -11,6 +11,7 @@ main {
     flex-direction: column;
     width: 100%;
     max-width: 1420px;
+    min-width: 1420px;
     height: 800px;
     align-items: center;
     justify-content: start;
@@ -152,3 +153,19 @@ main {
     font-size: 14px;
     font-family: 'Quicksand', sans-serif;
 }
+
+
+.content-visible {
+    display: block;
+}
+
+.content-hidden {
+    display: none;
+}
+
+
+.participants-frame {
+    display: block !important;
+}
+
+

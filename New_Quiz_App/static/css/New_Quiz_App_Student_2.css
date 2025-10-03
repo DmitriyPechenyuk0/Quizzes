@@ -8,6 +8,7 @@ main {
 
 .section {
   display: flex;
+  flex-shrink: 0;
   flex-direction: column;
   width: 100%;
   max-width: 1420px;
@@ -110,4 +111,10 @@ input {
   color: rgba(0, 0, 0, 0.5);
   background-color: rgba(97, 208, 63, 0.5);
   cursor: pointer;
+}
+.hidden {
+    display: none !important;
+}
+#student2Block{
+    width: 1500px;
 }

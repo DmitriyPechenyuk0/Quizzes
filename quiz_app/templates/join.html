@@ -1,38 +1,87 @@
-
 {% extends "base.html" %}
 
 {% block title %}Join{% endblock %}
 
 {% block head %}
+    {{ super() }}
     <link rel="stylesheet" href="{{ url_for('join.static', filename='css/join.css') }}">
+    <link rel="stylesheet" href="{{ url_for('join.static', filename='css/join_next.css') }}" disabled id="joinNextStyles">
+    <link rel="stylesheet"
+          href="{{ url_for('New_Quiz.static', filename='css/New_Quiz_App_Student_2.css') }}"
+          disabled id="student2Styles">
+    <script src="{{ url_for('New_Quiz.static', filename='js/jquery-3.7.1.min.js') }}"></script>
 {% endblock %}
 
 {% block main %}
-    <div class="join-page">
+    <div id="particles-js"></div>
+
+
+    <div class="join-page content-visible" id="joinPage">
         <form method="post" class="join-form">
             <div class="input-wrapper">
-                <input name="join_code" type="text" maxlength="6" placeholder="Enter join code" id="code" value="{{ code or '' }}"/>
-                <button type="button" id="joinBtn">⏎</button>
+                <input name="join_code" type="text" maxlength="6"
+                       placeholder="Введіть код для приєднання"
+                       id="code" value="{{ code or '' }}">
+                <button type="button" id="joinBtn">Приєднатися</button>
             </div>
         </form>
-        
+
         <div id="status"></div>
         <div id="question"></div>
         <div id="progress"></div>
-        
+
         <div class="passed-quizzes">
-            <h2>All Quizzes</h2>
+            <h2 class="scroll-title">Пройдені тести</h2>
             <div class="scroll-quizzes">
                 {% for quiz in quizzes %}
                     <div class="quiz-pcs">
+                        {% if quiz.image %}
                         <img src="{{ url_for('New_Quiz.static', filename='media/' ~ quiz.image) }}">
                         <p>{{ quiz.name }}</p>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
         </div>
+    </div>
 
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
 
-    <script src="{{ url_for('quiz_app.static', filename='js/join.js') }}?v=1"></script>
+    <div id="joinNextContainer" class="content-hidden">
+        <div class="main-window">
+            <div class="main-window-main">
+                <p class="mwm-name" id="participantName">{{ name or 'Guest' }}</p>
+                <p class="main-window-quiz-name" id="quizName">Quiz name</p>
+                <div class="mwm-participants-count">
+                    <p class="mwm-participants-count-title">Учасники</p>
+                    <p class="mwm-participants-count-count" id="participantsCount">0</p>
+                </div>
+            </div>
+            <div class="main-window-other-participants" id="participantsList"></div>
+        </div>
+    </div>
+
+
+    <div id="student2Block" class="content-hidden">
+        <div class="section">
+            <div class="title-div"><p class="title-p">Нові тести</p></div>
+            <div class="div-content">
+                <div class="new-quiz-content">
+                    <div class="fill-form-frame"><p>Інформація про запитання</p></div>
+                    <div class="fill-form-frame-2">
+                        <input type="text" placeholder="Напишіть запитання:">
+                        <button class="enter-btn">Ввести</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.currentUserName = "{{ name or 'Guest' }}";
+    </script>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+    <script src="{{ url_for('quiz_app.static', filename='js/join.js') }}?v=6"></script>
 {% endblock %}

@@ -8,39 +8,39 @@
 
 
 <div class="titles" >
-    <h1>Create and Take Quizzes</h1>
-    <h3>Build quizzes with easy to use tools and customize them to your specific needs. You can also test your knowledge on a variety of topics ranging from history and science to pop culture and current events.</h3>
+    <h1>Створюй та проходь тести</h1>
+    <h3>Створюйте тести за допомогою простих у використанні інструментів і налаштовуйте їх відповідно до ваших конкретних потреб. Ви також можете перевірити свої знання з різноманітних тем, починаючи від історії та науки і закінчуючи культурою та поточними подіями.</h3>
 </div>
 {% if is_auth == True %}
-<a class="get-started" href="/new-quiz-settings">Get started</a>
+<a class="get-started" href="/new-quiz-settings">Почати</a>
 {% elif is_auth != True %}
-<a class="get-started" href="/login">Get started</a>
+<a class="get-started" href="/login">Почати</a>
 {% endif %}
 <div class="benefits">
     <div class="benefit tick">
         <img src="{{ url_for('home_app.static', filename='img/tick.png') }}">
         <div class="benefit-text">
-            <h4>Easy to Use</h4>
-            <p>quickly create and manage your quizzes</p>
+            <h4>Простий у використанні</h4>
+            <p>Швидко створюйте та керуйте своїми вікторинами</p>
         </div>
     </div>
     <div class="benefit topic">
         <img src="{{ url_for('home_app.static', filename='img/diverse-topics.png') }}">
         <div class="benefit-text">
-            <h4>Diverse Topics</h4>
-            <p>Quizzes avaible on  numerous subjects</p>
+            <h4>Різноманітні теми</h4>
+            <p>Доступні вікторини на численні теми</p>
         </div>
     </div>
     <div class="benefit star">
         <img src="{{ url_for('home_app.static', filename='img/star.png') }}">
         <div class="benefit-text">
-            <h4>Instant Feedback</h4>
-            <p>Get your results immeoiately after completing</p>
+            <h4>Миттєвий Зворотній зв'язок</h4>
+            <p>Отримайте свої результати безмірно після завершення</p>
         </div>
     </div>
 </div>
 <div class="scroll-quizzes-name">
-    <p class="scroll-title" >All Quizzes</p>
+    <p class="scroll-title" >Всі тести</p>
     <div class="scroll-quizzes">
         {% for quiz in quizzes %}
         <div class="quiz-pcs">

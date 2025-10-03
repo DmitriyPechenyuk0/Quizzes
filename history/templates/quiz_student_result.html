@@ -5,131 +5,140 @@
 {% block head %} <link rel="stylesheet" href="{{ url_for('history.static', filename='css/quiz_student_result.css') }}">{% endblock %}
 
 {% block main %} 
- <!-- Design -->
     <div class="section">
-        <p class="quiz-text">Quiz: Вікторина</p>
+        <p class="quiz-text">Тест: Вікторина</p>
         <div class="result-frame">
             <div class="student-info">
                 <div class="profile">
-                    <img class="img-profile">
+                    <img class="profile-img" src="{{ url_for('history.static', filename='img/Avatar.svg') }}" alt="Avatar">
                     <div class="username-email-frame">
-                        <p class="username">username</p>
-                        <p class="email-user">email</p>
+                        <p class="username">Anonymous user</p>
+                        <p class="email-user">anonymous@gmail.com.ua.org.com</p>
                     </div>
                 </div>
             </div>
-            <div class="all-answer-1">
-                <div class="answer-number-1">
-                    <p class="number-text-1">1</p>
-                </div>
-                <div class="answer-info-1">
-                    <div class="question-frame-1">
-                        <p class="question-1">Вкажіть назву обов'язкової властивісті у будь якій моделі бази даних?</p>
-                    </div>
-                    <div class="correct-answer-frame-1">
-                        <div class="correct-answer-info-1">
-                            <p class="answer-1">Відповідь:</p>
-                            <p class="correct-answer-1">ID</p>
+            <p class="scoure-of-test">Загальна точність по тесту: 70%</p>
+
+            <div class="answers-container">
+                <div class="answers-column">
+                    <div class="all-answer-1">
+                        <div class="answer-number-1">
+                            <p class="number-text-1">1</p>
                         </div>
-                        <div class="correct-answer-info-12">
-                            <p class="answer-12">Відповідь:</p>
-                            <p class="correct-answer-12">ID</p>
+                        <div class="answer-info-1">
+                            <div class="question-frame-1">
+                                <p class="question-1">Вкажіть назву обов'язкової властивісті у будь якій моделі бази даних?</p>
+                            </div>
+                            <div class="correct-answer-frame-1">
+                                <div class="correct-answer-info-1">
+                                    <p class="answer-1">Відповідь:</p>
+                                    <p class="correct-answer-1">ID</p>
+                                </div>
+                                <div class="correct-answer-info-12">
+                                    <p class="answer-12">Ваша відповідь:</p>
+                                    <p class="correct-answer-12">ID</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="all-answer-2">
-                <div class="answer-number-2">
-                    <p class="number-text-2">2</p>
-                </div>
-                <div class="answer-info-2">
-                    <div class="question-frame-2">
-                        <p class="question-2">Вкажіть назву обов'язкової властивісті у будь якій моделі бази даних?</p>
-                    </div>
-                    <div class="correct-answer-frame-2">
-                        <div class="correct-answer-info-2">
-                            <p class="answer-2">Відповідь</p>
-                            <div class="all-answers">
-                                <div class="answer-choice-1">
-                                    <div class="frame-img-answer-choice-1">
-                                        <img class="img-answer-choice-1" src="{{ url_for('history.static', filename='img/done_circle.jpg') }}">
-                                    </div>
-                                    <p class="text-answer-choice-1">11</p>
-                                </div>
-                                <div class="answer-choice-2">
-                                    <div class="frame-img-answer-choice-2">
-                                        <img class="img-answer-choice-2">
-                                        <p class="text-answer-choice-2">22</p>
-                                    </div>
-                                </div>
-                                <div class="answer-choice-3">
-                                    <div class="frame-img-answer-choice-3">
-                                        <img class="img-answer-choice-3">
-                                        <pr class="text-answer-choice-3">33</p>
-                                    </div>
-                                </div>
-                                <div class="answer-choice-4">
-                                    <div class="frame-img-answer-choice-4">
-                                        <img class="img-answer-choice-4">
-                                        <p class="text-answer-choice-4">44</p>
+                    <div class="all-answer-2">
+                        <div class="answer-number-2">
+                            <p class="number-text-2">2</p>
+                        </div>
+                        <div class="answer-info-2">
+                            <div class="question-frame-2">
+                                <p class="question-2">Вкажіть назву обов'язкової властивісті у будь якій моделі бази даних?</p>
+                            </div>
+                            <div class="correct-answer-frame-2">
+                                <div class="correct-answer-info-2">
+                                    <p class="answer-2">Відповідь</p>
+                                    <div class="all-answers">
+                                        <div class="answer-choice-1">
+                                            <div class="frame-img-answer-choice-1">
+                                                <img class="img-answer-choice-1" src="{{ url_for('history.static', filename='img/done-circle.svg') }}">
+                                            </div>
+                                            <p class="text-answer-choice-1">11</p>
+                                        </div>
+                                        <div class="answer-choice-2">
+                                            <div class="frame-img-answer-choice-2">
+                                                <img class="img-answer-choice-2">
+                                                <p class="text-answer-choice-2">22</p>
+                                            </div>
+                                        </div>
+                                        <div class="answer-choice-3">
+                                            <div class="frame-img-answer-choice-3">
+                                                <img class="img-answer-choice-3">
+                                                <p class="text-answer-choice-3">33</p>
+                                            </div>
+                                        </div>
+                                        <div class="answer-choice-4">
+                                            <div class="frame-img-answer-choice-4">
+                                                <img class="img-answer-choice-4">
+                                                <p class="text-answer-choice-4">44</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="all-answer-3">
-                <div class="answer-number-3">
-                    <p class="number-text-3">3</p>
-                </div>
-                <div class="answer-info-3">
-                    <div class="question-frame-3">
-                        <p class="question-3">Вкажіть назву обов'язкової властивісті у будь якій моделі бази даних?</p>
-                    </div>
-                    <div class="correct-answer-frame-3">
-                        <div class="correct-answer-info-3">
-                            <p class="answer-3">Відповідь:</p>
-                            <p class="correct-answer-3">ID</p>
+                <div class="answers-column">
+                    <div class="all-answer-3">
+                        <div class="answer-number-3">
+                            <p class="number-text-3">3</p>
                         </div>
-                        <div class="correct-answer-info-31">
-                            <p class="answer-31">Відповідь:</p>
-                            <p class="correct-answer-31">ID</p>
+                        <div class="answer-info-3">
+                            <div class="question-frame-3">
+                                <p class="question-3">Вкажіть назву обов'язкової властивісті у будь якій моделі бази даних?</p>
+                            </div>
+                            <div class="correct-answer-frame-3">
+                                <div class="correct-answer-info-3">
+                                    <p class="answer-3">Відповідь:</p>
+                                    <p class="correct-answer-3">ID</p>
+                                </div>
+                                <div class="correct-answer-info-31">
+                                    <p class="answer-31">Ваша відповідь:</p>
+                                    <p class="correct-answer-31">ID</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="all-answer-4">
-                <div class="answer-number-4">
-                    <p class="number-text-4">4</p>
-                </div>
-                <div class="answer-info-4">
-                    <div class="question-frame-4">
-                        <p class="question-4">Вкажіть назву обов'язкової властивісті у будь якій моделі бази даних?</p>
-                    </div>
-                    <div class="correct-answer-frame-4">
-                        <div class="correct-answer-info-4">
-                            <p class="answer-4">Відповідь</p>
-                            <div class="all-answers-2">
-                                <div class="answer-choice-12">
-                                    <div class="frame-img-answer-choice-12">
-                                        <img class="img-answer-choice-12" src="{{ url_for('history.static', filename='img/done_circle.jpg') }}">
+                    <div class="all-answer-4">
+                        <div class="answer-number-4">
+                            <p class="number-text-4">4</p>
+                        </div>
+                        <div class="answer-info-4">
+                            <div class="question-frame-4">
+                                <p class="question-4">Вкажіть назву обов'язкової властивісті у будь якій моделі бази даних?</p>
+                            </div>
+                            <div class="correct-answer-frame-4">
+                                <div class="correct-answer-info-4">
+                                    <p class="answer-4">Відповідь</p>
+                                    <div class="all-answers-2">
+                                        <div class="answer-choice-12">
+                                            <div class="frame-img-answer-choice-12">
+                                                <img class="img-answer-choice-12" src="{{ url_for('history.static', filename='img/done-circle.svg') }}">
+                                            </div>
+                                            <p class="text-answer-choice-12">11</p>
+                                        </div>
+                                            <div class="answer-choice-22">
+                                                <div class="frame-img-answer-choice-22">
+                                                    <img class="img-answer-choice-22" src="/history_static/img/cross-circle.svg" alt="cross-circle">
+                                                </div>
+                                                <p class="text-answer-choice-22">22</p>
+                                            </div>
+                                        <div class="answer-choice-32">
+                                            <div class="frame-img-answer-choice-32">
+                                                <img class="img-answer-choice-32">
+                                                <p class="text-answer-choice-32">33</p>
+                                            </div>
+                                        </div>
+                                        <div class="answer-choice-42">
+                                             <img class="img-answer-choice-42">
+                                             <p class="text-answer-choice-42">44</p>
+                                        </div>
                                     </div>
-                                    <p class="text-answer-choice-12">11</p>
-                                </div>
-                                <div class="answer-choice-22">
-                                    <div class="frame-img-answer-choice-22">
-                                        <img class="img-answer-choice-22" src="{{ url_for('history.static', filename='img/cross_circle.jpg') }}">
-                                    </div>
-                                    <p class="text-answer-choice-22">22</p>
-                                </div>
-                                <div class="answer-choice-32">
-                                    <img class="img-answer-choice-32">
-                                    <p class="text-answer-choice-32">33</p>
-                                </div>
-                                <div class="answer-choice-42">
-                                    <img class="img-answer-choice-42">
-                                    <p class="text-answer-choice-42">44</p>
                                 </div>
                             </div>
                         </div>

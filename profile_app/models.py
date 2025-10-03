@@ -10,7 +10,8 @@ class User(db.Model, UserMixin):
 
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
 
-
+    is_confirmed = db.Column(db.Boolean, default=False, nullable=False)
+    
     def __repr__(self) -> str:
         return f"name: {self.name}, email: {self.email}, is_admin: {self.is_admin}"
     

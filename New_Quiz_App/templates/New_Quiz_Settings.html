@@ -11,44 +11,44 @@
 {% block main %}
 <div class="section">
     <div class="title-div">
-        <p class="title-p">New Quizzes</p>
+        <p class="title-p">Новий тест</p>
     </div>
     <div class="div-content">
         <div class="quiz-settings-content">
-            <h1>Quiz Setting</h1>
+            <h1>Налаштування тесту</h1>
             <form class="quiz-form" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="quiz-name">Name of quiz</label>
+                    <label for="quiz-name">Назва вікторини</label>
                     <input type="text" id="quiz-name" name="quiz-name" required>
                 </div>
                 <div class="form-group">
-                    <label for="num-questions">Number of questions</label>
+                    <label for="num-questions">Кількість питань</label>
                     <input type="number" id="quizCount" name="num-questions"min="1" required>
                 </div>
                 <div class="form-group">
-                    <label for="topic">Topic</label>
+                    <label for="topic">Тема</label>
                     <input type="text" id="topic" name="topic" required>
                 </div>
                 <div class="form-group">
-                    <label for="image">Image</label>
+                    <label for="image">Зображення</label>
                     <div class="image-upload">
                         <input type="file" id="image" name="image" accept="image/*" hidden>
                         <div class="upload-area" onclick="document.getElementById('image').click()">
                             <img src="{{ url_for('New_Quiz.static', filename='img/Cloud-Icon.png') }}" alt="Cloud-Logo">
-                            <p id="file-name">Drop files or click here</p>
+                            <p id="file-name">Перетягніть файли або натисніть тут</p>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="description">Description</label>
+                    <label for="description">Опис</label>
                     <textarea id="description" name="description"rows="4" required></textarea>
                 </div>
-                <button id="generateQuizzesBtn" type="submit" class="submit-btn">Submit</button>
+                <button id="generateQuizzesBtn" type="submit" class="submit-btn">Створити</button>
             </form>
         </div>
 
         <div class="quiz-preview">
-            <h1>Preview</h1>
+            <h1>Попередній перегляд</h1>
             <div class="image-preview">
                 <img class="quiz-image-preview" src="{{ url_for('New_Quiz.static', filename='img/quiz-image-preview.png') }}" alt="quiz-image-preview">
                 <h2 id="quiz-title">Вікторина з програмування</h2>
