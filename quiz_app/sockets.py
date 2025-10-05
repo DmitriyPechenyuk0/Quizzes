@@ -90,12 +90,12 @@ def on_join(data):
         db.session.add(p)
         try:
             db.session.commit()
+
         except Exception:
             db.session.rollback()
-
-    join_room(code)
-
-    emit("room:participants_update", {"nickname": display_name, "id": display_id}, to=code)
+    else:
+        join_room(code)
+        emit("room:participants_update", {"nickname": display_name, "id": display_id}, to=code)
     broadcast_state(code)
 
 @socketio.on("teacher:start")
