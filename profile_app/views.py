@@ -8,6 +8,7 @@ from quiz_app.models import QuizSession, SessionParticipant
 
 @login_required
 def show_profile_page():
+
     created_quizzes = Quiz.query.filter_by(owner=current_user.id).all()
 
     participated_session_ids = db.session.query(SessionParticipant.session_id).filter_by(user_id=current_user.id).subquery()
