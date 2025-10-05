@@ -4,20 +4,31 @@ import flask
 
 from profile_app.models import User
 from New_Quiz_App.models import Quiz, db
+from quiz_app.models import QuizSession, SessionParticipant 
+
 @login_required
 def show_profile_page():
- 
-    quizzes = Quiz.query.filter_by(owner=current_user.id).all()
+    created_quizzes = Quiz.query.filter_by(owner=current_user.id).all()
+
+    participated_session_ids = db.session.query(SessionParticipant.session_id).filter_by(user_id=current_user.id).subquery()
+
+    completed_quiz_ids = db.session.query(QuizSession.quiz_id).filter(QuizSession.id.in_(participated_session_ids)).distinct().subquery()
+
+    completed_quizzes = Quiz.query.filter(Quiz.id.in_(completed_quiz_ids)).all()
 
     context = {
         'page': 'profile',
         'name': current_user.name,
         'email': current_user.email,
-        'quizzes': quizzes,
-        'created_quizzes_count': len(quizzes)  
+        'created_quizzes': created_quizzes, 
+        'created_quizzes_count': len(created_quizzes),
+        'completed_quizzes': completed_quizzes,
+        'completed_quizzes_count': len(completed_quizzes),
+        'is_admin': current_user.is_admin 
     }
-    
+
     return flask.render_template("profile.html", **context)
+
 
 @login_required
 def logout():

@@ -7,9 +7,10 @@
 <script src="{{ url_for('profile_app.static', filename='js/profile.js') }} " defer></script>
 {% endblock %}
 
+
 {% block main %}
+
 <div class="profile-container">
-  
     <div class="profile-header">
         <div class="profile-info">
             <img src="{{ url_for('profile_app.static', filename='img/Avatar.png') }}" alt="Аватар">
@@ -19,46 +20,92 @@
             </div>
         </div>
         <div class="quiz-stats">
-            <div class="quiz-count-box">
+
+            {% if is_admin %}
+            <div class="quiz-count-box active" id="show-created-btn">
                 <p>{{ created_quizzes_count }}</p>
                 <span>Створені тести</span>
             </div>
-            <div class="quiz-count-box">
-                <p>0</p>
+            <div class="quiz-count-box" id="show-completed-btn">
+                <p>{{ completed_quizzes_count }}</p>
                 <span>Пройдені тести</span>
             </div>
-        </div>
-    </div>
-
-    <div class="create-quiz-section">
-        <h2>Створені тести</h2>
-        {% if quizzes %}
-        <div class="quiz-grid">
-            {% for quiz in quizzes %}
-            <div class="quiz-card" onclick="openModal('{{ quiz.id }}', '{{ quiz.name }}')">
-                {% if quiz.image %}
-                <img src="{{ url_for('New_Quiz.static', filename='media/' + quiz.image) }}" alt="Зображення вікторини">
-                {% else %}
-                <img src="{{ url_for('profile_app.static', filename='img/placeholder.png') }}" alt="Зображення вікторини">
-                {% endif %}
-                <p>{{ quiz.name }}</p>
+            {% else %}
+            <div class="quiz-count-box">
+                <p>{{ completed_quizzes_count }}</p>
+                <span>Пройдені тести</span>
             </div>
-            {% endfor %}
+            {% endif %}
         </div>
-        {% else %}
-        <p>У вас немає пройдених або створених тестiв</p>
-        {% endif %}
-
-        <a href="new-quiz-settings" class="create-button">Створити тест</a>
     </div>
+
+
+    {% if is_admin %}
+        <div class="create-quiz-section" id="created-quizzes-section">
+            <h2>Створені тести</h2>
+            {% if created_quizzes %}
+            <div class="quiz-grid">
+                {% for quiz in created_quizzes %}
+                <div class="quiz-card" onclick="openModal('{{ quiz.id }}', '{{ quiz.name }}')">
+                    {% if quiz.image %}
+                    <img src="{{ url_for('New_Quiz_App.static', filename='media/' + quiz.image) }}" alt="Зображення вікторини">
+                    {% else %}
+                    <img src="{{ url_for('profile_app.static', filename='img/placeholder.png') }}" alt="Зображення вікторини">
+                    {% endif %}
+                    <p>{{ quiz.name }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>У вас немає створених тестiв</p>
+            {% endif %}
+        </div>
+
+        <div class="create-quiz-section" id="completed-quizzes-section" style="display: none;">
+            <h2>Пройдені тести</h2>
+            {% if completed_quizzes %}
+            <div class="quiz-grid">
+                {% for quiz in completed_quizzes %}
+                <div class="quiz-card">
+                    {% if quiz.image %}
+                    <img src="{{ url_for('New_Quiz_App.static', filename='media/' + quiz.image) }}" alt="Зображення вікторини">
+                    {% else %}
+                    <img src="{{ url_for('profile_app.static', filename='img/placeholder.png') }}" alt="Зображення вікторини">
+                    {% endif %}
+                    <p>{{ quiz.name }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>У вас немає пройдених тестiв</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="create-quiz-section">
+            <h2>Пройдені тести</h2>
+            {% if completed_quizzes %}
+            <div class="quiz-grid">
+                {% for quiz in completed_quizzes %}
+                <div class="quiz-card">
+                    {% if quiz.image %}
+                    <img src="{{ url_for('New_Quiz_App.static', filename='media/' + quiz.image) }}" alt="Зображення вікторини">
+                    {% else %}
+                    <img src="{{ url_for('profile_app.static', filename='img/placeholder.png') }}" alt="Зображення вікторини">
+                    {% endif %}
+                    <p>{{ quiz.name }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>У вас немає пройдених тестiв</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
 </div>
 
 <div id="quizModal" class="modal-backdrop">
     <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="modalTitle"></h3>
-        </div>
-        
         <div class="modal-buttons">
             <button onclick="deleteQuiz()">Видалити</button>
             <a id="startBtn" href="#">Почати</a>
