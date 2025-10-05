@@ -7,6 +7,13 @@
     z-index: 0;
     background: #1e1e1e;
 }
+.particles-js-canvas-el{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+}
 
 html, body {
     margin: 0;
@@ -31,6 +38,8 @@ html, body {
     align-items: center;
     height: 45vh;
     margin-bottom: 30px;
+    background: none;
+    background-color: none;
 }
 
 .input-wrapper {

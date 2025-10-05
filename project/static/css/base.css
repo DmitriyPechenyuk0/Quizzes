@@ -36,10 +36,6 @@
     background-color: #FAF1F1;
 }
 body{
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
     width: 100vw;
     height: 100vh;
     overflow-x: hidden;
@@ -52,6 +48,7 @@ header{
     height: 80px;
     width: 100vw;
     border-bottom: 1px solid #bbb4b4;    
+    z-index: 10;
 }
 .header-content{
     display: flex;
@@ -62,6 +59,7 @@ header{
     padding-top: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid #bbb4b4;    
+    z-index: 10;
 }
 .urls{
     display: flex;
