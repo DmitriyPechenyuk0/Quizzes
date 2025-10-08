@@ -2,10 +2,8 @@ from flask import Blueprint, redirect, url_for
 import flask_login
 from profile_app.models import User, db 
 import flask
+from .moduls import Class
 
-control_bp = Blueprint('control', __name__)
-
-@control_bp.route('/control')
 @flask_login.login_required
 def show_control_page():
     user = flask_login.current_user
@@ -16,7 +14,6 @@ def show_control_page():
     return flask.render_template("control.html", students=students, requests=requests_list)
 
 
-@control_bp.route('/control/accept/<int:student_id>', methods=['POST'])
 @flask_login.login_required
 def accept_student(student_id):
     student = User.query.get(student_id)
@@ -26,7 +23,6 @@ def accept_student(student_id):
     return redirect(url_for('control.show_control_page'))
 
 
-@control_bp.route('/control/remove/<int:student_id>', methods=['POST'])
 @flask_login.login_required
 def remove_student(student_id):
     student = User.query.get(student_id)
@@ -35,3 +31,12 @@ def remove_student(student_id):
         student.is_approved = False 
         db.session.commit()
     return redirect(url_for('control.show_control_page'))
+
+
+def add_class(class_name):
+    
+    classs = Class(
+        name=class_name
+    )
+    db.session.add(classs)
+    db.session.commit()

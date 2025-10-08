@@ -8,9 +8,11 @@ from result import result
 from quiz_app.app import quiz
 from quiz_app import views as quiz_views
 from quiz_app import sockets as quiz_sockets
-from control import show_control_page, accept_student, remove_student
+from control import show_control_page, accept_student, remove_student, add_class
 from control import control
+
 result.add_url_rule("/result", view_func=show_result_page, methods=["GET"])
+control.add_url_rule("/control/<class_name>", view_func=add_class, methods=["GET"])
 control.add_url_rule("/control", view_func=show_control_page, methods=["GET"])
 control.add_url_rule("/control/accept/<int:student_id>", view_func=accept_student, methods=["POST"])
 control.add_url_rule("/control/remove/<int:student_id>", view_func=remove_student, methods=["POST"])
