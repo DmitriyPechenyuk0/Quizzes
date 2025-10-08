@@ -327,12 +327,13 @@ https://www.figma.com/design/YzImPm9jOsLFq1Hr3ium2P/Quizzes?node-id=0-1&p=f
 
   * **Step 9**: Copy the command below into the Git terminal:
   ```sh
-  git clone https://github.com/DmitriyPechenyuk0/QRLogic.git
+    git clone https://github.com/DmitriyPechenyuk0/Quizzes.git
   ```
 
-  * **Step 10**: Create a new Power Shell terminal, then copy and run:
+  * **Step 10**:Copy and run:
   ```sh
-  python3 -m venv QRLogic/venv && cd QRLogic/venv/bin && source activate && cd ../.. && pip3 install -r requirements.txt && python3 QRLogic/manage.py runserver
+
+  cd Quizzes && python3 -m venv Quizzes/venv && source Quizzes/venv/bin/activate && cd ../.. && pip3 install -r requirements.txt && python3 QRLogic/manage.py runserver
   ```
 
 ---
