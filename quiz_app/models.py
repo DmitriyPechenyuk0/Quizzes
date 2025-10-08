@@ -29,6 +29,7 @@ class SessionAnswer(db.Model):
     question_id = db.Column(db.Integer, db.ForeignKey("question.id"), index=True, nullable=False)
     answer_text = db.Column(db.Text, nullable=False)
     is_correct = db.Column(db.Boolean, nullable=True)
+    total_result = db.Column(db.JSON)
     __table_args__ = (UniqueConstraint('session_id', 'user_id', 'question_id', name='uq_answer_once'),)
     
     def session_percentage(s_id):
@@ -37,27 +38,3 @@ class SessionAnswer(db.Model):
         percentage =  true_answers / all_answers * 100
         percentage = str(percentage) + '%'
         return percentage
-
-class SessionResults(db.Model):
-    __tablename__ = 'session_results'
-    id = db.Column(db.Integer, primary_key=True)
-
-    total_answers = db.Column(db.Integer, nullable=False, default=0)
-    correct_answers = db.Column(db.Integer, nullable=False, default=0)
-    incorrect_answers = db.Column(db.Integer, nullable=False, default=0)
-    skipped_answers = db.Column(db.Integer, nullable=False, default=0)
-    correct_percentage = db.Column(db.Float, nullable=True)
-
-    session_id = db.Column(
-        db.Integer,
-        db.ForeignKey("quiz_session.id"),
-        nullable=False
-    )
-
-class SessionResultsParticipants(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-
-    session_result_id = db.Column(db.Integer, db.ForeignKey("session_results.id"), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    percentage = db.Column(db.Float, nullable=True)
-    
