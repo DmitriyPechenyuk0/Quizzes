@@ -1,17 +1,4 @@
-body{
-    overflow-y: hidden;
-}
-main{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
-    overflow-y: hidden;
-}
 .main-window{
-    display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
@@ -105,6 +92,9 @@ main{
     font-weight: 600;
     background: none;
 }
-.hidden {
-    display: none !important;
+.display-flex{
+    display: flex;
+}
+.display-none{
+    display: none;
 }

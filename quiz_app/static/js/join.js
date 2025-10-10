@@ -10,9 +10,9 @@
   }
 
   function clearUI({ keepStatus = false } = {}) {
-    $("question").innerHTML = "";
-    $("progress").innerText = "";
-    if (!keepStatus) $("status").innerText = "";
+    // $("question").innerHTML = "";
+    // $("progress").innerText = "";
+    // if (!keepStatus) $("status").innerText = "";
   }
 
   function renderQuestion(q) {
@@ -30,96 +30,28 @@
       socket.emit("participant:answer", { code: state.code, answer: payload });
     };
   }
+  function updateCounter() {
+    let usersCount = document.querySelectorAll('.mwop-user').length
+    let usersCBtn = document.querySelector('.mwm-participants-count-count')
+    usersCBtn.textContent = usersCount
 
-  function renderParticipantsList(participantsData) {
-    const participantsList = document.getElementById('participantsList');
-    const participantsCount = document.getElementById('participantsCount');
+  }
+  function switchInterfaceToRoom(){
+    document.querySelector('#particles-js').classList.add('display-none')
+    document.querySelector('.join-code-div').classList.remove('display-flex')
+    document.querySelector('.join-code-div').classList.add('display-none')
+    document.querySelector('.main-window').classList.remove('display-none')
+    document.querySelector('.main-window').classList.add('display-flex')
+  }
+  function switchInterfaceToAnswerRoom(){
     
-    if (!participantsList) return;
-    
-    if (participantsCount) {
-      participantsCount.textContent = participantsData.count || 0;
-    }
-    
-    participantsList.innerHTML = '';
-    
-    if (participantsData.participants && participantsData.participants.length > 0) {
-      participantsData.participants.forEach(participant => {
-        const participantElement = document.createElement('div');
-        participantElement.className = 'mwop-user';
-        participantElement.innerHTML = `<p>${participant.nickname}</p>`;
-        participantsList.appendChild(participantElement);
-      });
-    } else {
-      const emptyElement = document.createElement('div');
-      emptyElement.className = 'mwop-user';
-      emptyElement.innerHTML = '<p>Немає учасників</p>';
-      participantsList.appendChild(emptyElement);
-    }
   }
 
-  function switchToStudentInterface() {
-    const joinPage = document.getElementById('joinPage');
-    const joinNextContainer = document.getElementById('joinNextContainer');
-    const student2Block = document.getElementById('student2Block');
-
-    [joinPage, joinNextContainer, student2Block].forEach(container => {
-        if (container) {
-            container.classList.remove('content-visible');
-            container.classList.add('content-hidden');
-        }
-    });
+  function renderParticipantsList(data) {
     
-
-    if (student2Block) {
-        student2Block.classList.remove('content-hidden');
-        student2Block.classList.add('content-visible');
-    }
-    
-
-    const joinNextStyles = document.getElementById('joinNextStyles');
-    const student2Styles = document.getElementById('student2Styles');
-    
-    if (joinNextStyles) joinNextStyles.disabled = true;
-    if (student2Styles) student2Styles.disabled = false;
   }
-
-  function switchToJoinNext() {
-    const joinPage = document.getElementById('joinPage');
-    const joinNextContainer = document.getElementById('joinNextContainer');
-    const student2Block = document.getElementById('student2Block');
-    
-    [joinPage, joinNextContainer, student2Block].forEach(container => {
-        if (container) {
-            container.classList.remove('content-visible');
-            container.classList.add('content-hidden');
-        }
-    });
-
-    if (joinNextContainer) {
-        joinNextContainer.classList.remove('content-hidden');
-        joinNextContainer.classList.add('content-visible');
-        
-        if (state.code) {
-          socket.emit("request_participants", { code: state.code });
-        }
-    }
-    
-    const joinNextStyles = document.getElementById('joinNextStyles');
-    const student2Styles = document.getElementById('student2Styles');
-    
-    if (joinNextStyles) joinNextStyles.disabled = false;
-    if (student2Styles) student2Styles.disabled = true;
-  }
-
   function attachEvents() {
     $("joinBtn").onclick = () => {
-      const code = ($("code").value || "").trim();
-      if (!code) {
-        $("status").innerText = "Enter code";
-        return;
-      }
-      state.code = code;
       socket.emit("join", { code });
     };
 
@@ -127,23 +59,19 @@
       if (e.key === "Enter") $("joinBtn").click();
     });
 
-    socket.on("connect", () => {
-      if (!state.code) {
-        const qsCode = getCodeFromQuery();
-        if (qsCode) {
-          state.code = qsCode;
-          if ($("code")) $("code").value = qsCode;
-          socket.emit("join", { code: qsCode });
-        }
-      }
-    });
+    // socket.on("connect", () => {
+    //   if (!state.code) {
+    //     const qsCode = getCodeFromQuery();
+    //     if (qsCode) {
+    //       state.code = qsCode;
+    //       if ($("code")) $("code").value = qsCode;
+    //       socket.emit("join", { code: qsCode });
+    //     }
+    //   }
+    // });
 
     socket.on("error", (e) => {
       $("status").innerText = e?.message || "Error";
-    });
-
-    socket.on("room:joined", (data) => {
-      switchToJoinNext();
     });
 
     socket.on("room:participants_list", (data) => {
@@ -151,16 +79,17 @@
     });
 
     socket.on("room:state", (s) => {
-      if (s.status === "WAITING" || s.status === "IN_PROGRESS") {
-        switchToJoinNext();
+      if (s.status === "WAITING"){
+        switchInterfaceToRoom()
+      }
+      if (s.status === "IN_PROGRESS"){
+        switchInterfaceToAnswerRoom()
+      }
         
         if (s.participants) {
-          renderParticipantsList({
-            participants: s.participants,
-            count: s.participants.length
-          });
+          renderParticipantsList({participants: s.participants, count: s.participants.length});
         }
-      }
+      
       if (s.question) renderQuestion(s.question);
     });
 

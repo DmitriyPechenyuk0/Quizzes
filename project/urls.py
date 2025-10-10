@@ -32,7 +32,7 @@ New_Quiz_App.New_Quiz.add_url_rule(rule= '/new-quiz-student-2', view_func=New_Qu
 New_Quiz_App.New_Quiz.add_url_rule(rule= '/new-quiz/questions/save/<int:quiz_id>', view_func=New_Quiz_App.save_questions, methods = ['POST'])
 home_app.home.add_url_rule('/log-out', view_func=profile_app.logout, methods=['POST', 'GET'])
 
-New_Quiz_App.New_Quiz.add_url_rule('/save_quiz', view_func=New_Quiz_App.save_quiz, methods=['POST'])
+# New_Quiz_App.New_Quiz.add_url_rule('/save_quiz', view_func=New_Quiz_App.save_quiz, methods=['POST'])
 New_Quiz_App.New_Quiz.add_url_rule('/save_topic', view_func=New_Quiz_App.save_topic, methods=['POST'])
 
 New_Quiz_App.join.add_url_rule('/joinnnnn', view_func=New_Quiz_App.views.render_join, methods=['POST', 'GET'])
