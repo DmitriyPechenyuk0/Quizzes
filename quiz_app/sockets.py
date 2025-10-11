@@ -65,9 +65,9 @@ def on_join(data):
 
     if not getattr(current_user, "is_authenticated", False):
         return emit("error", {"message": "Please Login to account"})
-
     sess = QuizSession.query.filter_by(code=code).first()
     if not sess or sess.status == "FINISHED":
+        
         return emit("error", {"message": "Session unavaible"})
 
     if getattr(current_user, "is_admin", False) and not as_host:

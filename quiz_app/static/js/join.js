@@ -5,8 +5,8 @@
   function $(id) { return document.getElementById(id); }
 
   function getCodeFromQuery() {
-    const p = new URLSearchParams(window.location.search);
-    return p.get("code") || "";
+  //   const p = new URLSearchParams(window.location.search);
+  //   return p.get("code") || "";
   }
 
   function clearUI({ keepStatus = false } = {}) {
@@ -16,24 +16,24 @@
   }
 
   function renderQuestion(q) {
-    clearUI({ keepStatus: false });
-    const container = $("question");
-    container.innerHTML = `
-      <div><strong>${q.text}</strong></div>
-      <div style="margin-top:8px">
-        <input id="txtAnswer" type="text" placeholder="Your answer:" style="width:280px"/>
-      </div>
-      <button id="send" style="margin-top:8px">Send</button>
-    `;
-    $("send").onclick = () => {
-      const payload = $("txtAnswer").value;
-      socket.emit("participant:answer", { code: state.code, answer: payload });
-    };
+    // clearUI({ keepStatus: false });
+    // const container = $("question");
+    // container.innerHTML = `
+    //   <div><strong>${q.text}</strong></div>
+    //   <div style="margin-top:8px">
+    //     <input id="txtAnswer" type="text" placeholder="Your answer:" style="width:280px"/>
+    //   </div>
+    //   <button id="send" style="margin-top:8px">Send</button>
+    // `;
+    // $("send").onclick = () => {
+    //   const payload = $("txtAnswer").value;
+    //   socket.emit("participant:answer", { code: state.code, answer: payload });
+    // };
   }
   function updateCounter() {
     let usersCount = document.querySelectorAll('.mwop-user').length
     let usersCBtn = document.querySelector('.mwm-participants-count-count')
-    usersCBtn.textContent = usersCount
+    usersCBtn.textContent = usersCount + 1
 
   }
   function switchInterfaceToRoom(){
@@ -42,6 +42,7 @@
     document.querySelector('.join-code-div').classList.add('display-none')
     document.querySelector('.main-window').classList.remove('display-none')
     document.querySelector('.main-window').classList.add('display-flex')
+    updateCounter()
   }
 
   function switchInterfaceToAnswerRoom(){
@@ -64,7 +65,8 @@
   }
   function attachEvents() {
     $("joinBtn").onclick = () => {
-      socket.emit("join", { code });
+      let codde = document.querySelector('#code').value
+      socket.emit("join", { code: codde });
     };
 
     $("code").addEventListener("keydown", (e) => {
@@ -83,7 +85,7 @@
     // });
 
     socket.on("error", (e) => {
-      $("status").innerText = e?.message || "Error";
+      console.log(e)
     });
 
     socket.on("room:participants_list", (data) => {
