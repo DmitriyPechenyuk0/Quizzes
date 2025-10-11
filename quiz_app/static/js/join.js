@@ -37,11 +37,11 @@
 
   }
   function switchInterfaceToRoom(){
-    document.querySelector('#particles-js').classList.add('display-none')
-    document.querySelector('.join-code-div').classList.remove('display-flex')
-    document.querySelector('.join-code-div').classList.add('display-none')
-    document.querySelector('.main-window').classList.remove('display-none')
-    document.querySelector('.main-window').classList.add('display-flex')
+    // document.querySelector('#particles-js').classList.add('display-none')
+    // document.querySelector('.join-code-div').classList.remove('display-flex')
+    // document.querySelector('.join-code-div').classList.add('display-none')
+    // document.querySelector('.main-window').classList.remove('display-none')
+    // document.querySelector('.main-window').classList.add('display-flex')
   }
   function switchInterfaceToAnswerRoom(){
     

@@ -8,9 +8,9 @@
 {% endblock %}
 
 {% block main %}
-    <div id="particles-js display-none"></div>
+    <div id="particles-js"></div>
 
-    <div class="join-code-div display-none">
+    <div class="join-code-div display-flex">
         <input id="code" type="text" maxlength="6" placeholder="Код для приєднання" value="{% if code %}{{ code }}{% endif %}">
         <button id="joinBtn" >Приєднатися</button>
     </div>
@@ -38,13 +38,32 @@
         </div>
     </div>
 
-    <div class="div-section-answer display-flex">
-        <div class="div-section-answer-title">
-            <p id="QuizNameArea" >
-                name
-            </p>
+    <div class="waiting-overlay display-none">
+        <div class="waiting-div">
+            <p>Очікуйте поки вчитель завершить питання</p>
+            <img src="{{ url_for('quiz_app.static', filename='images/loading.svg') }}">
         </div>
     </div>
+
+    <!-- <div class="div-section-answer display-flex">
+        <div class="div-section-answer-title">
+            <p id="QuizNameArea" >
+                
+            </p>
+        </div>
+        <div class="div-section-answer-content-main" >
+            <div class="div-section-answer-content">
+                <div class="div-section-answer-content-question">
+                    <p id="questionBlockP"></p>
+                </div>
+                <div class="div-section-answer-content-answer">
+                    <input placeholder="Напишіть відповідь" id="answerInputI" type="text">
+                    <button>Enter</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="{{ url_for('quiz_app.static', filename='js/join.js') }}?v=6"></script>
