@@ -34,7 +34,9 @@
         socket.emit("teacher:start", { code })
         socket.emit('switch_content', { code })
       };
-      
+      $("nextQ").onclick = () => {
+        socket.emit('teacher:next', { code })
+      }      
       // $("next").onclick = () => socket.emit("teacher:next", { code });
       // $("finish").onclick = () => socket.emit("teacher:finish", { code });
 

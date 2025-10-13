@@ -9,26 +9,14 @@
   //   return p.get("code") || "";
   }
 
-  function clearUI({ keepStatus = false } = {}) {
-    // $("question").innerHTML = "";
-    // $("progress").innerText = "";
-    // if (!keepStatus) $("status").innerText = "";
+  function renderQuestion(q_text) {
+    if (document.querySelector('.waiting-overlay').classList.contains('display-flex')){
+      inactiveWaitingOverlay()
+    }
+    document.querySelector('#questionBlockP').innerText = q_text
   }
+  function waitNewQuestions(){
 
-  function renderQuestion(q) {
-    // clearUI({ keepStatus: false });
-    // const container = $("question");
-    // container.innerHTML = `
-    //   <div><strong>${q.text}</strong></div>
-    //   <div style="margin-top:8px">
-    //     <input id="txtAnswer" type="text" placeholder="Your answer:" style="width:280px"/>
-    //   </div>
-    //   <button id="send" style="margin-top:8px">Send</button>
-    // `;
-    // $("send").onclick = () => {
-    //   const payload = $("txtAnswer").value;
-    //   socket.emit("participant:answer", { code: state.code, answer: payload });
-    // };
   }
   function updateCounter() {
     let usersCount = document.querySelectorAll('.mwop-user').length
@@ -36,7 +24,7 @@
     usersCBtn.textContent = usersCount + 1
 
   }
-  function switchInterfaceToRoom(){
+  function switchInterfaceToRoom(qname){
     document.querySelector('#particles-js').classList.add('display-none')
     document.querySelector('.join-code-div').classList.remove('display-flex')
     document.querySelector('.join-code-div').classList.add('display-none')
@@ -67,22 +55,18 @@
     $("joinBtn").onclick = () => {
       let codde = document.querySelector('#code').value
       socket.emit("join", { code: codde });
+      state.code = codde
     };
 
     $("code").addEventListener("keydown", (e) => {
       if (e.key === "Enter") $("joinBtn").click();
     });
 
-    // socket.on("connect", () => {
-    //   if (!state.code) {
-    //     const qsCode = getCodeFromQuery();
-    //     if (qsCode) {
-    //       state.code = qsCode;
-    //       if ($("code")) $("code").value = qsCode;
-    //       socket.emit("join", { code: qsCode });
-    //     }
-    //   }
-    // });
+    $("enterQuestion").onclick = () => {
+      let answer = document.querySelector('#answerInputI').value
+      socket.emit('participant:answer', {code: state.code})
+      activeWaitingOverlay()
+    }
 
     socket.on("error", (e) => {
       console.log(e)
@@ -93,8 +77,10 @@
     });
 
     socket.on("room:state", (s) => {
+      console.log(s)
       if (s.status === "WAITING"){
         switchInterfaceToRoom()
+        document.querySelector('.main-window-quiz-name').innerText = s.quiz_name
       }
       if (s.status === "IN_PROGRESS"){
         switchInterfaceToAnswerRoom()
@@ -104,11 +90,12 @@
           renderParticipantsList({participants: s.participants, count: s.participants.length});
         }
       
-      if (s.question) renderQuestion(s.question);
+      if (s.question) renderQuestion(s.question.text);
     });
 
     socket.on("room:question", (q) => {
-      renderQuestion(q);
+      console.log(q.text)
+      renderQuestion(q.text);
     });
 
     socket.on("room:answers_progress", (p) => {
@@ -129,8 +116,6 @@
     });
 
     socket.on("student:switch_content", (d) => {
-
-      switchToStudentInterface();
     });
 
     socket.on("room:participants_update", (data) => {

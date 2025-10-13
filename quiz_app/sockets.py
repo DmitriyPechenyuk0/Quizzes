@@ -113,9 +113,12 @@ def on_teacher_start(data):
 
     sess.status = "IN_PROGRESS"
     sess.current_order = first_q.order_index
+    
     db.session.commit()
+    
     emit("delete_user", {"id": 1}, to=code)
     emit("room:question", serialize_question(first_q), to=code)
+    
     broadcast_state(code)
 
 @socketio.on("teacher:next")
