@@ -14,10 +14,10 @@
       counter.textContent = document.querySelectorAll('.right-content-user').length
     }
    
-    function renderQuestion(q) {
-      clearUI({ keepState: false });
+    // function renderQuestion(q) {
+    //   clearUI({ keepState: false });
 
-    }
+    // }
     function userRemover(user_id){
       let div = document.querySelector(`#usr_${user_id}`)
       div.remove()
@@ -44,8 +44,9 @@
         if ($("lcaTitleElement").textContent != info.quiz_name) $("lcaTitleElement").textContent = info.quiz_name
 
         if (info.question){
-          renderQuestion(info.question)
+          
           console.log(info)
+
           document.getElementById('lcacQQuantity').textContent = `${ info.current_order } / ${info.question.q_quantity}`
           document.getElementById('lcaccmQuestion').textContent = info.question.text
           
@@ -70,9 +71,7 @@
       });
 
       socket.on("room:final_results", (res) => {
-        clearUI();
-        $("question").innerHTML = `<h3>Results</h3>`;
-        $("stats").innerHTML = `<pre>${JSON.stringify(res, null, 2)}</pre>`
+        
       });
 
       socket.on("room:participants_update", (info) => {

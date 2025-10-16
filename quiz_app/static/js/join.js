@@ -40,6 +40,7 @@
     document.querySelector('.div-section-answer').classList.add('display-flex')
   }
   function activeWaitingOverlay(){
+    document.querySelector('#answerInputI').value = ''
     document.querySelector('.waiting-overlay').classList.remove('display-none')
     document.querySelector('.waiting-overlay').classList.add('display-flex')
   }
@@ -98,25 +99,16 @@
       renderQuestion(q.text);
     });
 
-    socket.on("room:answers_progress", (p) => {
-      $("progress").innerText = `responsed: ${p.answered}/${p.total}`;
-    });
-
     socket.on("room:question_closed", (d) => {
-      const ans = Array.isArray(d.correct_answer)
-        ? d.correct_answer.join(" | ")
-        : (d.correct_answer || "not set");
-      $("status").innerText = `True answer: ${ans}`;
-      clearUI({ keepStatus: true });
     });
 
     socket.on("room:final_results", (res) => {
-      clearUI();
-      $("question").innerHTML = `<h3>Results</h3><pre>${JSON.stringify(res, null, 2)}</pre>`;
+
     });
 
-    socket.on("student:switch_content", (d) => {
-    });
+    // socket.on("student:switch_content", (d) => {
+
+    // });
 
     socket.on("room:participants_update", (data) => {
       if (state.code) {
