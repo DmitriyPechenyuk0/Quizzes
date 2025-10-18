@@ -5,6 +5,7 @@ from project.settings import socketio, db
 from .models import QuizSession, Question, SessionParticipant, SessionAnswer
 from New_Quiz_App.models import Quiz
 from flask import request
+import colorama
 
 def serialize_question(q: Question):
     qz = Quiz.query.filter_by(id = q.quiz_id).first()
@@ -150,25 +151,19 @@ def on_teacher_next(data):
     else:
         finish_session(s)
 
-@socketio.on("teacher:finish")
-def on_teacher_finish(data):
-    code = str(data.get("code", "")).strip()
-    s = QuizSession.query.filter_by(code=code).first()
-    if s:
-        finish_session(s)
-
 def finish_session(s: QuizSession):
     s.status = "FINISHED"
     db.session.commit()
-    results = final_results(s.id)
-    emit("room:final_results", results, to=s.code)
+    final_results(s.id)
+    
+def final_results(session_idd: int):
+    quiz_session = QuizSession.query.filter_by(id=session_idd).first()
+    quiz = Quiz.query.filter_by(id=quiz_session.quiz_id).first()
+    participants = SessionParticipant.query.filter_by(session_id=session_idd).all()
+    print(f"\nquiz_session:\n{quiz_session}\n\nquiz:\n{quiz}\n\nparticipants:\n{participants}")
+    for part in participants:
+        print(f"{part.nickname} and {part.user_id}\n")
 
-def final_results(session_id: int):
-    sub = db.session.query(SessionAnswer.user_id.label("uid"), func.sum(case((SessionAnswer.is_correct == True, 1), else_=0)).label("score")).filter(SessionAnswer.session_id == session_id).group_by(SessionAnswer.user_id).subquery()
-
-    rows = db.session.query(SessionParticipant.nickname, func.coalesce(sub.c.score, 0).label("score")).outerjoin(sub, SessionParticipant.user_id == sub.c.uid).filter(SessionParticipant.session_id == session_id).order_by(func.coalesce(sub.c.score, 0).desc()).all()
-
-    return [{"nickname": nick, "score": int(score)} for nick, score in rows]
 
 @socketio.on("participant:answer")
 def on_answer(data):
