@@ -19,7 +19,7 @@ def normalize(text: str) -> str:
     filtered = "".join(ch if (ch.isalnum() or ch.isspace()) else " " for ch in t)
     return " ".join(filtered.split())
 
-def is_correct(user_text: str, correct_raw: str) -> bool:
+def is_correctt(user_text: str, correct_raw: str) -> bool:
     return normalize(user_text) == normalize(correct_raw or "")
 
 def current_question(session: QuizSession):
@@ -169,7 +169,7 @@ def final_results(session_idd: int):
 def on_answer(data):
     code = str(data.get("code", "")).strip()
 
-    answer_text = (data.get("answer") or data.get("selected") or "").strip()
+    answer_text = (data.get("answer")).strip()
 
     if not getattr(current_user, "is_authenticated", False):
         return emit("error", {"message": "Login to account"})
@@ -186,8 +186,14 @@ def on_answer(data):
     if exists:
         return
 
-    i_correct = is_correct(answer_text, cur_quest.correct_answer)
-    db.session.add(SessionAnswer(session_id=session.id, user_id=current_user.id, question_id=cur_quest.id, answer_text=answer_text, is_correct=i_correct))
+    i_correct = is_correctt(answer_text, cur_quest.correct_answer)
+    answr = SessionAnswer(
+    session_id=session.id,
+    user_id=current_user.id,
+    question_id=cur_quest.id,
+    answer_text=answer_text,
+    is_correct=i_correct)
+    db.session.add(answr)
     db.session.commit()
 
     total = SessionParticipant.query.filter_by(session_id=session.id).count()

@@ -65,7 +65,7 @@
 
     $("enterQuestion").onclick = () => {
       let answer = document.querySelector('#answerInputI').value
-      socket.emit('participant:answer', {code: state.code})
+      socket.emit('participant:answer', {code: state.code, answer: answer})
       activeWaitingOverlay()
     }
 
