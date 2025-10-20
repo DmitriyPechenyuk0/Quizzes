@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результати вікторини з математики</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .chart-container {
+            margin: 30px 0;
+        }
+        
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .chart-label {
+            width: 100px;
+            font-weight: bold;
+        }
+        
+        .chart-value {
+            width: 60px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        
+        .chart-bar-visual {
+            height: 20px;
+            background-color: #3498db;
+            border-radius: 3px;
+        }
+        
+        .accuracy {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #27ae60;
+            margin: 20px 0;
+        }
+        
+        .results-section {
+            margin-top: 40px;
+        }
+        
+        .results-section h2 {
+            color: #2c3e50;
+            border-bottom: 1px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .results-column h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .results-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .results-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .correct {
+            color: #27ae60;
+        }
+        
+        .incorrect {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz: Вікторина з математики</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Ім'я</th>
+                <th>Точність</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Nikolay Skri</td>
+                <td>100% (10/10)</td>
+            </tr>
+            <tr>
+                <td>Artem Vlas..</td>
+                <td>100% (10/10)</td>
+            </tr>
+            <tr>
+                <td>Artem Vlas..</td>
+                <td>100% (10/10)</td>
+            </tr>
+            <tr>
+                <td>Artem Vlas..</td>
+                <td>100% (10/10)</td>
+            </tr>
+            <tr>
+                <td>Artem Vlas..</td>
+                <td>100% (10/10)</td>
+            </tr>
+            <tr>
+                <td>Artem Vlas..</td>
+                <td>100% (10/10)</td>
+            </tr>
+            <tr>
+                <td>Artem Vlas..</td>
+                <td>100% (10/10)</td>
+            </tr>
+            <tr>
+                <td>Dmitrij Рес...</td>
+                <td>100% (10/10)</td>
+            </tr>
+            <tr>
+                <td>Nikita Hodo..</td>
+                <td>100% (10/10)</td>
+            </tr>
+            <tr>
+                <td>Nikita Hodo..</td>
+                <td>100% (10/10)</td>
+            </tr>
+            <tr>
+                <td>Nikita Hodo..</td>
+                <td>100% (10/10)</td>
+            </tr>
+            <tr>
+                <td>Nikita Hodo..</td>
+                <td>100% (10/10)</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Статистика відповідей на запитання</h2>
+    <p>Результаты группы по вопросам</p>
+    
+    <div class="chart-container">
+        <div class="chart-bar">
+            <div class="chart-label">Вопрос 1</div>
+            <div class="chart-value">100%</div>
+            <div class="chart-bar-visual" style="width: 100%;"></div>
+        </div>
+        <div class="chart-bar">
+            <div class="chart-label">Вопрос 2</div>
+            <div class="chart-value">80%</div>
+            <div class="chart-bar-visual" style="width: 80%;"></div>
+        </div>
+        <div class="chart-bar">
+            <div class="chart-label">Вопрос 3</div>
+            <div class="chart-value">60%</div>
+            <div class="chart-bar-visual" style="width: 60%;"></div>
+        </div>
+        <div class="chart-bar">
+            <div class="chart-label">Вопрос 4</div>
+            <div class="chart-value">40%</div>
+            <div class="chart-bar-visual" style="width: 40%;"></div>
+        </div>
+    </div>
+    
+    <div class="accuracy">Середня точність по групі: 100%</div>
+    
+    <div class="results-section">
+        <h2>Results of all questions</h2>
+        <div class="results-grid">
+            <div class="results-column">
+                <h3>Inputs</h3>
+                <ul class="results-list">
+                    <li>Питання 1: <span class="correct">Ваша відповідь (правильно)</span></li>
+                    <li>Питання 2: <span class="correct">Ваша відповідь (правильно)</span></li>
+                    <li>Питання 3: <span class="incorrect">Ваша відповідь (неправильно)</span></li>
+                    <li>Питання 4: <span class="correct">Ваша відповідь (правильно)</span></li>
+                </ul>
+            </div>
+            <div class="results-column">
+                <h3>Outputs</h3>
+                <ul class="results-list">
+                    <li>Правильна відповідь: ...</li>
+                    <li>Правильна відповідь: ...</li>
+                    <li>Правильна відповідь: ...</li>
+                    <li>Правильна відповідь: ...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
