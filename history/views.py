@@ -11,16 +11,16 @@ def show_history_page():
     return flask.render_template(template_name_or_list="history.html" )
 
  
-def show_qsr_page(session_id, user_id):
-  
+def show_qsr_page(session_id=None, user_id=None):
+    
+    if user_id is None:
+        if current_user and getattr(current_user, "is_authenticated", False):
+            user_id = getattr(current_user, "id", None)
+        if not user_id:
+            user_id = request.args.get("user_id", type=int)
 
-    user_id = None
-    if current_user and getattr(current_user, "is_authenticated", False):
-        user_id = getattr(current_user, "id", None)
-    if not user_id:
-        user_id = request.args.get("user_id", type=int)
-
-    session_id = request.args.get("session_id", type=int)
+    if session_id is None:
+        session_id = request.args.get("session_id", type=int)
 
     if not session_id and user_id:
         last_session = (
@@ -33,19 +33,20 @@ def show_qsr_page(session_id, user_id):
         if last_session:
             session_id = last_session.id
 
-    if not session_id:
+    if not session_id or not user_id:
         return flask.render_template("quiz_student_result.html", results=[])
-
 
     query = (
         db.session.query(SessionAnswer, Question)
         .join(Question, SessionAnswer.question_id == Question.id)
-        .filter(SessionAnswer.session_id == session_id)
+        .filter(
+            SessionAnswer.session_id == session_id,
+            SessionAnswer.user_id == user_id
+        )
+        .order_by(Question.order_index)
     )
-    if user_id:
-        query = query.filter(SessionAnswer.user_id == user_id)
 
-    answers = query.order_by(Question.order_index).all()
+    answers = query.all()
 
     results = []
     for answer, question in answers:
@@ -60,6 +61,7 @@ def show_qsr_page(session_id, user_id):
         })
 
     return flask.render_template("quiz_student_result.html", results=results)
+
 
 
 def show_qtr_page():

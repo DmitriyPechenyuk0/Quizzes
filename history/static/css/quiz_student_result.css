@@ -27,7 +27,26 @@ main {
     
     color: #000000;
 }
+.answer-number-1,
+.answer-number-2,
+.answer-number-3,
+.answer-number-4 {
+    border-radius: 15px 0 0 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    padding: 15px 5px;
+}
 
+/* Цвета для состояния */
+.correct {
+    background-color: #00C985 !important; /* зелёный */
+}
+
+.wrong {
+    background-color: #EF3C69 !important; /* красный */
+}
 .result-frame {
     display: flex;
     flex-direction: column;
