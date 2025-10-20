@@ -4,6 +4,7 @@ from sqlalchemy import text
 from flask_login import current_user
 from project.settings import db
 from .models import QuizSession, Question
+from profile_app.models import User
 from New_Quiz_App.models import Quiz
 def _gen_code():
     while True:
@@ -33,7 +34,7 @@ def create_session():
     if Question.query.filter_by(quiz_id=quiz_id).count() == 0:
         abort(400, "Quiz has no questions")
 
-    s = QuizSession(quiz_id=quiz_id, code=_gen_code(), status="WAITING", current_order=None)
+    s = QuizSession(quiz_id=quiz_id, code=_gen_code(), status="WAITING", current_order=None, who_host=current_user.id)
     db.session.add(s); db.session.commit()
     return jsonify({"session_id": s.id, "code": s.code})
 
@@ -47,8 +48,9 @@ def start_session_redirect(quiz_id: int):
         abort(404, "Quiz not found")
     if Question.query.filter_by(quiz_id=quiz_id).count() == 0:
         abort(400, "Quiz has no questions")
-
-    s = QuizSession(quiz_id=quiz_id, code=_gen_code(), status="WAITING", current_order=None)
+    usr =User.query.filter_by(id=current_user.id).first()
+    
+    s = QuizSession(quiz_id=quiz_id, code=_gen_code(), status="WAITING", current_order=None, who_host=current_user.id, group = usr.group)
     db.session.add(s); db.session.commit()
     return redirect(url_for("quiz_app.host_page", code=s.code))
 

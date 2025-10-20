@@ -14,6 +14,8 @@ class QuizSession(db.Model):
     code = db.Column(db.String(6), unique=True, index=True, nullable=False)
     status = db.Column(db.String(20), default="WAITING", nullable=False)
     current_order = db.Column(db.Integer, nullable=True)
+    who_host = db.Column(db.Integer, db.ForeignKey("users.id"), index=True, nullable=False)
+    group = db.Column(db.Integer, db.ForeignKey("classes.id"), index=True, nullable=False)
 
 class SessionParticipant(db.Model):
     id = db.Column(db.Integer, primary_key=True)

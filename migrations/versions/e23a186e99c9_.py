@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: d3c80df6fe62
+Revision ID: e23a186e99c9
 Revises: 
-Create Date: 2025-10-13 20:53:42.240416
+Create Date: 2025-10-20 21:33:53.912358
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd3c80df6fe62'
+revision = 'e23a186e99c9'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -49,19 +49,6 @@ def upgrade():
         batch_op.create_index(batch_op.f('ix_question_order_index'), ['order_index'], unique=False)
         batch_op.create_index(batch_op.f('ix_question_quiz_id'), ['quiz_id'], unique=False)
 
-    op.create_table('quiz_session',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('quiz_id', sa.Integer(), nullable=False),
-    sa.Column('code', sa.String(length=6), nullable=False),
-    sa.Column('status', sa.String(length=20), nullable=False),
-    sa.Column('current_order', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['quiz_id'], ['quiz.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    with op.batch_alter_table('quiz_session', schema=None) as batch_op:
-        batch_op.create_index(batch_op.f('ix_quiz_session_code'), ['code'], unique=True)
-        batch_op.create_index(batch_op.f('ix_quiz_session_quiz_id'), ['quiz_id'], unique=False)
-
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=20), nullable=False),
@@ -72,6 +59,25 @@ def upgrade():
     sa.ForeignKeyConstraint(['class_id'], ['classes.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('quiz_session',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('quiz_id', sa.Integer(), nullable=False),
+    sa.Column('code', sa.String(length=6), nullable=False),
+    sa.Column('status', sa.String(length=20), nullable=False),
+    sa.Column('current_order', sa.Integer(), nullable=True),
+    sa.Column('who_host', sa.Integer(), nullable=False),
+    sa.Column('group', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['group'], ['classes.id'], ),
+    sa.ForeignKeyConstraint(['quiz_id'], ['quiz.id'], ),
+    sa.ForeignKeyConstraint(['who_host'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    with op.batch_alter_table('quiz_session', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_quiz_session_code'), ['code'], unique=True)
+        batch_op.create_index(batch_op.f('ix_quiz_session_group'), ['group'], unique=False)
+        batch_op.create_index(batch_op.f('ix_quiz_session_quiz_id'), ['quiz_id'], unique=False)
+        batch_op.create_index(batch_op.f('ix_quiz_session_who_host'), ['who_host'], unique=False)
+
     op.create_table('requests_to_class',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -125,12 +131,14 @@ def downgrade():
 
     op.drop_table('session_answer')
     op.drop_table('requests_to_class')
-    op.drop_table('users')
     with op.batch_alter_table('quiz_session', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_quiz_session_who_host'))
         batch_op.drop_index(batch_op.f('ix_quiz_session_quiz_id'))
+        batch_op.drop_index(batch_op.f('ix_quiz_session_group'))
         batch_op.drop_index(batch_op.f('ix_quiz_session_code'))
 
     op.drop_table('quiz_session')
+    op.drop_table('users')
     with op.batch_alter_table('question', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_question_quiz_id'))
         batch_op.drop_index(batch_op.f('ix_question_order_index'))
