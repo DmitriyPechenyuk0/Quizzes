@@ -16,9 +16,8 @@ registration.registration.add_url_rule(rule = '/registration', view_func= regist
 authorization.authorization.add_url_rule( rule = "/login", view_func = authorization.show_authorization, methods = ['POST', 'GET'])
 profile_app.profille.add_url_rule(rule= '/profile', view_func=profile_app.show_profile_page, methods = ['POST', 'GET'])
 profile_app.profille.add_url_rule(rule= '/profile/', view_func=profile_app.show_profile_page, methods = ['POST', 'GET'])
-history.history.add_url_rule(rule='/history', view_func=history.show_history_page, methods= ['POST', 'GET'])
-history.history.add_url_rule(rule='/history_tr', view_func=history.show_qtr_page, methods= ['POST', 'GET'])
-history.history.add_url_rule(rule='/history_sr', view_func=history.show_qsr_page, methods= ['POST', 'GET'])
+# history.history.add_url_rule(rule='/history_tr', view_func=history.show_qtr_page, methods= ['POST', 'GET'])
+# history.history.add_url_rule(rule='/history_sr', view_func=history.show_qsr_page, methods= ['POST', 'GET'])
 
 New_Quiz_App.New_Quiz.add_url_rule('/joinnext', view_func=New_Quiz_App.join_next_page, methods = ['POST', 'GET'])
 New_Quiz_App.New_Quiz.add_url_rule(rule= '/new-quiz/<name>', view_func=New_Quiz_App.render_new_quiz, methods = ['POST', 'GET'])

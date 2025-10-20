@@ -13,7 +13,7 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 
 @login_required
 def render_new_quiz(id):
-    if not current_user.is_admin:
+    if not current_user.is_teacher:
         return render_template('error_403.html')
     
     if not id:
@@ -35,7 +35,7 @@ def render_new_quiz(id):
 
 @login_required
 def render_new_quiz_settigs():
-    if not current_user.is_admin:
+    if not current_user.is_teacher:
         return render_template('error_403.html')
 
     if request.method == 'POST':
@@ -138,25 +138,6 @@ def render_join():
     return flask.render_template(template_name_or_list='join.html', **context)
 
 saved_topic = None
-
-@login_required
-def save_topic():
-    data = request.get_json()
-    topic = data.get('topic')
-
-    if topic:
-        if any(char in "абвгдеєжзиіїйклмнопрстуфхцчшщьюяАБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ" for char in topic):
-            language = "Ukrainian"
-        elif any(char in string.ascii_letters for char in topic):
-            language = "English"
-        else:
-            language = "Unknown"
-
-        print(f"Received topic: {topic}, Language: {language}")
-        return jsonify({"status": "success", "topic": topic, "language": language})
-    else:
-        return jsonify({"status": "error", "message": "No topic provided"}), 400
-
 
 def join_next_page():
     context = {

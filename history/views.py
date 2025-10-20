@@ -5,11 +5,6 @@ from flask import request
 from project.settings import db
 from quiz_app.models import Question, SessionAnswer, QuizSession,  SessionParticipant
 from flask_login import current_user
-
-def show_history_page():
-    
-    return flask.render_template(template_name_or_list="history.html" )
-
  
 def show_qsr_page(session_id, user_id):
   

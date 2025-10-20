@@ -26,7 +26,7 @@ def show_profile_page():
         'created_quizzes_count': len(created_quizzes),
         'completed_quizzes': completed_quizzes,
         'completed_quizzes_count': len(completed_quizzes),
-        'is_admin': current_user.is_admin 
+        'is_admin': current_user.is_teacher 
     }
 
     return flask.render_template("profile.html", **context)
