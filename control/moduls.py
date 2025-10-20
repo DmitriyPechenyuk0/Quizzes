@@ -12,5 +12,6 @@ class RequestsToClass(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     class_id = db.Column(db.Integer, db.ForeignKey('classes.id'), nullable=False)
     status = db.Column(db.String(20), nullable=False, default='Pending')
+    
 
 # statuses - Pending, Accepted, Rejected

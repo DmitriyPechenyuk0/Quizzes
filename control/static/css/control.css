@@ -1,0 +1,134 @@
+.main-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.panel-box {
+    background: #5a768e;
+    border-radius: 30px;
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column; 
+    gap: 30px;
+    width: 1596px;
+    height: 900px;
+    box-sizing: border-box;
+}
+
+.panel-title {
+    font-size: 28px;
+    font-weight: bold;
+    background: #5a768e;
+    color:white;
+    text-align: center;
+    margin: -14;
+}
+
+.columns-container {
+    display: flex;
+    gap: 50px;
+    background: #5a768e;
+    color:white;
+    justify-content: center;
+    flex: 1; 
+}
+
+.column {
+    width: 437px;   
+    height: 800px;  
+    border: 2px solid #d6d6d6;
+    border-radius: 15px;
+    padding: 20px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.column h3 {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+    background: #5a768e;
+    color:white;
+    background: transparent;
+    padding: 0;
+}
+
+.column-history{
+    width: 623px;   
+    height: 800px;  
+    border: 2px solid #d6d6d6;
+    border-radius: 15px;
+    padding: 20px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.column-history h3{
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+    background: #5a768e;
+    color:white;
+    background: transparent;
+    padding: 0;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #5a768e;
+    color:white;
+    border-radius: 20px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+}
+
+.user span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #d6d6d6; 
+    padding: 4px 8px;
+    border-radius: 30px;
+    color: #000;
+    font-size: 15px;
+    width: 280px;
+    height: 46px;
+}
+
+.user img {
+    width: 39px;
+    height: 39px;
+    border-radius: 50%;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    background: #5a768e;
+}
+
+.btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn img {
+    width: 40px;
+    height: 40px;
+    background: none;
+}

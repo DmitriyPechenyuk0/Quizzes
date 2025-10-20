@@ -2,34 +2,47 @@
 
 {% block title %} Registration page {% endblock %}
 
-{% block head %} 
+{% block head %}
 <link rel="stylesheet" href="{{ url_for('registration.static', filename='css/registration.css') }}">
 {% endblock %}
 
+
 {% block main %}
+
+
+<div class="flash-messages" id="flash-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+</div>
+
 <div class="registration-box">
     <h2>Реєстрація</h2>
-    <form method="post">
+    <form method="post" id="registration-form">
         <div class='input-pass'>
             <label for="login" class="input-title">Логін:</label>
-            <input type="text" id="login" name="login" class="input-field">
+            <input type="text" id="login" name="login" class="input-field" required>
         </div>
         <div class='input-pass'>
             <label for="email" class="input-title">Електронна пошта:</label>
-            <input type="email" id="email" name="email" class="input-field" placeholder="example@gmail.com">
+            <input type="email" id="email" name="email" class="input-field" placeholder="example@gmail.com" required>
         </div>
         <div class='input-pass'>
             <label for="password" class="input-title">Пароль:</label>
-            <input type="password" id="password" name="password" class="input-field">
+            <input type="password" id="password" name="password" class="input-field" required>
         </div>
         <div class='input-pass'> 
             <label for="confirm" class="input-title"> Підтвердження пароля:</label>
-            <input type="password" id="confirm" name="confirm" class="input-field">
+            <input type="password" id="confirm" name="confirm" class="input-field" required>
         </div>
 
         <div class="role-selection">
             <div class="label-text">
-                <label for="login">Студент або Вчитель:</label>
+                <label>Студент або Вчитель:</label>
             </div>
             <div class="choose-choose">
                 <div>
@@ -42,9 +55,28 @@
                 </div>
             </div>
         </div>
-            
-        <p><a class="n-underline">Вже зареєстровані? </a><a href="/login" class="input">Перейти до авторизації</a></p>
+        
+        <p><a class="n-underline">Вже зареєстровані? </a><a href="{{ url_for('authorization.show_authorization') }}" class="input">Перейти до авторизації</a></p> {# <-- ИСПРАВЛЕНО ЗДЕСЬ #}
         <button type="submit" class="submit-btn">Надіслати</button>
     </form>
 </div>
+
+
+<div id="successModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <p>Виберіть свій клас</p>
+        <div class="button-grid">
+            {% if classes and classes|length > 0 %}
+                {% for cls in classes %}
+                    <button type="button" class="btn" data-id="{{ cls.id }}">{{ cls.name }}</button>
+                {% endfor %}
+            {% else %}
+                <p class="no-classes-msg">Немає доступних класів. Якщо Ви вчитель, під час підтвердження реєстрації буде створено новий клас.</p>
+            {% endif %}
+        </div>
+        <button class="sub">Submit</button>      
+    </div>
+</div>
+
+<script src="{{ url_for('registration.static', filename='js/registration.js') }}"></script>
 {% endblock %}
