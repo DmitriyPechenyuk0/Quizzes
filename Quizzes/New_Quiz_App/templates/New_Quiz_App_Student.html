@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %} New-Quiz-Page-Student {% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('New_Quiz.static', filename='css/New_Quiz_App_Student.css') }}">
+<script src="{{ url_for('New_Quiz.static', filename='js/jquery-3.7.1.min.js') }}"></script>
+<script src="{{ url_for('New_Quiz.static', filename='js/New_Quiz_App.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="section">
+    <div class="title-div">
+        <p class="title-p">New Quizzes</p>
+    </div>
+    <div class="div-content">
+        <div class="new-quiz-content">
+            <div class="fill-form-frame">
+                <h1>Question information</h1>
+            </div>
+
+            <div class="answers-options-frame">
+                <div class="answer-container">
+                    <p class="answers-options-frame-blue">Answer 1</p>
+                    <input type="checkbox" class="answer-checkbox">
+                </div>
+                <div class="answer-container">
+                    <p class="answers-options-frame-green">Answer 2</p>
+                    <input type="checkbox" class="answer-checkbox">
+                </div>
+                <div class="answer-container">
+                    <p class="answers-options-frame-yellow">Answer 3</p>
+                    <input type="checkbox" class="answer-checkbox">
+                </div>
+                <div class="answer-container">
+                    <p class="answers-options-frame-red">Answer 4</p>
+                    <input type="checkbox" class="answer-checkbox">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

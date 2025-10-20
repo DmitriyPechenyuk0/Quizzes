@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('profile_app.static', filename='css/profile.css') }}">
+<script src="{{ url_for('profile_app.static', filename='js/profile.js') }} " defer></script>
+{% endblock %}
+
+{% block main %}
+<div class="profile-container">
+  
+    <div class="profile-header">
+        <div class="profile-info">
+            <img src="{{ url_for('profile_app.static', filename='img/Avatar.png') }}" alt="Avatar">
+            <div class="l">
+                <h1>{{ name }}</h1>
+                <a href="mailto:{{ email }}">{{ email }}</a>
+            </div>
+        </div>
+        <div class="quiz-stats">
+            <div class="quiz-count-box">
+                <p>{{ created_quizzes_count }}</p>
+                <span>Created quizzes</span>
+            </div>
+            <div class="quiz-count-box">
+                <p>0</p>
+                <span>Passed quizzes</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="create-quiz-section">
+        <h2>Created quizzes</h2>
+        {% if quizzes %}
+        <div class="quiz-grid">
+            {% for quiz in quizzes %}
+            <div class="quiz-card" onclick="openModal('{{ quiz.id }}', '{{ quiz.name }}')">
+                {% if quiz.image %}
+                <img src="{{ url_for('New_Quiz.static', filename='media/' + quiz.image) }}" alt="Quiz Image">
+                {% else %}
+                <img src="{{ url_for('profile_app.static', filename='img/placeholder.png') }}" alt="Quiz Image">
+                {% endif %}
+                <p>{{ quiz.name }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>You have no quizzes completed or created</p>
+        {% endif %}
+
+        <a href="new-quiz-settings" class="create-button">Create a quiz</a>
+    </div>
+</div>
+
+<div id="quizModal" class="modal-backdrop">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalTitle"></h3>
+        </div>
+        
+        <div class="modal-buttons">
+            <button onclick="deleteQuiz()">Delete</button>
+            <a id="startBtn" href="#">Start</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+<!--  -->
