@@ -114,7 +114,10 @@
 .actions {
     display: flex;
     gap: 20px;
-    background: transparent;
+    background: none;
+}
+.actions form{
+    background: none;
 }
 
 .btn {
@@ -126,8 +129,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: transparent !important;
-    background-image: none !important;
+    background: none;
     box-shadow: none !important;
 }
 
@@ -135,7 +137,8 @@
 .btn-remove img {
     width: 40px;
     height: 40px;
-    display: block; 
+    display: block;
+    background: none;
 }
 
 
