@@ -3,6 +3,10 @@ import flask_login
 from profile_app.models import User, db 
 from .moduls import Class, RequestsToClass
 from project.email import send_student_approval_email
+from flask import jsonify
+from New_Quiz_App.models import Quiz
+from quiz_app.models import QuizSession, SessionParticipant
+from profile_app.models import User
 
 control = Blueprint(
     'control', 
@@ -125,3 +129,36 @@ def remove_student(student_id):
             'success': False,
             'message': "Учень не належить до вашого класу."
         })
+        
+        
+@flask_login.login_required
+def get_class_quiz_history():
+    teacher = flask_login.current_user
+    if not teacher.is_teacher or not teacher.group:
+        return jsonify({'success': False, 'message': 'Дія заборонена.'}), 403
+
+    students = User.query.filter_by(group=teacher.group, is_teacher=False, is_approved=True).all()
+    student_ids = [s.id for s in students]
+
+    sessions = (
+        db.session.query(QuizSession)
+        .join(SessionParticipant, SessionParticipant.session_id == QuizSession.id)
+        .filter(SessionParticipant.user_id.in_(student_ids))
+        .distinct(QuizSession.id)
+        .all()
+    )
+
+    quizzes_info = []
+    for session in sessions:
+        quiz = Quiz.query.get(session.quiz_id)
+        if quiz:
+            quizzes_info.append({
+                'id': quiz.id,
+                'name': quiz.name,
+                'topic': quiz.topic,
+                'image': quiz.image,
+                'session_code': session.code,
+                'session_id': session.id,
+            })
+
+    return jsonify({'success': True, 'quizzes': quizzes_info})
