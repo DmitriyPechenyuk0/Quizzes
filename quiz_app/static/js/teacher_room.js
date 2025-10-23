@@ -4,20 +4,34 @@
 
     function $(id) { return document.getElementById(id); }
 
-    function clearUI({ keepState = false } = {}) {
-      // $("question").innerHTML = "";
-      // $("progress").innerText = "";
-      // if (!keepState) $("state").innerText = "";
+    function loadLocalStorageValues(){
+      quizname = localStorage.getItem("quizname")
+      allQuantity = localStorage.getItem("allQuantity")
+      interfaceStage = localStorage.getItem("interfaceStage")
+      qText = localStorage.getItem("qText")
+      current_order = localStorage.getItem("current_order")
+      if (interfaceStage == 'progress'){
+        document.querySelector('.left-content').classList.remove('display-flex'); document.querySelector('.left-content').classList.add('display-none')
+        document.querySelector('.left-content-afterstart').classList.remove('display-none'); document.querySelector('.left-content-afterstart').classList.add('display-flex')
+        document.querySelector('.right-content-q-skipper').classList.remove('display-none'); document.querySelector('.right-content-q-skipper').classList.add('display-flex')
+      }
+      if (quizname && interfaceStage == 'progress'){
+        document.querySelector('#lcaTitleElement').textContent = quizname
+      }
+      if (allQuantity && current_order && interfaceStage == 'progress'){
+        document.querySelector('#lcacQQuantity').innerHTML = `${current_order} / ${allQuantity}`
+      }
+      if (qText && interfaceStage == 'progress'){
+        document.querySelector('#lcaccmQuestion').innerHTML = `${qText}`
+      }
+      
     }
+
     function updateUserCounter(){
       let counter = document.querySelector('.right-content-title-count');
       counter.textContent = document.querySelectorAll('.right-content-user').length
     }
-   
-    // function renderQuestion(q) {
-    //   clearUI({ keepState: false });
 
-    // }
     function userRemover(user_id){
       let div = document.querySelector(`#usr_${user_id}`)
       div.remove()
@@ -26,12 +40,13 @@
     function attachEvents() {
       $("start").onclick = () => {
         updateUserCounter()
-
+        
         document.querySelector('.left-content').classList.remove('display-flex'); document.querySelector('.left-content').classList.add('display-none')
         document.querySelector('.left-content-afterstart').classList.remove('display-none'); document.querySelector('.left-content-afterstart').classList.add('display-flex')
         document.querySelector('.right-content-q-skipper').classList.remove('display-none'); document.querySelector('.right-content-q-skipper').classList.add('display-flex')
 
         socket.emit("teacher:start", { code })
+        localStorage.setItem('interfaceStage', 'progress')
         socket.emit('switch_content', { code })
       };
       $("nextQ").onclick = () => {
@@ -41,38 +56,36 @@
       // $("finish").onclick = () => socket.emit("teacher:finish", { code });
 
       socket.on("room:state", (info) => {
-        if ($("lcaTitleElement").textContent != info.quiz_name) $("lcaTitleElement").textContent = info.quiz_name
-
+        if ($("lcaTitleElement").textContent != info.quiz_name){
+          
+          $("lcaTitleElement").textContent = info.quiz_name
+          localStorage.setItem('quizname', info.quiz_name)
+        }
+        
         if (info.question){
           
-          console.log(info)
 
+          console.log(info)
           document.getElementById('lcacQQuantity').textContent = `${ info.current_order } / ${info.question.q_quantity}`
           document.getElementById('lcaccmQuestion').textContent = info.question.text
-          
-        };
-      });
 
-      socket.on("room:question", (q) => {
-        renderQuestion(q);
-      });
+          localStorage.setItem('current_order', info.current_order)
+          localStorage.setItem('allQuantity', info.question.q_quantity)
+          localStorage.setItem('qText', info.question.text)
+        
+        }
+      })
 
       socket.on("room:answers_progress", (p) => {
-        document.querySelector('.rcqsCount').textContent = `${p.answered}/${p.total}`
+
+        document.querySelector('.rcqsCount').textContent = `${p.answered} / ${p.total}`
+        localStorage.setItem('userAnswered', p.answered)
+        localStorage.setItem('userTotal', p.total)
       });
 
-      socket.on("room:question_closed", (d) => {
-
-        const ans = Array.isArray(d.correct_answer)
-          ? d.correct_answer.join(" | ")
-          : (d.correct_answer || "не задан");
-        $("state").innerText = `Close question ${d.question_id || d.question_index}. True answer: ${ans}`;
-        clearUI({ keepState: true });
-      });
-
-      socket.on("room:final_results", (res) => {
+      // socket.on("room:final_results", (res) => {
         
-      });
+      // });
 
       socket.on("room:participants_update", (info) => {
         console.log(info)
@@ -107,6 +120,7 @@
       socket = io();
       socket.emit("join", { code, as_host: true });
       attachEvents();
+      loadLocalStorageValues()
     });
 })();
 

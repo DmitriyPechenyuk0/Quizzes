@@ -5,8 +5,7 @@
   function $(id) { return document.getElementById(id); }
 
   function getCodeFromQuery() {
-  //   const p = new URLSearchParams(window.location.search);
-  //   return p.get("code") || "";
+    code = localStorage.getItem('codde')
   }
 
   function renderQuestion(q_text) {
@@ -105,10 +104,6 @@
     socket.on("room:final_results", (res) => {
 
     });
-
-    // socket.on("student:switch_content", (d) => {
-
-    // });
 
     socket.on("room:participants_update", (data) => {
       if (state.code) {

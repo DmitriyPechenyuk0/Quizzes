@@ -71,10 +71,10 @@ def on_join(data):
         
         return emit("error", {"message": "Session unavaible"})
 
-    if getattr(current_user, "is_admin", False) and not as_host:
+    if getattr(current_user, "is_teacher", False) and not as_host:
         return emit("error", {"message": "The host cannot connect as a participant"})
 
-    if as_host and getattr(current_user, "is_admin", False):
+    if as_host and getattr(current_user, "is_teacher", False):
         SessionParticipant.query.filter_by(session_id=sess.id, user_id=current_user.id).delete()
         db.session.commit()
         join_room(code)
@@ -136,11 +136,6 @@ def on_teacher_next(data):
     total = SessionParticipant.query.filter_by(session_id=s.id).count()
     answered = SessionAnswer.query.filter_by(session_id=s.id, question_id=q.id).count()
     correct = SessionAnswer.query.filter_by(session_id=s.id, question_id=q.id, is_correct=True).count()
-    emit("room:question_closed", {
-        "question_id": q.id,
-        "stats": {"total": total, "answered": answered, "correct": correct},
-        "correct_answer": q.correct_answer
-    }, to=code)
 
     nxt = next_question(s)
     if nxt:
@@ -157,12 +152,13 @@ def finish_session(s: QuizSession):
     final_results(s.id)
     
 def final_results(session_idd: int):
-    quiz_session = QuizSession.query.filter_by(id=session_idd).first()
-    quiz = Quiz.query.filter_by(id=quiz_session.quiz_id).first()
-    participants = SessionParticipant.query.filter_by(session_id=session_idd).all()
-    print(f"\nquiz_session:\n{quiz_session}\n\nquiz:\n{quiz}\n\nparticipants:\n{participants}")
-    for part in participants:
-        print(f"{part.nickname} and {part.user_id}\n")
+    # quiz_session = QuizSession.query.filter_by(id=session_idd).first()
+    # quiz = Quiz.query.filter_by(id=quiz_session.quiz_id).first()
+    # participants = SessionParticipant.query.filter_by(session_id=session_idd).all()
+    # print(f"\nquiz_session:\n{quiz_session}\n\nquiz:\n{quiz}\n\nparticipants:\n{participants}")
+    # for part in participants:
+    #     print(f"{part.nickname} and {part.user_id}\n")
+    pass
 
 
 @socketio.on("participant:answer")
@@ -221,7 +217,7 @@ def on_remove_user(data):
     if not getattr(current_user, "is_authenticated", False):
         return emit("error", {"message": "Please Login to account"})
     
-    if not getattr(current_user, "is_admin", False):
+    if not getattr(current_user, "is_teacher", False):
         return emit("error", {"message": "Only host can remove participants"})
 
     sess = QuizSession.query.filter_by(code=code).first()
