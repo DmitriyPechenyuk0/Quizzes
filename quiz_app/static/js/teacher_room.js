@@ -3,7 +3,12 @@
     let code = "";
 
     function $(id) { return document.getElementById(id); }
-
+    function lrm(key){
+      localStorage.removeItem(key)
+    }
+    function clearLAFS(){
+      lrm('quizname'); lrm('qText'); lrm('interfaceStage'); lrm("allQuantity"); lrm('current_order')
+    }
     function loadLocalStorageValues(){
       quizname = localStorage.getItem("quizname")
       allQuantity = localStorage.getItem("allQuantity")
@@ -52,9 +57,6 @@
       $("nextQ").onclick = () => {
         socket.emit('teacher:next', { code })
       }      
-      // $("next").onclick = () => socket.emit("teacher:next", { code });
-      // $("finish").onclick = () => socket.emit("teacher:finish", { code });
-
       socket.on("room:state", (info) => {
         if ($("lcaTitleElement").textContent != info.quiz_name){
           
@@ -75,17 +77,16 @@
         
         }
       })
-
       socket.on("room:answers_progress", (p) => {
 
         document.querySelector('.rcqsCount').textContent = `${p.answered} / ${p.total}`
         localStorage.setItem('userAnswered', p.answered)
         localStorage.setItem('userTotal', p.total)
       });
-
-      // socket.on("room:final_results", (res) => {
-        
-      // });
+      
+      socket.on("finish_session", () => {
+        clearLAFS()
+      });
 
       socket.on("room:participants_update", (info) => {
         console.log(info)

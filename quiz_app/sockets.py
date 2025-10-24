@@ -1,4 +1,4 @@
-from flask_socketio import join_room, emit
+from flask_socketio import join_room, emit, disconnect
 from flask_login import current_user
 from sqlalchemy import func, case
 from project.settings import socketio, db
@@ -6,6 +6,8 @@ from .models import QuizSession, Question, SessionParticipant, SessionAnswer
 from New_Quiz_App.models import Quiz
 from flask import request
 import colorama
+
+user_sessions = {}
 
 def serialize_question(q: Question):
     qz = Quiz.query.filter_by(id = q.quiz_id).first()
@@ -95,6 +97,8 @@ def on_join(data):
         except Exception:
             db.session.rollback()
     else:
+        user_sessions[display_id] = request.sid
+        print(user_sessions, request.sid)
         join_room(code)
         emit("room:participants_update", {"nickname": display_name, "id": display_id}, to=code)
     broadcast_state(code)
@@ -144,12 +148,13 @@ def on_teacher_next(data):
         emit("room:question", serialize_question(nxt), to=code)
         broadcast_state(code)
     else:
-        finish_session(s)
+        finish_session(s, code)
 
-def finish_session(s: QuizSession):
+def finish_session(s: QuizSession, code):
     s.status = "FINISHED"
     db.session.commit()
     final_results(s.id)
+    emit('finish_session', {}, to=code)
     
 def final_results(session_idd: int):
     # quiz_session = QuizSession.query.filter_by(id=session_idd).first()
@@ -231,9 +236,19 @@ def on_remove_user(data):
     
     removed_id = participant.user_id
     removed_nickname = participant.nickname
+
+    print(user_id, user_sessions)
+    if user_id in user_sessions:
+        print(2)
+        sid = user_sessions[user_id]
+        emit('disconnect', {"message": 'Вчитель вигнав тебе з класу.'} , to=sid)
+        disconnect(sid)
+        print(user_id, sid)
+        del user_sessions[user_id]
+        db.session.delete(participant)
+        return
     
-    db.session.delete(participant)
-    print('successfuly deleted')
+    print(user_id)
     
 
     SessionAnswer.query.filter_by(session_id=sess.id, user_id=user_id).delete()

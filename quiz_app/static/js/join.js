@@ -15,7 +15,18 @@
     document.querySelector('#questionBlockP').innerText = q_text
   }
   function waitNewQuestions(){
-
+  }
+  function lrm(key){
+    localStorage.removeItem(key)
+  }
+  function lget(key){
+    localStorage.getItem(key)
+  }
+  function clearLAFS(){
+    lrm('quizname'); lrm('qText'); lrm('interfaceStage'); lrm("allQuantity"); lrm('current_order'); lrm('userAnswered'); lrm('userTotal')
+  }
+  function u (){
+    
   }
   function updateCounter() {
     let usersCount = document.querySelectorAll('.mwop-user').length
@@ -71,7 +82,9 @@
     socket.on("error", (e) => {
       console.log(e)
     });
-
+    socket.on("finish_session", () => {
+        clearLAFS()
+    });
     socket.on("room:participants_list", (data) => {
       renderParticipantsList(data);
     });
@@ -106,10 +119,13 @@
     });
 
     socket.on("room:participants_update", (data) => {
-      if (state.code) {
-        socket.emit("request_participants", { code: state.code });
-      }
+      // if (state.code) {
+      //   socket.emit("request_participants", { code: state.code });
+      // }
     });
+    socket.on("disconnect"), () => {
+        window.location.href = '/'
+      }
   }
 
   document.addEventListener("DOMContentLoaded", () => {
