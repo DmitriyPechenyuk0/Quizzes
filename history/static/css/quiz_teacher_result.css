@@ -2,52 +2,43 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Quicksand', sans-serif;
-    overflow-x: hidden;
-    background: #f0f2f5;
-}
-
-main {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    width: 100vw;
 }
 
 .section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 1910px;
+    width: 1800px;
     padding-top: 30px;
 }
 
 .quiz-text {
     font-weight: 700;
-    font-size: 50px;
-    line-height: 62px;
-    color: #000000;
-    margin-bottom: 30px;
+    font-size: 40px;
+    text-align: center;
+    color: #000;
+    margin-bottom: 25px;
 }
 
 .result-frame {
     display: flex;
     flex-direction: row;
     width: 1800px;
-    height: 1474px;
-    background: #607C94;
-    border-radius: 60px;
-    box-shadow: 0px 271px 108px rgba(0, 0, 0, 0.01),
-                0px 152px 91px rgba(0, 0, 0, 0.05),
-                0px 68px 68px rgba(0, 0, 0, 0.09),
-                0px 17px 37px rgba(0, 0, 0, 0.1);
+    height: 1490px;
+    background: #6b8196; 
+    border-radius: 40px;
     overflow: hidden;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
 }
+
 
 .student-table {
     width: 50%;
-    background: #607C94;
-    border-radius: 60px 0 0 60px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    background: #6b8196;
+    border-radius: 40px 0 0 40px;
 }
 
 .student-table table {
@@ -55,56 +46,62 @@ main {
     border-collapse: collapse;
 }
 
-.student-table th, 
+.student-table th,
 .student-table td {
-    padding: 15px 20px;
-    font-weight: 700;
-    font-size: 40px;
-    color: #FFFFFF;
+    padding: 18px 70px;
+    font-size: 32px;
+    font-weight: 600;
+    color: #fff;
     text-align: left;
+    background: transparent;
 }
 
-.student-table thead {
-    background: #425a6a;
-}
-
-.student-table tbody tr:nth-child(even) {
-    background: #526e85;
+.student-table th {
+    background: #54697b;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 .student-table tbody tr:nth-child(odd) {
-    background: #607C94;
+    background: #6b8196;
+}
+.student-table tbody tr:nth-child(even) {
+    background: #5f7588;
 }
 
+
 .chart-section {
-    width: 60%;
-    padding: 50px;
+    width: 70%;
+    background: #f7f7f7;
+    padding: 80px 10px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    gap: 30px;
+    justify-content: flex-start;
+    gap: 60px;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.05);
 }
 
 .chart-section h3 {
     font-weight: 700;
-    font-size: 35px;
-    color: #000000;
-    margin-bottom: 20px;
+    font-size: 30px;
+    color: #000;
+    margin-bottom: 10px;
 }
 
 .chart-section .avg {
     font-weight: 700;
-    font-size: 35px;
-    color: #000000;
+    font-size: 30px;
+    color: #000;
+    margin-top: 10px;
 }
 
 canvas {
-    width: 100% !important;
+    width: 964px !important;
     max-width: 600px;
-    height: 400px !important;
-    background: #fff;
-    border-radius: 20px;
+    height: 670px !important; 
+    border-radius: 25px;
     padding: 20px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
