@@ -1113,5 +1113,39 @@ main {
     background-color: none;
     font-size: 24px;
     font-weight: 700;
-    
+    background: none;
+}
+.answers-question-type-fill-numberoid-true p{
+    color: #fff;
+    background-color: none;
+    font-size: 24px;
+    font-weight: 700;
+    background: none;
+}
+.answers-question-type-fill-main{
+    width: 776px;
+    height: fit-content;
+    min-height: 310px;
+    display: flex;
+    flex-direction: column;
+}
+.answers-quesiton-type-fill-main-ques{
+    width: 776px;
+    height: fit-content;
+    min-height: 155px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0px;
+    padding: 0px 20px;
+    border-bottom: 2px solid black;
+}
+.answers-quesiton-type-fill-main-ques p{
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    color: #000000;
+    background: none;
+    background-color: none;
 }

@@ -30,6 +30,12 @@
                 {% for item in results if item.is_correct %}
                     <div class="answers-question-type-fill">
                         <div class="answers-question-type-fill-numberoid-true"><p>{{ item.order }}</p></div>
+                        <div class="answers-question-type-fill-main">
+                            <div class="answers-quesiton-type-fill-main-ques"><p>{{ item.question }}</p></div>
+                            <div class="answers-quesiton-type-fill-main-answ">
+                                <p>Відповідь: {{ item.user_answer }}</p>
+                            </div>
+                        </div>
                     </div>
                 {% endfor %}
             </div>
@@ -39,6 +45,10 @@
                 {% for item in results if not item.is_correct %}
                     <div class="answers-question-type-fill">
                         <div class="answers-question-type-fill-numberoid-false"><p>{{ item.order }}</p></div>
+                        <div class="answers-question-type-fill-main">
+                            <div class="answers-quesiton-type-fill-main-ques"><p>{{ item.question }}</p></div>
+                            <div class="answers-quesiton-type-fill-main-answ"></div>
+                        </div>
                     </div>
                 {% endfor %}
             </div>

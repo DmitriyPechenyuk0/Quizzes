@@ -36,7 +36,6 @@ def show_qsr_page(session_id=None, user_id=None):
     answers = query.all()
 
     results = []
-    results_false = []
     correct_count = 0
     total_count = len(answers)
 

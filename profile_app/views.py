@@ -11,13 +11,18 @@ def show_profile_page():
 
     created_quizzes = Quiz.query.filter_by(owner=current_user.id).all()
 
-    participated_session_ids = db.session.query(SessionParticipant.session_id).filter_by(user_id=current_user.id).subquery()
-
-
-    completed_quiz_ids = db.session.query(QuizSession.quiz_id).filter(QuizSession.id.in_(participated_session_ids)).distinct().subquery()
-
-    completed_quizzes = Quiz.query.filter(Quiz.id.in_(completed_quiz_ids)).all()
-
+    completed_counts = (
+        db.session.query(
+            QuizSession.quiz_id,
+            db.func.count(QuizSession.id).label("times_completed")
+        )
+        .join(SessionParticipant, SessionParticipant.session_id == QuizSession.id)
+    .filter(SessionParticipant.user_id == current_user.id).group_by(QuizSession.quiz_id).all()
+    )
+    completed_dict = {q.quiz_id:q.times_completed for q in completed_counts}
+    completed_quizess = Quiz.query.filter(Quiz.id.in_(completed_dict.keys()).all())
+    for quiz in completed_quizess:
+        quiz.times_completed =  completed_dict.get(quiz.id,0)
     context = {
         'page': 'profile',
         'name': current_user.name,
@@ -25,7 +30,7 @@ def show_profile_page():
         'created_quizzes': created_quizzes, 
         'created_quizzes_count': len(created_quizzes),
         'completed_quizzes': completed_quizzes,
-        'completed_quizzes_count': len(completed_quizzes),
+        'completed_quizzes_count': sum(completed_dict.values()),
         'is_admin': current_user.is_teacher 
     }
 
