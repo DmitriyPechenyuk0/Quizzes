@@ -1140,6 +1140,7 @@ main {
     gap: 0px;
     padding: 0px 20px;
     border-bottom: 2px solid black;
+    border-top-right-radius: 20px;
 }
 .answers-quesiton-type-fill-main-ques p{
     font-size: 24px;
@@ -1148,4 +1149,23 @@ main {
     color: #000000;
     background: none;
     background-color: none;
+}
+.answers-quesiton-type-fill-main-answ{
+    width: 776px;
+    height: fit-content;
+    min-height: 155px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-evenly;
+    padding: 15px;
+    border-bottom-right-radius: 20px;
+}
+.answers-quesiton-type-fill-main-answ p{
+    font-size: 24px;
+    font-weight: 700;
+}
+.answers-quesiton-type-fill-main-answ span{
+    font-size: 24px;
+    font-weight: 500;
 }

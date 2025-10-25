@@ -47,7 +47,10 @@
                         <div class="answers-question-type-fill-numberoid-false"><p>{{ item.order }}</p></div>
                         <div class="answers-question-type-fill-main">
                             <div class="answers-quesiton-type-fill-main-ques"><p>{{ item.question }}</p></div>
-                            <div class="answers-quesiton-type-fill-main-answ"></div>
+                            <div class="answers-quesiton-type-fill-main-answ">
+                                <p>Відповідь: {{ item.user_answer }}</p>
+                                <span>Правильна відповідь: {{ item.correct_answer }}</span>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}

@@ -9,20 +9,25 @@ from quiz_app.models import QuizSession, SessionParticipant
 @login_required
 def show_profile_page():
 
+
+
+    if current_user.is_teacher:
+        completed_quizzes = QuizSession.query.filter_by(who_host = current_user.id).all()
+        print(completed_quizzes)
+    else:
+        completed_quizzes = SessionParticipant.query.filter_by(user_id = current_user.id).all()
+        quizz = []
+        for item in completed_quizzes:
+            quizz.append(item.session_id)
+        completed_quizzes = quizz
+        sess = []
+        for item in completed_quizzes:
+            sess.append(QuizSession.query.filter_by(id=item).first())
+        completed_quizzes= sess
+    completed_counts = len(completed_quizzes)
+
     created_quizzes = Quiz.query.filter_by(owner=current_user.id).all()
 
-    completed_counts = (
-        db.session.query(
-            QuizSession.quiz_id,
-            db.func.count(QuizSession.id).label("times_completed")
-        )
-        .join(SessionParticipant, SessionParticipant.session_id == QuizSession.id)
-    .filter(SessionParticipant.user_id == current_user.id).group_by(QuizSession.quiz_id).all()
-    )
-    completed_dict = {q.quiz_id:q.times_completed for q in completed_counts}
-    completed_quizess = Quiz.query.filter(Quiz.id.in_(completed_dict.keys()).all())
-    for quiz in completed_quizess:
-        quiz.times_completed =  completed_dict.get(quiz.id,0)
     context = {
         'page': 'profile',
         'name': current_user.name,
@@ -30,7 +35,7 @@ def show_profile_page():
         'created_quizzes': created_quizzes, 
         'created_quizzes_count': len(created_quizzes),
         'completed_quizzes': completed_quizzes,
-        'completed_quizzes_count': sum(completed_dict.values()),
+        'completed_quizzes_count': completed_counts,
         'is_admin': current_user.is_teacher 
     }
 
