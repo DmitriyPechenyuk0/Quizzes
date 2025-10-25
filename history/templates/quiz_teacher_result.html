@@ -26,7 +26,11 @@
         <tbody>
           {% for s in students %}
           <tr>
-            <td>{{ s.name }}</td>
+            <td>
+              <a href="{{ url_for('history.show_qsr_page', session_id=session_id, user_id=s.id) }}" class="student-link">
+                {{ s.name }}
+              </a>
+            </td>
             <td>{{ s.accuracy }}%</td>
           </tr>
           {% endfor %}

@@ -82,7 +82,17 @@ body {
     gap: 60px;
     box-shadow: inset 0 0 30px rgba(0,0,0,0.05);
 }
-
+.student-link {
+    color: #ffffff;      /* белый текст */
+    text-decoration: none; /* убираем подчеркивание */
+    cursor: pointer;  
+    background-color: #6b8196;   /* курсор меняется на руку */
+  }
+  
+  .student-link:hover {
+    color: #ffffff;      /* остаётся белым при наведении */
+    text-decoration: none; 
+  }
 .chart-section h3 {
     font-weight: 700;
     font-size: 30px;
