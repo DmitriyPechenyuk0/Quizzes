@@ -1050,5 +1050,68 @@ main {
 
 .false-answers,
 .true-answers{
-
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    height: 1660px;
+    gap: 10px;
+    padding: 0px;
+    justify-content: start;
+    align-items: center;
+    background-color: none;
+    background: none;
+}
+.false-answers-t{
+    font-size: 34px;
+    font-weight: 700;
+    color: #fff;
+    background-color: none;
+    background: none;
+}
+.answers-question-type-fill{
+    width: 800px;
+    height: fit-content;
+    min-height: 311px;
+    display: flex;
+    flex-direction: row;
+    gap: 0px;
+    border-radius: 20px;
+    background-color: #fff;
+}
+.answers-question-type-fill-numberoid-true{
+    display: flex;
+    flex-direction: row;
+    width: 24px;
+    height: fit-content;
+    min-height: 311px;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 5px;
+    background-color: #00C985;
+    z-index: 0;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+.answers-question-type-fill-numberoid-false{
+    display: flex;
+    flex-direction: row;
+    width: 24px;
+    height: fit-content;
+    min-height: 311px;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 5px;
+    background-color: #EF3C69;
+    z-index: 0;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+.answers-question-type-fill-numberoid-false p{
+    color: #fff;
+    background-color: none;
+    font-size: 24px;
+    font-weight: 700;
+    
 }

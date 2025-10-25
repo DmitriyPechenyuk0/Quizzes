@@ -26,16 +26,20 @@
         </p>
         <div class="answers-container">
             <div class="true-answers">
-                <p>Правильні відповіді</p>
+                <p class="false-answers-t">Правильні відповіді</p>
                 {% for item in results if item.is_correct %}
-                    
+                    <div class="answers-question-type-fill">
+                        <div class="answers-question-type-fill-numberoid-true"><p>{{ item.order }}</p></div>
+                    </div>
                 {% endfor %}
             </div>
 
             <div class="false-answers">
                 <p class="false-answers-t" >Неправильні відповіді</p>
                 {% for item in results if not item.is_correct %}
-                    
+                    <div class="answers-question-type-fill">
+                        <div class="answers-question-type-fill-numberoid-false"><p>{{ item.order }}</p></div>
+                    </div>
                 {% endfor %}
             </div>
         </div>
