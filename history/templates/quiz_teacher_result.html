@@ -1,58 +1,51 @@
 {% extends 'base.html' %}
-
-{% block title %} Quiz Student Result {% endblock %}
+{% block title %}Quiz Teacher Result{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('history.static', filename='css/quiz_student_result.css') }}">
+<link rel="stylesheet" href="{{ url_for('history.static', filename='css/quiz_teacher_result.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
 {% block main %}
-<div class="section">
-  <p class="quiz-text">Quiz: Вікторина</p>
+<div class="section"
+     id="quizData"
+     data-question-labels='{{ stats|map(attribute="question")|list|tojson }}'
+     data-question-data='{{ stats|map(attribute="percent")|list|tojson }}'
+     data-avg-accuracy='{{ avg_accuracy }}'>
+
+  <p class="quiz-text">Quiz: Вікторина з математики</p>
   <div class="result-frame">
-    <div class="student-info">
-      <div class="profile">
-        <img class="img-profile">
-        <div class="username-email-frame">
-          <p class="username">username</p>
-          <p class="email-user">email</p>
-        </div>
-      </div>
+    <div class="student-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Ім’я</th>
+            <th>Точність</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in students %}
+          <tr>
+            <td>
+              <a href="{{ url_for('history.show_qsr_page', session_id=session_id, user_id=s.id) }}" class="student-link">
+                {{ s.name }}
+              </a>
+            </td>
+            <td>{{ s.accuracy }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
 
-    {% for item in results %}
-    <div class="all-answer-{{ loop.index }}">
-      <div class="answer-number-{{ loop.index }}">
-        <p class="number-text-{{ loop.index }}">{{ loop.index }}</p>
-      </div>
-      <div class="answer-info-{{ loop.index }}">
-        <div class="question-frame-{{ loop.index }}">
-          <p class="question-{{ loop.index }}">{{ item.question }}</p>
-        </div>
-        <div class="correct-answer-frame-{{ loop.index }}">
-          <div class="correct-answer-info-{{ loop.index }}">
-            <p class="answer-{{ loop.index }}">Правильна відповідь:</p>
-            <p class="correct-answer-{{ loop.index }}">{{ item.correct_answer }}</p>
-          </div>
-          <div class="correct-answer-info-{{ loop.index }}2">
-            <p class="answer-{{ loop.index }}2">Твоя відповідь:</p>
-            <div class="all-answers">
-              <div class="answer-choice-{{ loop.index }}">
-                <div class="frame-img-answer-choice-{{ loop.index }}">
-                  {% if item.is_correct %}
-                  <img class="img-answer-choice-{{ loop.index }}" src="{{ url_for('history.static', filename='img/done_circle.jpg') }}">
-                  {% else %}
-                  <img class="img-answer-choice-{{ loop.index }}" src="{{ url_for('history.static', filename='img/cross_circle.jpg') }}">
-                  {% endif %}
-                </div>
-                <p class="text-answer-choice-{{ loop.index }}">{{ item.user_answer }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="chart-section">
+      <h3>Статистика відповідей на запитання</h3>
+      <canvas id="questionChart"></canvas>
+      <p class="avg">Середня точність групи: {{ avg_accuracy }}%</p>
+      <canvas id="summaryChart"></canvas>
     </div>
-    {% endfor %}
   </div>
 </div>
+
+<script src="{{ url_for('history.static', filename='js/quiz_teacher_result.js') }}"></script>
 {% endblock %}

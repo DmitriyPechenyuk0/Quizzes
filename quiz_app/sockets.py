@@ -211,7 +211,7 @@ def switch_content(data):
 @socketio.on("rm_user_from_session")
 def on_remove_user(data):
     code = str(data.get("code", "")).strip()
-    user_id = data.get("user_id")
+    user_id = int(data.get("user_id"))
     
     if not code:
         return emit("error", {"message": "need code"})
@@ -236,20 +236,19 @@ def on_remove_user(data):
     
     removed_id = participant.user_id
     removed_nickname = participant.nickname
+    
 
-    print(user_id, user_sessions)
+    print(type(user_id), user_sessions)
     if user_id in user_sessions:
-        print(2)
         sid = user_sessions[user_id]
-        emit('disconnect', {"message": 'Вчитель вигнав тебе з класу.'} , to=sid)
-        disconnect(sid)
-        print(user_id, sid)
+        print('KUKAREKU:', sid)
+        emit('kickedd', {"message": 'Вчитель вигнав тебе з класу.'} , to=sid)
+        # disconnect(sid)
+        # print(user_id, sid)
         del user_sessions[user_id]
         db.session.delete(participant)
         return
-    
-    print(user_id)
-    
+   
 
     SessionAnswer.query.filter_by(session_id=sess.id, user_id=user_id).delete()
     

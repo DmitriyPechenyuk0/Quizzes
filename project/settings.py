@@ -26,7 +26,7 @@ project.config["SECRET_KEY"] = "dev"
 
 db = flask_sqlalchemy.SQLAlchemy(app = project)
 migrate = flask_migrate.Migrate(app = project, db = db)
-socketio = flask_socketio.SocketIO(app=project, cors_allowed_origins="*")
+socketio = flask_socketio.SocketIO(app=project, cors_allowed_origins="*", async_mode="eventlet")
 
 project.config['MAIL_SERVER'] = 'smtp.gmail.com'
 project.config['MAIL_PORT'] = 587

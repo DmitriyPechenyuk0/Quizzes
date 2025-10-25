@@ -123,9 +123,9 @@
       //   socket.emit("request_participants", { code: state.code });
       // }
     });
-    socket.on("disconnect"), () => {
-        window.location.href = '/'
-      }
+    socket.on("kickedd", (data) => {
+      window.location.href = '/'
+    })
   }
 
   document.addEventListener("DOMContentLoaded", () => {
