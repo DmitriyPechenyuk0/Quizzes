@@ -16,7 +16,6 @@ main{
     display: none;
 }
 #particles-js{
-    position: relative;
     flex-direction: column;
     width: 1447px;
     height: 1000px;
