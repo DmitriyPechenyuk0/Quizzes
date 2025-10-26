@@ -7,7 +7,7 @@
       localStorage.removeItem(key)
     }
     function clearLAFS(){
-      lrm('quizname'); lrm('qText'); lrm('interfaceStage'); lrm("allQuantity"); lrm('current_order')
+      lrm('quizname'); lrm('qText'); lrm('interfaceStage'); lrm("allQuantity"); lrm('current_order'); lrm('userAnswered'); lrm('userTotal')
     }
     function loadLocalStorageValues(){
       quizname = localStorage.getItem("quizname")
@@ -84,8 +84,9 @@
         localStorage.setItem('userTotal', p.total)
       });
       
-      socket.on("finish_session", () => {
+      socket.on("finish_session", (datas) => {
         clearLAFS()
+        window.location.href = `/history/${datas.session_id}`
       });
 
       socket.on("room:participants_update", (info) => {

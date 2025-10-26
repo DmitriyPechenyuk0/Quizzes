@@ -114,8 +114,8 @@
     socket.on("room:question_closed", (d) => {
     });
 
-    socket.on("room:final_results", (res) => {
-
+    socket.on("finish_session", (datas) => {
+      window.location.href = `/history/${datas.session_id}/${document.getElementById('current_user_id').textContent}`
     });
 
     socket.on("room:participants_update", (data) => {

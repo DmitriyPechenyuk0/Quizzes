@@ -154,7 +154,7 @@ def finish_session(s: QuizSession, code):
     s.status = "FINISHED"
     db.session.commit()
     final_results(s.id)
-    emit('finish_session', {}, to=code)
+    emit('finish_session', {"session_id": s.id}, to=code)
     
 def final_results(session_idd: int):
     # quiz_session = QuizSession.query.filter_by(id=session_idd).first()
@@ -241,7 +241,7 @@ def on_remove_user(data):
     print(type(user_id), user_sessions)
     if user_id in user_sessions:
         sid = user_sessions[user_id]
-        print('KUKAREKU:', sid)
+        # print('KUKAREKU:', sid)
         emit('kickedd', {"message": 'Вчитель вигнав тебе з класу.'} , to=sid)
         # disconnect(sid)
         # print(user_id, sid)

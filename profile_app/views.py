@@ -14,20 +14,26 @@ def show_profile_page():
     if current_user.is_teacher:
         completed_quizzes = QuizSession.query.filter_by(who_host = current_user.id).all()
         print(completed_quizzes)
-    else:
-        completed_quizzes = SessionParticipant.query.filter_by(user_id = current_user.id).all()
-        quizz = []
-        for item in completed_quizzes:
-            quizz.append(item.session_id)
-        completed_quizzes = quizz
-        sess = []
-        for item in completed_quizzes:
-            sess.append(QuizSession.query.filter_by(id=item).first())
-        completed_quizzes= sess
+        # sessionss = []
+
+        # for itm in completed_quizzes:
+            # sessionss.append()
+            # print(Quiz.query.filter_by(id=itm.quiz_id).first().name)
+            
+    # else:
+    #     completed_quizzes = SessionParticipant.query.filter_by(user_id = current_user.id).all()
+    #     quizz = []
+    #     for item in completed_quizzes:
+    #         quizz.append(item.session_id)
+    #     completed_quizzes = quizz
+    #     sess = []
+    #     for item in completed_quizzes:
+    #         sess.append(QuizSession.query.filter_by(id=item).first())
+    #     completed_quizzes= sess
     completed_counts = len(completed_quizzes)
 
     created_quizzes = Quiz.query.filter_by(owner=current_user.id).all()
-
+    
     context = {
         'page': 'profile',
         'name': current_user.name,

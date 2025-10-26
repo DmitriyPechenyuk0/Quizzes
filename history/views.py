@@ -23,7 +23,6 @@ def show_qsr_page(session_id=None, user_id=None):
     if not session_id or not user_id:
         return flask.render_template("quiz_student_result.html", results=[], score_percent=0)
 
-    # Получаем ответы пользователя
     query = (
         db.session.query(SessionAnswer, Question)
         .join(Question, SessionAnswer.question_id == Question.id)
@@ -52,13 +51,14 @@ def show_qsr_page(session_id=None, user_id=None):
             "is_correct": is_correct
         })
 
-    # Считаем общую точность
     score_percent = round(correct_count / total_count * 100, 2) if total_count else 0
 
     return flask.render_template(
         "quiz_student_result.html",
         results=results,
-        score_percent=score_percent
+        score_percent=score_percent,
+        username=User.query.filter_by(id=user_id).first().name,
+        user_mail=User.query.filter_by(id=user_id).first().email,
     )
 
 

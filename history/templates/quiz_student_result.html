@@ -15,14 +15,14 @@
             <div class="profile">
                 <img class="profile-img" src="{{ url_for('history.static', filename='img/Avatar.svg') }}" alt="Avatar">
                 <div class="username-email-frame">
-                    <p class="username">Anonymous user</p>
-                    <p class="email-user">anonymous@gmail.com.ua.org.com</p>
+                    <p class="username">{{ username }}</p>
+                    <p class="email-user">{{ user_mail }}</p>
                 </div>
             </div>
         </div>
 
         <p class="scoure-of-test">
-            Загальна точність по тесту: {{ score_percent }}%
+            Загальна точність відповідей: {{ score_percent }}%
         </p>
         <div class="answers-container">
             <div class="true-answers">

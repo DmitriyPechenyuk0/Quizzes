@@ -72,7 +72,7 @@
                     {% else %}
                     <img src="{{ url_for('profile_app.static', filename='img/placeholder.png') }}" alt="Зображення вікторини">
                     {% endif %}
-                    <p>{{ quiz.name }}</p>
+                    <p>{{ quiz.quiz_id.name }}</p>
                 </div>
                 {% endfor %}
             </div>
