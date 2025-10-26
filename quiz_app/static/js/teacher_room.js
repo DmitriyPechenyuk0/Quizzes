@@ -36,7 +36,7 @@
       let counter = document.querySelector('.right-content-title-count');
       counter.textContent = document.querySelectorAll('.right-content-user').length
     }
-
+    
     function userRemover(user_id){
       let div = document.querySelector(`#usr_${user_id}`)
       div.remove()
@@ -130,6 +130,9 @@
       socket.emit("join", { code, as_host: true });
       attachEvents();
       loadLocalStorageValues()
+      document.querySelector('#copyCodeButton').addEventListener('click', () => {
+        navigator.clipboard.writeText(document.querySelector('#copyCodeButton').className).then(() => console.log("Done!")).catch(err => console.error(err))
+      })
     });
 })();
 

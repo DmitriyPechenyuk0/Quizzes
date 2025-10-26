@@ -40,7 +40,7 @@
             <span class="main-left-content-connection-link-icn" >2</span>
             <span class="main-left-content-cnt" >Введіть код підключення</span>
             <span class="main-left-content-code" >{{ code }}</span>
-            <img src="{{ url_for('quiz_app.static', filename='images/copy-icon.svg') }}">
+            <img id="copyCodeButton" class="{{ code }}" src="{{ url_for('quiz_app.static', filename='images/copy-icon.svg') }}">
         </div>
         <div class="main-left-content-connection-btn">
             <button id="start" class="main-left-content-button-start" >
