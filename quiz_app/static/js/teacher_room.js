@@ -49,14 +49,21 @@
         document.querySelector('.left-content').classList.remove('display-flex'); document.querySelector('.left-content').classList.add('display-none')
         document.querySelector('.left-content-afterstart').classList.remove('display-none'); document.querySelector('.left-content-afterstart').classList.add('display-flex')
         document.querySelector('.right-content-q-skipper').classList.remove('display-none'); document.querySelector('.right-content-q-skipper').classList.add('display-flex')
-
+        
         socket.emit("teacher:start", { code })
         localStorage.setItem('interfaceStage', 'progress')
         socket.emit('switch_content', { code })
+        socket.emit('check_answers', { code })
       };
       $("nextQ").onclick = () => {
         socket.emit('teacher:next', { code })
-      }      
+        socket.emit('check_answers', { code })
+      }
+      socket.on("update_answers", (info) => {
+        document.querySelector('.rcqsCount').textContent = `${info.answered} / ${info.total}`
+        localStorage.setItem('userAnswered', info.answered)
+        localStorage.setItem('userTotal', info.total)
+      })
       socket.on("room:state", (info) => {
         if ($("lcaTitleElement").textContent != info.quiz_name){
           
@@ -70,7 +77,7 @@
           console.log(info)
           document.getElementById('lcacQQuantity').textContent = `${ info.current_order } / ${info.question.q_quantity}`
           document.getElementById('lcaccmQuestion').textContent = info.question.text
-
+          
           localStorage.setItem('current_order', info.current_order)
           localStorage.setItem('allQuantity', info.question.q_quantity)
           localStorage.setItem('qText', info.question.text)

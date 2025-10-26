@@ -13,7 +13,7 @@
      data-question-data='{{ stats|map(attribute="percent")|list|tojson }}'
      data-avg-accuracy='{{ avg_accuracy }}'>
 
-  <p class="quiz-text">Quiz: Вікторина з математики</p>
+  <p class="quiz-text">Тест: {{ quiz_name }}</p>
   <div class="result-frame">
     <div class="student-table">
       <table>

@@ -6,6 +6,7 @@ from project.settings import db
 from quiz_app.models import Question, SessionAnswer, QuizSession,  SessionParticipant
 from flask_login import current_user
 from profile_app.models import User  
+from New_Quiz_App.models import Quiz
 def show_history_page():
     
     return flask.render_template(template_name_or_list="history.html" )
@@ -59,6 +60,7 @@ def show_qsr_page(session_id=None, user_id=None):
         score_percent=score_percent,
         username=User.query.filter_by(id=user_id).first().name,
         user_mail=User.query.filter_by(id=user_id).first().email,
+        quiz_name = Quiz.query.filter_by(id=QuizSession.query.filter_by(id=session_id).first().quiz_id).first().name
     )
 
 
@@ -114,4 +116,4 @@ def show_qtr_page(session_id=None):
         percent = round((s["correct"] / s["total"]) * 100, 2) if s["total"] else 0
         stats.append({"question": q.text, "percent": percent})
 
-    return flask.render_template( "quiz_teacher_result.html", students=student_results, stats=stats, avg_accuracy=avg_accuracy,session_id=session_id )
+    return flask.render_template( "quiz_teacher_result.html", students=student_results, stats=stats, avg_accuracy=avg_accuracy,session_id=session_id,quiz_name = Quiz.query.filter_by(id=QuizSession.query.filter_by(id=session_id).first().quiz_id).first().name)

@@ -164,7 +164,15 @@ def final_results(session_idd: int):
     # for part in participants:
     #     print(f"{part.nickname} and {part.user_id}\n")
     pass
+@socketio.on("check_answers")
+def check_answer(data):
+    code = str(data.get("code", "")).strip()
+    session = QuizSession.query.filter_by(code=code).first()
+    cur_quest = current_question(session)
 
+    total = SessionParticipant.query.filter_by(session_id=session.id).count()
+    answered = SessionAnswer.query.filter_by(session_id=session.id, question_id=cur_quest.id).count()
+    emit('update_answers', {"total": total, "answered": answered}, to=code)
 
 @socketio.on("participant:answer")
 def on_answer(data):
