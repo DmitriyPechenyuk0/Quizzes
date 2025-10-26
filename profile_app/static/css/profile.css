@@ -153,6 +153,7 @@
     padding: 10px;
     transition: transform 0.3s ease;
     flex: 0 0 auto;
+    cursor: pointer;
 }
 
 .quiz-card:hover {

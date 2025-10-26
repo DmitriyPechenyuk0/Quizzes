@@ -66,13 +66,17 @@
             {% if completed_quizzes %}
             <div class="quiz-grid">
                 {% for quiz in completed_quizzes %}
-                <div class="quiz-card">
-                    {% if quiz.image %}
-                    <img src="{{ url_for('New_Quiz.static', filename='media/' + quiz.image) }}" alt="Зображення вікторини">
+                    {% if current_user.is_teacher %}
+                        <div class="quiz-card switch-to-history-picker" onclick="historyTeacherSwitcher('{{ quiz.session.id }}')">
                     {% else %}
-                    <img src="{{ url_for('profile_app.static', filename='img/placeholder.png') }}" alt="Зображення вікторини">
+                        <div class="quiz-card switch-to-history-picker" onclick="historyStudentSwitcher('{{ quiz.session.id }}', '{{ current_user.id }}')"></div>
                     {% endif %}
-                    <p>{{ quiz.quiz_id.name }}</p>
+                    {% if quiz.quiz.image %}
+                        <img src="{{ url_for('New_Quiz.static', filename='media/' + quiz.quiz.image) }}" alt="Зображення вікторини">
+                    {% else %}
+                        <img src="{{ url_for('profile_app.static', filename='img/placeholder.png') }}" alt="Зображення вікторини">
+                    {% endif %}
+                    <p>{{ quiz.quiz.name }}</p>
                 </div>
                 {% endfor %}
             </div>
@@ -86,13 +90,17 @@
             {% if completed_quizzes %}
             <div class="quiz-grid">
                 {% for quiz in completed_quizzes %}
-                <div class="quiz-card">
-                    {% if quiz.image %}
-                    <img src="{{ url_for('New_Quiz.static', filename='media/' + quiz.image) }}" alt="Зображення вікторини">
+                    {% if current_user.is_teacher %}
+                        <div class="quiz-card switch-to-history-picker" onclick="historyTeacherSwitcher('{{ quiz.session.id }}')">
                     {% else %}
-                    <img src="{{ url_for('profile_app.static', filename='img/placeholder.png') }}" alt="Зображення вікторини">
+                        <div class="quiz-card switch-to-history-picker" onclick="historyStudentSwitcher('{{ quiz.session.id }}', '{{ current_user.id }}')">
                     {% endif %}
-                    <p>{{ quiz.name }}</p>
+                    {% if quiz.quiz.image %}
+                        <img src="{{ url_for('New_Quiz.static', filename='media/' + quiz.quiz.image) }}" alt="Зображення вікторини">
+                    {% else %}
+                        <img src="{{ url_for('profile_app.static', filename='img/placeholder.png') }}" alt="Зображення вікторини">
+                    {% endif %}
+                    <p>{{ quiz.quiz.name }}</p>
                 </div>
                 {% endfor %}
             </div>

@@ -57,6 +57,13 @@ document.getElementById('quizModal').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
 });
 
+function historyTeacherSwitcher(session_id){
+    window.location.href = `/history/${session_id}`
+}
+function historyStudentSwitcher(session_id, user_id){
+    window.location.href = `/history/${session_id}/${user_id}`
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     const showCreatedBtn = document.getElementById('show-created-btn');
@@ -85,4 +92,5 @@ document.addEventListener('DOMContentLoaded', () => {
             showCreatedBtn.classList.remove('active');
         });
     }
+
 });
