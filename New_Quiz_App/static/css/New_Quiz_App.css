@@ -107,11 +107,12 @@ main {
     flex-direction: column;
     align-items: center;
     width: 322px;
-    height: 141px;
+    height: fit-content;
     border: 2px solid;
-    border-radius: 20px;
+    border-radius: 10px;
     transition: box-shadow 0.3s ease;
     font-family: 'Quicksand', sans-serif;
+    padding: 10px 46px;
 }
 
 .big-choice:hover,
@@ -129,14 +130,14 @@ main {
 }
 
 p {
-    font-size: 25px;
+    font-size: 17px;
     margin: 0;
     font-family: 'Quicksand', sans-serif;
 }
 
 img {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
 }
 
 .fill-form-frame,
@@ -288,7 +289,7 @@ img {
     display: flex;
     flex-direction: column;
     width: 322px;
-    height: 541px;
+    height: 100%;
     border: 2px solid black;
     border-radius: 10px;
     padding: 21px;
@@ -432,13 +433,13 @@ img {
 }
 #finish-editing{
     width: 280px;
-    height: 65px;
+    height: 50px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 15px;
-    padding: 10px 25px;
+    padding: 5px 25px;
     border-radius: 10px;
     background-color: rgb(0 0 0 / 70%);
     font-size: 20px;

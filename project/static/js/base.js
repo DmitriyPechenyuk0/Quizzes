@@ -21,9 +21,9 @@ particlesJS('particles-js',
           "nb_sides": 4
         },
         "image": {
-          "src": "https://i.ibb.co/XZ46Y2SL/Logo.png",
-          "width": 314,
-          "height": 70
+          "src": "https://i.ibb.co/chmHqsdc/11231232.png",
+          "width": 224,
+          "height": 50
         }
       },
       "opacity": {

@@ -74,10 +74,10 @@ def confirm_email(token):
 
     try:
         group_raw = user_data.get('group_name')
-
+        print(group_raw)
         if group_raw:
             
-            target_class = Class.query.filter_by(name=group_raw).first()
+            target_class = Class.query.filter_by(id=group_raw).first()
 
             if target_class:
                 new_user = User(
@@ -85,16 +85,17 @@ def confirm_email(token):
                     email=user_data.get('email'),
                     password=user_data.get('password'),
                     is_teacher=user_data.get('is_teacher', False),
-                    # is_email_confirmed=True,
+                    is_email_confirmed=True,
                     is_approved=True, 
                 )
+                db.session.add(new_user)
+                db.session.flush()
 
                 request_obj = RequestsToClass(
                     user_id=new_user.id,
                     class_id=target_class.id,
                     status='Pending'
                 )
-
                 db.session.add(request_obj)
                 db.session.commit()
             else:
