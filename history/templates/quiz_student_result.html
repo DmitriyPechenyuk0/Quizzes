@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %} Quiz Student Result {% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('history.static', filename='css/quiz_student_result.css') }}">
+{% endblock %}
+
+{% block main %}
+<div class="section">
+    <p class="quiz-text">Тест: {{ quiz_name }}</p>
+
+    <div class="result-frame">
+        <div class="student-info">
+            <div class="profile">
+                <img class="profile-img" src="{{ url_for('history.static', filename='img/Avatar.svg') }}" alt="Avatar">
+                <div class="username-email-frame">
+                    <p class="username">{{ username }}</p>
+                    <p class="email-user">{{ user_mail }}</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="scoure-of-test">
+            Загальна точність відповідей: {{ score_percent }}%
+        </p>
+        <div class="answers-container">
+            <div class="true-answers">
+                <p class="false-answers-t">Правильні відповіді</p>
+                {% for item in results if item.is_correct %}
+                    <div class="answers-question-type-fill">
+                        <div class="answers-question-type-fill-numberoid-true"><p>{{ item.order }}</p></div>
+                        <div class="answers-question-type-fill-main">
+                            <div class="answers-quesiton-type-fill-main-ques"><p>{{ item.question }}</p></div>
+                            <div class="answers-quesiton-type-fill-main-answ">
+                                <p>Відповідь: {{ item.user_answer }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="false-answers">
+                <p class="false-answers-t" >Неправильні відповіді</p>
+                {% for item in results if not item.is_correct %}
+                    <div class="answers-question-type-fill">
+                        <div class="answers-question-type-fill-numberoid-false"><p>{{ item.order }}</p></div>
+                        <div class="answers-question-type-fill-main">
+                            <div class="answers-quesiton-type-fill-main-ques"><p>{{ item.question }}</p></div>
+                            <div class="answers-quesiton-type-fill-main-answ">
+                                <p>Відповідь: {{ item.user_answer }}</p>
+                                <span>Правильна відповідь: {{ item.correct_answer }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

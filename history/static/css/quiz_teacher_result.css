@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1800px;
+    padding-top: 30px;
+}
+
+.quiz-text {
+    font-weight: 700;
+    font-size: 40px;
+    text-align: center;
+    color: #000;
+    margin-bottom: 25px;
+}
+
+.result-frame {
+    display: flex;
+    flex-direction: row;
+    width: 1800px;
+    height: 1490px;
+    background: #6b8196; 
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+}
+
+
+.student-table {
+    width: 50%;
+    overflow-y: auto;
+    background: #6b8196;
+    border-radius: 40px 0 0 40px;
+}
+
+.student-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.student-table th,
+.student-table td {
+    padding: 18px 70px;
+    font-size: 32px;
+    font-weight: 600;
+    color: #fff;
+    text-align: left;
+    background: transparent;
+}
+
+.student-table th {
+    background: #54697b;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.student-table tbody tr:nth-child(odd) {
+    background: #6b8196;
+}
+.student-table tbody tr:nth-child(even) {
+    background: #5f7588;
+}
+
+
+.chart-section {
+    width: 70%;
+    background: #f7f7f7;
+    padding: 80px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 60px;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.05);
+}
+.student-link {
+    color: #ffffff;      /* белый текст */
+    text-decoration: none; /* убираем подчеркивание */
+    cursor: pointer;  
+    background-color: #6b8196;   /* курсор меняется на руку */
+  }
+  
+  .student-link:hover {
+    color: #ffffff;      /* остаётся белым при наведении */
+    text-decoration: none; 
+  }
+.chart-section h3 {
+    font-weight: 700;
+    font-size: 30px;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.chart-section .avg {
+    font-weight: 700;
+    font-size: 30px;
+    color: #000;
+    margin-top: 10px;
+}
+
+canvas {
+    width: 964px !important;
+    max-width: 600px;
+    height: 670px !important; 
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}

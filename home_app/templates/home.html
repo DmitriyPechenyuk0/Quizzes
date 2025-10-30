@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %} Home Page {% endblock %}
+
+{% block head %} <link rel="stylesheet" href="{{ url_for('home_app.static', filename='css/home.css') }}">{% endblock %}
+
+{% block main %} 
+
+
+<div class="titles" >
+    <h1>Створюй та проходь тести</h1>
+    <h3>Створюйте тести за допомогою простих у використанні інструментів і налаштовуйте їх відповідно до ваших конкретних потреб. Ви також можете перевірити свої знання з різноманітних тем, починаючи від історії та науки і закінчуючи культурою та поточними подіями.</h3>
+</div>
+{% if is_auth == True %}
+<a class="get-started" href="/new-quiz-settings">Почати</a>
+{% elif is_auth != True %}
+<a class="get-started" href="/login">Почати</a>
+{% endif %}
+<div class="benefits">
+    <div class="benefit tick">
+        <img src="{{ url_for('home_app.static', filename='img/tick.png') }}">
+        <div class="benefit-text">
+            <h4>Простий у використанні</h4>
+            <p>Швидко створюйте та керуйте своїми вікторинами</p>
+        </div>
+    </div>
+    <div class="benefit topic">
+        <img src="{{ url_for('home_app.static', filename='img/diverse-topics.png') }}">
+        <div class="benefit-text">
+            <h4>Різноманітні теми</h4>
+            <p>Доступні вікторини на численні теми</p>
+        </div>
+    </div>
+    <div class="benefit star">
+        <img src="{{ url_for('home_app.static', filename='img/star.png') }}">
+        <div class="benefit-text">
+            <h4>Миттєвий Зворотній зв'язок</h4>
+            <p>Отримайте свої результати безмірно після завершення</p>
+        </div>
+    </div>
+</div>
+<div class="scroll-quizzes-name">
+    <p class="scroll-title" >Всі тести</p>
+    <div class="scroll-quizzes">
+        {% for quiz in quizzes %}
+        <div class="quiz-pcs">
+            <img src="{{ url_for('New_Quiz.static', filename='media/' ~ quiz.image) }}">
+            <p>{{ quiz.name }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

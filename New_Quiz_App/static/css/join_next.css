@@ -1,0 +1,100 @@
+.main-window{
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    background-color: #607C94;
+    width: 1850px;
+    height: 800px;
+    border-radius: 60px;
+    padding: 20px 0px;
+    gap: 35px;
+}
+.main-window-quiz-name{
+    font-weight: 700;
+    font-size: 40px;
+    color: #fff;
+    background: none;
+}
+.main-window-main{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 1810px;
+    height: 130px;
+    padding: 0 95px;
+    border-radius: 40px;
+    background-color: rgb(40 40 50 / 50%);
+}
+.mwm-name{
+    font-size: 35px;
+    background: none;
+    font-weight: 600;
+    color: #fff;
+}
+.mwm-participants-count{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    height: 70px;
+    background: none;   
+}
+.mwm-participants-count-title{
+    font-size: 35px;
+    font-weight: 600;
+    color: #fff;
+    background:none;
+}
+.mwm-participants-count-count{
+    padding: 10px 15px;
+    background-color: rgb(0 0 0 / 50%);
+    border-radius: 123123px;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+}
+.main-window-other-participants{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-shrink: none;
+    width: 1810px;
+    height: fit-content;
+    max-height: 609px;
+    row-gap: 20px;
+    justify-content: space-around;
+    align-items: start;
+    background: none;
+    overflow-y: auto;
+}
+.main-window-other-participants::-webkit-scrollbar{
+    width: 0;
+    visibility: hidden;
+}
+.mwop-user{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    width: max-content;
+    height: 100px;
+    padding: 28px 30px;
+    background-color: #fff;
+}
+.mwop-user p{
+    color: #000;
+    font-size: 25px;
+    font-weight: 600;
+    background: none;
+}
+.display-flex{
+    display: flex;
+}
+.display-none{
+    display: none;
+}
