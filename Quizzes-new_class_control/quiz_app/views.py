@@ -18,7 +18,7 @@ def _quiz_exists(quiz_id: int) -> bool:
 def create_session():
     if not getattr(current_user, "is_authenticated", False):
         abort(401)
-    if not getattr(current_user, "is_admin", False):
+    if not getattr(current_user, "is_teacher", False):
         abort(403)
 
     data = request.get_json(silent=True) or {}
@@ -40,7 +40,7 @@ def create_session():
 def start_session_redirect(quiz_id: int):
     if not getattr(current_user, "is_authenticated", False):
         abort(401)
-    if not getattr(current_user, "is_admin", False):
+    if not getattr(current_user, "is_teacher", False):
         abort(403)
 
     if not _quiz_exists(quiz_id):

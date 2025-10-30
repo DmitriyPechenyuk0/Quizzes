@@ -39,7 +39,7 @@ def render_new_quiz(name):
 
 @login_required
 def render_new_quiz_settigs():
-    if not current_user.is_admin:
+    if not current_user.is_teacher:
         return render_template('error_403.html')
 
     if request.method == 'POST':
