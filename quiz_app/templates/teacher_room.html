@@ -48,8 +48,26 @@
             </button>
         </div>
     </div>
+    <div class="main-left-content-user-pokaznik">
+        <div class="mlcupd">
+            <p>Учасники</p>
+        </div>
+        <div class="mlcupud">
+            <div class="mlcupud-user">
+                <p class="mlcupud-user-p">
+                    Dmytro Pechenyuk
+                </p>
+            </div>
+        </div>
+    </div>
+    <svg width="0" height="0" style="position:absolute">
+        <filter id="distorsion">
+        <feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="2" seed="7" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="15" xChannelSelector="G" yChannelSelector="B" />
+        </filter>
+    </svg>
 </div>
-<div class="right-content">
+<div class="right-content display-none">
     <p class="right-content-title">Учасники (<span class="right-content-title-count"></span>)</p>
     <div class="right-content-users-div">
         <!-- <div class="right-content-user">
