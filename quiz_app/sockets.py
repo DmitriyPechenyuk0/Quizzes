@@ -100,7 +100,7 @@ def on_join(data):
         user_sessions[display_id] = request.sid
         print(user_sessions, request.sid)
         join_room(code)
-        emit("room:participants_update", {"nickname": display_name, "id": display_id}, to=code)
+        emit("room:participants_update", {"nickname": display_name, "id": display_id, "sess_status" : sess.status}, to=code)
     broadcast_state(code)
 
 @socketio.on("teacher:start")

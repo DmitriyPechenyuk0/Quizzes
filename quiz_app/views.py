@@ -13,7 +13,7 @@ def _gen_code():
             return code
 
 def _quiz_exists(quiz_id: int) -> bool:
-    row = db.session.execute(text("SELECT 1 FROM quiz WHERE id = :id LIMIT 1"), {"id": quiz_id}).first()
+    row = Quiz.query.filter_by(id=quiz_id).first()
     return bool(row)
 
 def create_session():

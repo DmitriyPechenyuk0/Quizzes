@@ -359,7 +359,7 @@ main{
 .mlcupud{
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: start;
     justify-content:center;
     max-width: 1800px;
     width: 100%;
@@ -392,5 +392,4 @@ main{
     font-weight: 600;
     font-size: 25px;
     background-color: #fff;
-
 }

@@ -98,23 +98,30 @@
 
       socket.on("room:participants_update", (info) => {
         console.log(info)
-        let div = document.createElement("div");  div.id = `usr_${info.id}`; div.className = "right-content-user";
-        let morediv = document.createElement("div"); morediv.className = "right-content-user-more";
-        let rmusrButton = document.createElement("img"); rmusrButton.className = "remove-user-button"; rmusrButton.id = `rmusr_${info.id}`; rmusrButton.src = 'http://127.0.0.1:5000/quiz/quiz_static/images/remove-btn.svg'
-
-        let profimg = document.createElement("img"); profimg.className = "right-content-user-more-profile-avatar"; profimg.src = "http://127.0.0.1:5000/quiz/quiz_static/images/profile-avatar.svg"
-        let spanName = document.createElement("span"); spanName.className = "right-content-user-more-name"; spanName.textContent = info.nickname
-
-        morediv.appendChild(profimg); morediv.appendChild(spanName)
-        div.appendChild(morediv); div.appendChild(rmusrButton)
-        document.querySelector('.right-content-users-div').append(div)
-        updateUserCounter()
-        for (let btn of document.querySelectorAll('.remove-user-button')){
-          btn.addEventListener('click', () => {
-            userRemover(btn.id.split('_')[1])
-            socket.emit('rm_user_from_session', {code, user_id: btn.id.split('_')[1]})
-            updateUserCounter()
-          })
+        if (info.sess_status == 'IN_PROGRESS'){
+          let div = document.createElement("div");  div.id = `usr_${info.id}`; div.className = "right-content-user";
+          let morediv = document.createElement("div"); morediv.className = "right-content-user-more";
+          let rmusrButton = document.createElement("img"); rmusrButton.className = "remove-user-button"; rmusrButton.id = `rmusr_${info.id}`; rmusrButton.src = 'http://127.0.0.1:5000/quiz/quiz_static/images/remove-btn.svg'
+  
+          let profimg = document.createElement("img"); profimg.className = "right-content-user-more-profile-avatar"; profimg.src = "http://127.0.0.1:5000/quiz/quiz_static/images/profile-avatar.svg"
+          let spanName = document.createElement("span"); spanName.className = "right-content-user-more-name"; spanName.textContent = info.nickname
+  
+          morediv.appendChild(profimg); morediv.appendChild(spanName)
+          div.appendChild(morediv); div.appendChild(rmusrButton)
+          document.querySelector('.right-content-users-div').append(div)
+          updateUserCounter()
+          for (let btn of document.querySelectorAll('.remove-user-button')){
+            btn.addEventListener('click', () => {
+              userRemover(btn.id.split('_')[1])
+              socket.emit('rm_user_from_session', {code, user_id: btn.id.split('_')[1]})
+              updateUserCounter()
+            })
+          }
+        } else{
+          let pokaznik = document.querySelector('.mlcupud');
+          let p = document.createElement('p'); p.classList.add('mlcupud-user-p'); p.textContent = `${info.nickname}`
+          let div = document.createElement('div'); div.classList.add('mlcupud-user'); div.appendChild(p)
+          pokaznik.appendChild(div)
         }
       })
     }
@@ -133,6 +140,10 @@
       document.querySelector('#copyCodeButton').addEventListener('click', () => {
         navigator.clipboard.writeText(document.querySelector('#copyCodeButton').className).then(() => console.log("Done!")).catch(err => console.error(err))
       })
+      document.querySelectorAll('.mlcupud-user').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          console.log(btn)
+        })
+      })
     });
 })();
-
