@@ -37,6 +37,7 @@ def broadcast_state(code: str):
 
     sessio = QuizSession.query.filter_by(code=code).first()
     quiz = Quiz.query.filter_by(id=sessio.quiz_id).first()
+
     if not sessio:
         return
     
@@ -48,6 +49,8 @@ def broadcast_state(code: str):
     data = {"status": sessio.status, "participants": participants, "current_order": sessio.current_order, "quiz_name": quiz.name}
 
     if sessio.status == "IN_PROGRESS":
+
+        
         
         quest = current_question(sessio)
         
@@ -68,7 +71,9 @@ def on_join(data):
 
     if not getattr(current_user, "is_authenticated", False):
         return emit("error", {"message": "Please Login to account"})
+    
     sess = QuizSession.query.filter_by(code=code).first()
+
     if not sess or sess.status == "FINISHED":
         
         return emit("error", {"message": "Session unavaible"})
@@ -77,14 +82,15 @@ def on_join(data):
         return emit("error", {"message": "The host cannot connect as a participant"})
 
     if as_host and getattr(current_user, "is_teacher", False):
-        SessionParticipant.query.filter_by(session_id=sess.id, user_id=current_user.id).delete()
+        teacher = SessionParticipant.query.filter_by(session_id=sess.id, user_id=current_user.id)
+        if teacher:
+            teacher.delete()
         db.session.commit()
         join_room(code)
         broadcast_state(code)
         return
 
-    display_name = getattr(current_user, "nickname", None) or \
-                   getattr(current_user, "username", None) or f"{current_user.name}"
+    display_name = f"{current_user.name}"
     display_id = current_user.id 
 
     p = SessionParticipant.query.filter_by(session_id=sess.id, user_id=current_user.id).first()
