@@ -98,8 +98,15 @@
 
       socket.on("room:participants_update", (info) => {
         console.log(info);
-        let div = document.createElement("div");  
-        div.id = `usr_${info.id}`; 
+        const existing = document.querySelector(`#usr_${info.id}`);
+        if (existing) {
+          const nameEl = existing.querySelector('.right-content-user-more-name');
+          if (nameEl) nameEl.textContent = info.nickname;
+          updateUserCounter();
+          return;
+        }
+        let div = document.createElement("div");
+        div.id = `usr_${info.id}`;
         div.className = "right-content-user";
         
         let morediv = document.createElement("div"); 

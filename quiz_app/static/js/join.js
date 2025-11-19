@@ -5,7 +5,9 @@
   function $(id) { return document.getElementById(id); }
 
   function getCodeFromQuery() {
-    code = localStorage.getItem('codde')
+    try {
+      return localStorage.getItem('codde');
+    } catch (e) { return null }
   }
 
   function renderQuestion(q_text) {
@@ -20,10 +22,11 @@
     localStorage.removeItem(key)
   }
   function lget(key){
-    localStorage.getItem(key)
+    try { return localStorage.getItem(key); } catch (e) { return null }
   }
   function clearLAFS(){
-    lrm('quizname'); lrm('qText'); lrm('interfaceStage'); lrm("allQuantity"); lrm('current_order'); lrm('userAnswered'); lrm('userTotal')
+    lrm('quizname'); lrm('qText'); lrm('interfaceStage'); lrm("allQuantity"); lrm('current_order'); lrm('userAnswered'); lrm('userTotal');
+    try { localStorage.removeItem('in_quiz'); localStorage.removeItem('codde'); } catch (e) {}
   }
   function u (){
     
@@ -65,8 +68,10 @@
   function attachEvents() {
     $("joinBtn").onclick = () => {
       let codde = document.querySelector('#code').value
-      socket.emit("join", { code: codde });
+      try { localStorage.setItem('codde', codde); localStorage.setItem('in_quiz', '1'); } catch (e) {}
       state.code = codde
+      socket.emit("join", { code: codde });
+      switchInterfaceToRoom();
     };
 
     $("code").addEventListener("keydown", (e) => {
@@ -119,13 +124,56 @@
     });
 
     socket.on("room:participants_update", (data) => {
-      // if (state.code) {
-      //   socket.emit("request_participants", { code: state.code });
-      // }
+    
     });
     socket.on("kickedd", (data) => {
       window.location.href = '/'
     })
+
+    socket.on('disconnect', () => {
+      showResumeOverlay('Соединение потеряно. Нажмите «Вернуться», чтобы попытаться восстановить тест.');
+    });
+
+    socket.on('connect', () => {
+      hideResumeOverlay();
+      try {
+        const wasInQuiz = localStorage.getItem('in_quiz');
+        const savedCode = localStorage.getItem('codde');
+        if (wasInQuiz === '1' && savedCode) {
+          state.code = savedCode;
+          socket.emit('join', { code: savedCode });
+        }
+      } catch (e) {}
+    });
+  }
+
+  function showResumeOverlay(message){
+    const overlay = document.getElementById('resume-overlay');
+    if (!overlay) return;
+    const msg = document.getElementById('resumeMessage');
+    if (msg) msg.innerText = message || '';
+    overlay.classList.remove('display-none');
+    overlay.style.display = 'flex';
+    const btn = document.getElementById('resumeBtn');
+    const cancel = document.getElementById('resumeCancelBtn');
+    if (btn) btn.onclick = () => {
+      try {
+        const savedCode = localStorage.getItem('codde');
+        if (savedCode && document.getElementById('code')) {
+          document.getElementById('code').value = savedCode;
+        }
+        if (document.getElementById('joinBtn')) document.getElementById('joinBtn').click();
+      } catch (e) {}
+      hideResumeOverlay();
+    };
+    if (cancel) cancel.onclick = () => { hideResumeOverlay(); };
+  }
+
+  function hideResumeOverlay(){
+    const overlay = document.getElementById('resume-overlay');
+    if (!overlay) return;
+    overlay.classList.add('display-none');
+    overlay.style.display = 'none';
   }
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -133,5 +181,12 @@
     attachEvents();
     const codeFromQuery = getCodeFromQuery();
     if (codeFromQuery && $("code")) $("code").value = codeFromQuery;
+    try {
+      const wasInQuiz = localStorage.getItem('in_quiz');
+      const savedCode = localStorage.getItem('codde');
+      if (wasInQuiz === '1' && savedCode) {
+        showResumeOverlay('Вы были в тесте. Нажмите «Вернуться», чтобы продолжить.');
+      }
+    } catch (e) {}
   });
 })();

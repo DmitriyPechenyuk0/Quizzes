@@ -16,11 +16,6 @@
         <button id="joinBtn" >Приєднатися</button>
     </div>
 
-    <!-- <div class="passed-quizzes-bar display-flex">
-
-    </div> -->
-
-
     <div class="main-window display-none">
         <div class="main-window-main">
             <p class="mwm-name">
@@ -33,9 +28,6 @@
             </div>
         </div>
         <div class="main-window-other-participants" >
-            <!-- <div class="mwop-user">
-                <p>Dmytro Pecheniuk</p>
-            </div> -->
         </div>
     </div>
 
@@ -43,6 +35,16 @@
         <div class="waiting-div">
             <p>Очікуйте поки вчитель завершить питання</p>
             <img src="{{ url_for('quiz_app.static', filename='images/loading.svg') }}">
+        </div>
+    </div>
+
+    <div id="resume-overlay" class="display-none" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9999;background:rgba(0,0,0,0.6);">
+        <div style="background:#fff;padding:20px;border-radius:8px;max-width:480px;width:90%;text-align:center;">
+            <p id="resumeMessage" style="margin:0 0 12px 0;font-size:16px;color:#111;"></p>
+            <div style="display:flex;gap:8px;justify-content:center;">
+                <button id="resumeBtn" style="padding:8px 14px;border-radius:6px;border:none;background:#1976d2;color:#fff;cursor:pointer;">Вернуться</button>
+                <button id="resumeCancelBtn" style="padding:8px 14px;border-radius:6px;border:1px solid #ccc;background:#fff;color:#111;cursor:pointer;">Отмена</button>
+            </div>
         </div>
     </div>
 

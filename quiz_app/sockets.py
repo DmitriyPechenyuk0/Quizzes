@@ -93,14 +93,27 @@ def on_join(data):
         db.session.add(p)
         try:
             db.session.commit()
-
         except Exception:
             db.session.rollback()
-    else:
-        user_sessions[display_id] = request.sid
-        print(user_sessions, request.sid)
-        join_room(code)
+
+    user_sessions[display_id] = request.sid
+    join_room(code)
+    try:
+        sessio = QuizSession.query.filter_by(code=code).first()
+        quiz = Quiz.query.filter_by(id=sessio.quiz_id).first() if sessio else None
+        participants = []
+        if sessio:
+            for partici in SessionParticipant.query.filter_by(session_id=sessio.id):
+                participants.append({"user_id": partici.user_id, "nickname": partici.nickname})
+        data = {"status": sessio.status if sessio else None, "participants": participants, "current_order": sessio.current_order if sessio else None, "quiz_name": quiz.name if quiz else None}
+        if sessio and sessio.status == "IN_PROGRESS":
+            quest = current_question(sessio)
+            if quest:
+                data["question"] = serialize_question(quest)
         emit("room:participants_update", {"nickname": display_name, "id": display_id}, to=code)
+        emit("room:state", data, to=request.sid)
+    except Exception:
+        pass
     broadcast_state(code)
 
 @socketio.on("teacher:start")
