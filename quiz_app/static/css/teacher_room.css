@@ -225,7 +225,6 @@ main{
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    border: 2px solid #000;
     border-radius: 10px;
 }
 .lcac-content-info{
@@ -252,7 +251,6 @@ main{
     height: 761px;
     gap: 20px;
     padding: 110px 180px;
-    border: 2px solid #000;
     border-radius: 10px;
     display: flex;
     flex-direction: row;

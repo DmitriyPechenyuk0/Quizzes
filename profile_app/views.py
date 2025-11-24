@@ -45,11 +45,13 @@ def show_profile_page():
         'page': 'profile',
         'name': current_user.name,
         'email': current_user.email,
+        'is_auth': current_user.is_authenticated,
         'created_quizzes': created_quizzes, 
         'created_quizzes_count': len(created_quizzes),
         'completed_quizzes': sessionss,
         'completed_quizzes_count': completed_counts,
         'is_admin': current_user.is_teacher,
+        'is_teacher': current_user.is_teacher
     }
 
     return flask.render_template("profile.html", **context)

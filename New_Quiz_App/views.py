@@ -24,8 +24,9 @@ def render_new_quiz(id):
     questions = [f"{i + 1}" for i in range(quiz.count_questions )]
 
     context = {
-        'page': 'home',
+        'page': 'new_quiz',
         'is_auth': current_user.is_authenticated,
+        'is_teacher': current_user.is_teacher,
         'name': current_user.name,
         'quiz_name': quiz.name,
         'quiz': quiz,
@@ -102,8 +103,9 @@ def render_new_quiz_settigs():
 
 
     context = {
-        'page': 'home',
+        'page': 'new_quiz',
         'is_auth': current_user.is_authenticated,
+        'is_teacher': current_user.is_teacher,
         'name': current_user.name
     }
     return render_template('New_Quiz_Settings.html', **context)
@@ -112,8 +114,9 @@ def render_new_quiz_settigs():
 @login_required
 def render_new_quiz_student():
     context = {
-        'page': 'home',
+        'page': 'new_quiz',
         'is_auth': current_user.is_authenticated,
+        'is_teacher': current_user.is_teacher,
         'name': current_user.name
     }
     return render_template('New_Quiz_App_Student.html', **context)
