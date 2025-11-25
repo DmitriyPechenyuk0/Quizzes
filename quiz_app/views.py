@@ -74,20 +74,20 @@ def host_page(code):
 def passing_page(code):
 
     session = QuizSession.query.filter_by(code = code).first()
-    if not session:
-        return redirect('/')
+
     quiz = Quiz.query.filter_by(id= session.quiz_id).first()
-    if not quiz:
-        return redirect('/')
-    current_question = Question.query.filter_by(id=session.current_order).first()
-    current_question = current_question.text
     
+    current_question = Question.query.filter_by(id=session.current_order).first()
+    
+    current_question = current_question.text
+    print(current_question)
 
     context = {
-        'page': 'join',
+        'page': 'join_passing',
         'is_auth': current_user.is_authenticated,
         'name': current_user.name,
         'qes': current_question,
         "quiz_name": quiz.name
-               }
-    return render_template('student_passing.html')
+    }
+    
+    return render_template('student_passing.html', **context)

@@ -1,6 +1,8 @@
 (function () {
   let socket = null;
-  let state = { code: "" };
+  let state = { code: window.location.href.split('/')[5] };
+  console.log(state.code)
+
   function renderQuestion(q_text) {
     if (document.querySelector('.waiting-overlay').classList.contains('display-flex')){
       inactiveWaitingOverlay()
@@ -8,18 +10,6 @@
     document.querySelector('#questionBlockP').innerText = q_text
   }
   function waitNewQuestions(){
-  }
-  function lrm(key){
-    localStorage.removeItem(key)
-  }
-  function lget(key){
-    localStorage.getItem(key)
-  }
-  function clearLAFS(){
-    lrm('quizname'); lrm('qText'); lrm('interfaceStage'); lrm("allQuantity"); lrm('current_order'); lrm('userAnswered'); lrm('userTotal')
-  }
-  function u (){
-    
   }
   function updateCounter() {
     let usersCount = document.querySelectorAll('.mwop-user').length
@@ -56,21 +46,12 @@
     
   }
   function attachEvents() {
-    $("joinBtn").onclick = () => {
-      let codde = document.querySelector('#code').value
-      socket.emit("join", { code: codde });
-      state.code = codde
-    };
-
-    $("code").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") $("joinBtn").click();
-    });
-
-    $("enterQuestion").onclick = () => {
+    document.getElementById('enterQuestion').addEventListener('click', () => {
       let answer = document.querySelector('#answerInputI').value
+      console.log({code: state.code, answer: answer})
       socket.emit('participant:answer', {code: state.code, answer: answer})
       activeWaitingOverlay()
-    }
+    })
 
     socket.on("error", (e) => {
       console.log(e)
@@ -79,8 +60,7 @@
     });
     socket.on("room:participants_list", (data) => {
       renderParticipantsList(data);
-    });
-
+    })
     socket.on("room:state", (s) => {
       console.log(s)
       if (s.status === "WAITING"){
@@ -121,8 +101,8 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     socket = io()
+    console.log(123)
     attachEvents()
-    const codeFromQuery = window.location.href.split('/')[-1]
-    if (codeFromQuery && $("code")) $("code").value = codeFromQuery
+    socket.emit("join", { code: state.code })
   });
 })();

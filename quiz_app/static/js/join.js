@@ -14,25 +14,10 @@
     }
     document.querySelector('#questionBlockP').innerText = q_text
   }
-  function waitNewQuestions(){
-  }
-  function lrm(key){
-    localStorage.removeItem(key)
-  }
-  function lget(key){
-    localStorage.getItem(key)
-  }
-  function clearLAFS(){
-    lrm('quizname'); lrm('qText'); lrm('interfaceStage'); lrm("allQuantity"); lrm('current_order'); lrm('userAnswered'); lrm('userTotal')
-  }
-  function u (){
-    
-  }
   function updateCounter() {
     let usersCount = document.querySelectorAll('.mwop-user').length
     let usersCBtn = document.querySelector('.mwm-participants-count-count')
     usersCBtn.textContent = usersCount + 1
-
   }
   function switchInterfaceToRoom(qname){
     document.querySelector('#particles-js').classList.add('display-none')

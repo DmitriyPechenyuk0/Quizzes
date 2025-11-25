@@ -1,6 +1,5 @@
 from flask_socketio import join_room, emit, disconnect
 from flask_login import current_user
-from sqlalchemy import func, case
 from project.settings import socketio, db
 from .models import QuizSession, Question, SessionParticipant, SessionAnswer
 from New_Quiz_App.models import Quiz
@@ -182,6 +181,7 @@ def check_answer(data):
 
 @socketio.on("participant:answer")
 def on_answer(data):
+
     code = str(data.get("code", "")).strip()
 
     answer_text = (data.get("answer")).strip()
