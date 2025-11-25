@@ -7,6 +7,7 @@ main{
     min-height: 1000px;
     width: 1884px;
     gap: 17px;
+    overflow-y: hidden;
 }
 
 .display-flex{
@@ -385,9 +386,71 @@ main{
     border-radius: 20px;
     background-color: #fff;
     width: fit-content;
+    z-index: 100;
 }
 .mlcupud-user-p{
     font-weight: 600;
     font-size: 25px;
     background-color: #fff;
+}
+.overlay-kick-user{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 582px;
+    height: 172px;
+    background-color: white;
+    z-index: 10000;
+    border-radius: 10px;
+}
+.buttonsvignatydiv{
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 582px;
+    height: 98px;
+    gap: 50px;
+    background-color: white;
+}
+.buttonsvignatydiv button{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 64px;
+    border-radius: 10px;
+    background-color: #2382FF;
+    width: 150px;
+    height: 48px;
+    font-weight: 700;
+    font-size: 18px;
+    color: white;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+#vignatyp{
+    width: 582px;
+    height: 74px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;   
+    background-color: white;
+    border-radius: 10px;
+}
+#vignatyp-p{
+    font-weight: 500;
+    font-size: 28px;
+    background-color: white;
+}
+#vignaty-nick{
+    background-color: white;
 }

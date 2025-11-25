@@ -3,7 +3,7 @@ from flask import request, jsonify, abort, render_template, redirect, url_for
 from sqlalchemy import text
 from flask_login import current_user
 from project.settings import db
-from .models import QuizSession, Question
+from .models import QuizSession, Question, SessionParticipant
 from profile_app.models import User
 from New_Quiz_App.models import Quiz
 def _gen_code():
@@ -74,20 +74,25 @@ def host_page(code):
 def passing_page(code):
 
     session = QuizSession.query.filter_by(code = code).first()
-
+    if session.status == 'FINISHED':
+        return redirect('/')
     quiz = Quiz.query.filter_by(id= session.quiz_id).first()
     
-    current_question = Question.query.filter_by(id=session.current_order).first()
+    if_part = SessionParticipant.query.filter_by(user_id = current_user.id).first()
     
-    current_question = current_question.text
-    print(current_question)
-
     context = {
         'page': 'join_passing',
         'is_auth': current_user.is_authenticated,
         'name': current_user.name,
-        'qes': current_question,
         "quiz_name": quiz.name
     }
-    
+    if if_part:
+        if session.status == 'IN_PROGRESS':
+            current_question = Question.query.filter_by(id=session.current_order).first()
+            context['qes'] = current_question.text
+        else:
+            return redirect('/')
+    else:
+        return redirect('/')
+        
     return render_template('student_passing.html', **context)

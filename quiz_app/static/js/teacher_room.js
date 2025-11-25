@@ -90,9 +90,29 @@
         }
         
         let pokaznik = document.querySelector('.mlcupud');
-        let p = document.createElement('p'); p.classList.add('mlcupud-user-p'); p.textContent = `${info.nickname}`
-        let divu = document.createElement('div'); divu.classList.add('mlcupud-user'); divu.appendChild(p)
+        let p = document.createElement('p'); p.classList.add('mlcupud-user-p'); p.textContent = `${info.nickname}`;
+        let divu = document.createElement('div'); divu.classList.add('mlcupud-user'); divu.appendChild(p); divu.id = `${info.id}`
         pokaznik.appendChild(divu)
+        
+        document.querySelectorAll('.mlcupud-user').forEach((stud) => {
+          stud.addEventListener('click', () => {
+            document.querySelector('.overlay-kick-user').classList.add('display-flex'); document.querySelector('.overlay-kick-user').classList.remove('display-none');
+            document.getElementById('vignaty-nick').textContent = stud.textContent
+
+            
+            document.getElementById('zalyshyty').addEventListener('click', () => {
+              document.querySelector('.overlay-kick-user').classList.add('display-none'); document.querySelector('.overlay-kick-user').classList.remove('display-flex');
+              document.getElementById('vignaty-nick').textContent = ' '
+            })
+            document.getElementById('vignatiuchasnika').addEventListener('click', () => {
+              socket.emit('rm_user_from_session', {code, user_id: stud.id})
+              stud.remove()
+              
+              document.querySelector('.overlay-kick-user').classList.add('display-none'); document.querySelector('.overlay-kick-user').classList.remove('display-flex');
+              document.getElementById('vignaty-nick').textContent = ' '
+            })
+          })
+        })
         
       })
     }

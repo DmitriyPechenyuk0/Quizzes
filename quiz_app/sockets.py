@@ -101,11 +101,12 @@ def on_join(data):
 
         except Exception:
             db.session.rollback()
-    else:
-        user_sessions[display_id] = request.sid
-        print(user_sessions, request.sid)
-        join_room(code)
-        emit("room:participants_update", {"nickname": display_name, "id": display_id, "sess_status" : sess.status}, to=code)
+            return
+        
+    user_sessions[display_id] = request.sid
+    print(user_sessions, request.sid)
+    join_room(code)
+    emit("room:participants_update", {"nickname": display_name, "id": display_id, "sess_status" : sess.status}, to=code)
     broadcast_state(code)
 
 @socketio.on("teacher:start")
@@ -226,7 +227,7 @@ def switch_content(data):
 def on_remove_user(data):
     code = str(data.get("code", "")).strip()
     user_id = int(data.get("user_id"))
-    
+    print('WEBSOCKET: rm_user_from_session', code, user_id)
     if not code:
         return emit("error", {"message": "need code"})
     
@@ -255,12 +256,16 @@ def on_remove_user(data):
     print(type(user_id), user_sessions)
     if user_id in user_sessions:
         sid = user_sessions[user_id]
-        # print('KUKAREKU:', sid)
+
         emit('kickedd', {"message": 'Вчитель вигнав тебе з класу.'} , to=sid)
-        # disconnect(sid)
-        # print(user_id, sid)
-        del user_sessions[user_id]
-        db.session.delete(participant)
+        
+        try:
+            del user_sessions[user_id]
+            db.session.delete(participant)
+            print("successfully deleted")
+        except Exception as e:
+            print(e)
+            return
         return
    
 
