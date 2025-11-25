@@ -132,14 +132,24 @@
                             <a class="log-out-a text-decoration" href="/log-out"><img class="log-out-img" src="{{ url_for('static', filename='img/log-out.png') }}">  </a>
                         </div>
                     </div>
-                    {% elif page == 'join' and is_auth == True and is_teacher != True %}
+                {% elif page == 'join' and is_auth == True and is_teacher != True %}
                     <div class="urls">
                         <div class="account-a">
                             <a class="username-a text-decoration" href="/profile">{{ name }}</a>
                             <a class="log-out-a text-decoration" href="/log-out"><img class="log-out-img" src="{{ url_for('static', filename='img/log-out.png') }}">  </a>
                         </div>
                     </div>
-                    {% endif %}
+                {% elif page == 'host' and is_auth == True and is_teacher == True %}
+                    <div class="urls">
+                        <div class="new-quiz-div">
+                            <a class="new-quiz-a text-decoration" href="/new-quiz ">Новий тест</a>
+                        </div>
+                        <div class="account-a">
+                            <a class="username-a text-decoration" href="/profile">{{ name }}</a>
+                            <a class="log-out-a text-decoration" href="/log-out"><img class="log-out-img" src="{{ url_for('static', filename='img/log-out.png') }}">  </a>
+                        </div>
+                    </div>
+                {% endif %}
                 </div>
             </header>
             

@@ -1,13 +1,6 @@
 (function () {
   let socket = null;
   let state = { code: "" };
-
-  function $(id) { return document.getElementById(id); }
-
-  function getCodeFromQuery() {
-    code = localStorage.getItem('codde')
-  }
-
   function renderQuestion(q_text) {
     if (document.querySelector('.waiting-overlay').classList.contains('display-flex')){
       inactiveWaitingOverlay()
@@ -119,9 +112,7 @@
     });
 
     socket.on("room:participants_update", (data) => {
-      // if (state.code) {
-      //   socket.emit("request_participants", { code: state.code });
-      // }
+
     });
     socket.on("kickedd", (data) => {
       window.location.href = '/'
@@ -129,9 +120,9 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    socket = io();
-    attachEvents();
-    const codeFromQuery = getCodeFromQuery();
-    if (codeFromQuery && $("code")) $("code").value = codeFromQuery;
+    socket = io()
+    attachEvents()
+    const codeFromQuery = window.location.href.split('/')[-1]
+    if (codeFromQuery && $("code")) $("code").value = codeFromQuery
   });
 })();

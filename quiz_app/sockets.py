@@ -46,7 +46,7 @@ def broadcast_state(code: str):
     for partici in SessionParticipant.query.filter_by(session_id=sessio.id):
         participants.append({"user_id": partici.user_id, "nickname": partici.nickname})
     
-    data = {"status": sessio.status, "participants": participants, "current_order": sessio.current_order, "quiz_name": quiz.name}
+    data = {"status": sessio.status, "participants": participants, "current_order": sessio.current_order, "quiz_name": quiz.name, "quiz_code": code}
 
     if sessio.status == "IN_PROGRESS":
 

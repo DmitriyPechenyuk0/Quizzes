@@ -6,6 +6,7 @@ from registration.views import show_page_registration, confirm_email
 
 quiz.add_url_rule("/sessions", view_func=quiz_views.create_session, methods=["POST"])
 quiz.add_url_rule("/join", view_func=quiz_views.join_page, methods=["GET"])
+quiz.add_url_rule("/join/<code>", view_func=quiz_views.passing_page, methods=["GET"])
 quiz.add_url_rule("/host/<code>", view_func=quiz_views.host_page, methods=["GET"])
 quiz.add_url_rule("/start/<int:quiz_id>", view_func=quiz_views.start_session_redirect, methods=["GET"])
 

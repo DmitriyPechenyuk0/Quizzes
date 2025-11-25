@@ -57,7 +57,7 @@ def start_session_redirect(quiz_id: int):
 def join_page():
     code = request.args.get("code", "")
     quizzes = Quiz.query.all()
-    context = {'page': 'home',
+    context = {'page': 'join',
                'is_auth': current_user.is_authenticated,
                'name': current_user.name,
                'quizzes': quizzes}
@@ -65,4 +65,29 @@ def join_page():
     return render_template("join.html", code=code, **context)
 
 def host_page(code):
-    return render_template("teacher_room.html", code=code)
+    context = {'page': 'host',
+               'is_auth': current_user.is_authenticated,
+               "is_teacher": current_user.is_teacher,
+               'name': current_user.name}
+    return render_template("teacher_room.html", code=code, **context)
+
+def passing_page(code):
+
+    session = QuizSession.query.filter_by(code = code).first()
+    if not session:
+        return redirect('/')
+    quiz = Quiz.query.filter_by(id= session.quiz_id).first()
+    if not quiz:
+        return redirect('/')
+    current_question = Question.query.filter_by(id=session.current_order).first()
+    current_question = current_question.text
+    
+
+    context = {
+        'page': 'join',
+        'is_auth': current_user.is_authenticated,
+        'name': current_user.name,
+        'qes': current_question,
+        "quiz_name": quiz.name
+               }
+    return render_template('student_passing.html')
