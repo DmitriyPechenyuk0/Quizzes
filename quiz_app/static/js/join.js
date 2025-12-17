@@ -1,6 +1,7 @@
 (function () {
   let socket = null;
   let state = { code: "" };
+  let users = []
 
   function $(id) { return document.getElementById(id); }
 
@@ -43,9 +44,21 @@
     document.querySelector('.waiting-overlay').classList.add('display-none')
     document.querySelector('.waiting-overlay').classList.remove('display-flex')
   }
-
+  function renderParticipant(participant){
+    console.log(participant, 'renderpart')
+    let area = document.querySelector('.main-window-other-participants')
+    let div = document.createElement('div'); div.classList.add('mwop-user');
+    let p = document.createElement('p'); p.textContent =`${participant.nickname}`;div.appendChild(p)
+    area.appendChild(div)
+  }
   function renderParticipantsList(data) {
-    
+    console.log(data)
+    data.participants.forEach(participant => {
+      users.push(participant)
+      
+      renderParticipant(participant)
+    });
+    document.querySelector('.mwm-participants-count-count').textContent = data.counter
   }
   function attachEvents() {
     $("joinBtn").onclick = () => {
@@ -69,24 +82,24 @@
     });
     socket.on("finish_session", () => {
     });
-    socket.on("room:participants_list", (data) => {
-      renderParticipantsList(data);
-    });
+    // socket.on("room:participants_list", (data) => {
+    //   renderParticipantsList(data);
+    // });
 
     socket.on("room:state", (s) => {
       console.log(s)
       if (s.status === "WAITING"){
         switchInterfaceToRoom()
+        if (s.participants) {
+          console.log(s.participants)
+          renderParticipantsList({participants: s.participants, counter: s.participants.length});
+        }
         window.history.replaceState({}, '', `/quiz/join/${s.quiz_code}`)
         document.querySelector('.main-window-quiz-name').innerText = s.quiz_name
       }
       if (s.status === "IN_PROGRESS"){
         switchInterfaceToAnswerRoom()
       }
-        
-        if (s.participants) {
-          renderParticipantsList({participants: s.participants, count: s.participants.length});
-        }
       
       if (s.question) renderQuestion(s.question.text);
     });
