@@ -42,15 +42,32 @@ def broadcast_state(code: str):
     
     participants = []
     
-    for partici in SessionParticipant.query.filter_by(session_id=sessio.id):
-        participants.append({"user_id": partici.user_id, "nickname": partici.nickname})
+    cur_quest = current_question(sessio) if sessio.status == "IN_PROGRESS" else None
     
+    answered_users = []
+
+
+    if cur_quest:
+        answered_users = SessionAnswer.query.filter_by(
+            session_id=sessio.id,
+            question_id=cur_quest.id
+        ).all()
+
+    answered_user_ids = {ans.user_id: ans.is_correct for ans in answered_users}
+    
+
+    for partici in SessionParticipant.query.filter_by(session_id=sessio.id):
+        participants.append({
+            "user_id": partici.user_id,
+            "nickname": partici.nickname,
+            "answered": partici.user_id in answered_user_ids,
+            "is_correct": answered_user_ids.get(partici.user_id, None)
+        })
+
     data = {"status": sessio.status, "participants": participants, "current_order": sessio.current_order, "quiz_name": quiz.name, "quiz_code": code}
 
     if sessio.status == "IN_PROGRESS":
 
-        
-        
         quest = current_question(sessio)
         
         if quest:
@@ -93,9 +110,11 @@ def on_join(data):
     display_id = current_user.id 
 
     p = SessionParticipant.query.filter_by(session_id=sess.id, user_id=current_user.id).first()
+    is_new_participant = False
     if not p:
         p = SessionParticipant(session_id=sess.id, user_id=current_user.id, nickname=display_name)
         db.session.add(p)
+        is_new_participant = True
         try:
             db.session.commit()
 
@@ -106,7 +125,10 @@ def on_join(data):
     user_sessions[display_id] = request.sid
     print(user_sessions, request.sid)
     join_room(code)
-    emit("room:participants_update", {"nickname": display_name, "id": display_id, "sess_status" : sess.status}, to=code)
+
+    if is_new_participant:
+        emit("room:participants_update", {"nickname": display_name, "id": display_id, "sess_status" : sess.status}, to=code)
+
     broadcast_state(code)
 
 @socketio.on("teacher:start")
@@ -237,7 +259,7 @@ def on_answer(data):
 
     answered = len(answered_users)
     total = len(all_participants)
-    
+
     emit("room:answers_progress", {
         "question_id": cur_quest.id,
         "answered": answered,
