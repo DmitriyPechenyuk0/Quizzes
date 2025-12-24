@@ -61,7 +61,29 @@
         
       })
       socket.on("room:answers_progress", (p) => {
+        console.log("ANSWER_PROGGRES:", p)
+
         document.querySelector('.rcqsCount').textContent = `${p.answered} / ${p.total}`
+        const userElements = document.querySelectorAll('.right-content-user-more');
+
+        userElements.forEach(userElement => {
+
+          const lastChild = userElement.lastElementChild
+          if (!lastChild) return;
+          
+          const nickname = lastChild.textContent.trim();
+          
+          const participant = p.participants.find(p => p.username === nickname);
+          
+          if (participant) {
+
+            if (participant.answered) {
+              userElement.style.backgroundColor = '#d4edda';
+            } else {
+              userElement.style.backgroundColor = '#DCDCDC';
+            }
+          }
+        });
       });
       
       socket.on("finish_session", (datas) => {

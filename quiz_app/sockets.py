@@ -5,7 +5,7 @@ from .models import QuizSession, Question, SessionParticipant, SessionAnswer
 from New_Quiz_App.models import Quiz
 from flask import request
 import colorama
-
+from profile_app.models import User
 user_sessions = {}
 
 def serialize_question(q: Question):
@@ -203,6 +203,7 @@ def on_answer(data):
         return
 
     i_correct = is_correctt(answer_text, cur_quest.correct_answer)
+    
     answr = SessionAnswer(
     session_id=session.id,
     user_id=current_user.id,
@@ -212,9 +213,37 @@ def on_answer(data):
     db.session.add(answr)
     db.session.commit()
 
-    total = SessionParticipant.query.filter_by(session_id=session.id).count()
-    answered = SessionAnswer.query.filter_by(session_id=session.id, question_id=cur_quest.id).count()
-    emit("room:answers_progress", {"question_id": cur_quest.id, "answered": answered, "total": total}, to=code)
+    all_participants = SessionParticipant.query.filter_by(session_id=session.id).all()
+
+    answered_users = SessionAnswer.query.filter_by(
+        session_id=session.id, 
+        question_id=cur_quest.id
+    ).all()
+    
+    participants_status = []
+    answered_user_ids = {ans.user_id for ans in answered_users}
+    
+    for participant in all_participants:
+        user = User.query.get(participant.user_id)
+        if not user:
+            continue
+        participants_status.append({
+            "user_id": user.id,
+            "username": participant.nickname,
+            "email": user.email,
+            "answered": user.id in answered_user_ids,
+            "is_correct": next((ans.is_correct for ans in answered_users if ans.user_id == user.id), None)
+        })
+
+    answered = len(answered_users)
+    total = len(all_participants)
+    
+    emit("room:answers_progress", {
+        "question_id": cur_quest.id,
+        "answered": answered,
+        "total": total,
+        "participants": participants_status
+    }, to=code)
 
 @socketio.on("switch_content")
 def switch_content(data):

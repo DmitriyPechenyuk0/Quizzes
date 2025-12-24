@@ -53,6 +53,7 @@
   }
   function renderParticipantsList(data) {
     console.log(data)
+
     data.participants.forEach(participant => {
       users.push(participant)
       
@@ -92,6 +93,9 @@
         switchInterfaceToRoom()
         if (s.participants) {
           console.log(s.participants)
+          document.querySelectorAll('.mwop-user').forEach(usr => {
+            usr.remove()
+          })
           renderParticipantsList({participants: s.participants, counter: s.participants.length});
         }
         window.history.replaceState({}, '', `/quiz/join/${s.quiz_code}`)
