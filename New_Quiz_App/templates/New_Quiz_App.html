@@ -16,11 +16,18 @@
     
     <div class="div-content">
         <div class="side-bar-content">
-            <button class="fill-form active">
+            <button id="fform" class="fill-form active">
                 <img src="{{ url_for('New_Quiz.static', filename='img/Fill-Form.svg') }}" alt="Fill Form">
                 <p>Заповнити форму</p>
             </button>
-            
+            <button id="letters" class="fill-form">
+                <img src="{{ url_for('New_Quiz.static', filename='img/Fill-Form.svg') }}" alt="Fill Form">
+                <p>Заповнити літери</p>
+            </button>
+            <button id="select" class="fill-form">
+                <img src="{{ url_for('New_Quiz.static', filename='img/filledbox.svg') }}" alt="Fill Form">
+                <p>Великий вибір</p>
+            </button>
             <div class="scroll-frame">
                 <button id="finish-editing" type="button">
                     Закінчити редагування

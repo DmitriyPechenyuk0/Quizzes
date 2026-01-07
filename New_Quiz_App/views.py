@@ -155,9 +155,10 @@ def save_questions(quiz_id):
     data = data["questions"]
 
     for item in data:
-
+        print(item)
         quest = Question(
             quiz_id = quiz_id,
+            type = item['type'],
             order_index = item['id'],
             text = item['question'],
             correct_answer = item['answer']

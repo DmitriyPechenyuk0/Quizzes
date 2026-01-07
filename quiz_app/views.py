@@ -6,6 +6,7 @@ from project.settings import db
 from .models import QuizSession, Question, SessionParticipant
 from profile_app.models import User
 from New_Quiz_App.models import Quiz
+
 def _gen_code():
     while True:
         code = f"{random.randint(0, 999999):06d}"

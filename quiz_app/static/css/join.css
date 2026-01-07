@@ -177,8 +177,6 @@ main{
     background: none;
 }
 
-/* AnswerRoom */
-
 .div-section-answer{
     justify-content: start;
     align-items: center;
@@ -336,9 +334,123 @@ main{
     height: 60px;
     background: none;
 }
-.display-flex{
+.quiz-wrapper-qz {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.question-section-qz {
+    height: 50vh;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.question-number-qz {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.question-text-qz {
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+    max-width: 800px;
+    color: #212529;
+    line-height: 1.4;
+}
+
+.question-hint-qz {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #6c757d;
+}
+
+.answers-section-qz {
+    height: 340px;
+    display: flex;
+    gap: 20px;
+    padding: 30px;
+    width: 100%;
+    background: transparent;
+}
+
+.answer-card-qz {
+    flex: 1;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.answer-card-qz:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.answer-card-qz.selected-qz {
+    background: #e7f5ff;
+}
+
+.checkbox-qz {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #adb5bd;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.answer-card-qz.selected-qz .checkbox-qz {
+    background: #000000;
+    border-color: #000000;
+}
+
+.checkbox-qz::after {
+    content: '✓';
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.15s ease;
+}
+
+.answer-card-qz.selected-qz .checkbox-qz::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.answer-text-qz {
+    font-size: 18px;
+    font-weight: 500;
+    color: #212529;
+    text-align: center;
+}
+
+.display-flex {
     display: flex;
 }
-.display-none{
+
+.display-none {
     display: none;
 }

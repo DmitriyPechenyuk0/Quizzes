@@ -31,8 +31,8 @@ socketio = flask_socketio.SocketIO(app=project, cors_allowed_origins="*", async_
 project.config['MAIL_SERVER'] = 'smtp.gmail.com'
 project.config['MAIL_PORT'] = 587
 project.config['MAIL_USE_TLS'] = True
-project.config['MAIL_USERNAME'] = 'dmitriypechenyuk0@gmail.com' 
+project.config['MAIL_USERNAME'] = os.getenv('MAILER')
 project.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
-project.config['MAIL_DEFAULT_SENDER'] = 'dmitriypechenyuk0@gmail.com' 
+project.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAILER')
 
 mail = Mail(project)

@@ -7,6 +7,7 @@ class Question(db.Model):
     order_index = db.Column(db.Integer, index=True, nullable=False)
     text = db.Column(db.Text, nullable=False)
     correct_answer = db.Column(db.Text, nullable=False)
+    type = db.Column(db.Integer, nullable=False)
 
 class QuizSession(db.Model):
     id = db.Column(db.Integer, primary_key=True)
