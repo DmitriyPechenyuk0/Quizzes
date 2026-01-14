@@ -35,9 +35,10 @@
         }
       };
       $("nextQ").onclick = () => {
+        console.log(document.querySelectorAll('.right-content-user-more'))
+        document.querySelectorAll('.right-content-user-more').forEach(el => {console.log(el) ;el.style.backgroundColor = "#DCDCDC"})
         socket.emit('teacher:next', { code })
         socket.emit('check_answers', { code })
-        document.querySelectorAll('.right-content-user-more').style.backgroundColor = '#DCDCDC'
       }
       socket.on("update_answers", (info) => {
         document.querySelector('.rcqsCount').textContent = `${info.answered} / ${info.total}`

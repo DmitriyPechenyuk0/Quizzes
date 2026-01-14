@@ -240,6 +240,7 @@ main{
     border-bottom-right-radius: 20px;
 }
 .div-section-answer-content-question{
+    position: relative;
     max-width: 1424px;
     max-height: 383px;
     width: 100%;
@@ -445,6 +446,7 @@ main{
     font-weight: 500;
     color: #212529;
     text-align: center;
+    background-color: transparent;
 }
 
 .display-flex {
@@ -453,4 +455,21 @@ main{
 
 .display-none {
     display: none;
+}
+#enterQuestionS{
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 23px 12px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: rgb(97 208 63 / 50%);
+    cursor: pointer;
+    right: 20px;
+    bottom: 20px;
 }

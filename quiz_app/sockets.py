@@ -11,7 +11,11 @@ user_sessions = {}
 def serialize_question(q: Question):
     qz = Quiz.query.filter_by(id = q.quiz_id).first()
     print(qz)
-    return {"id": q.id, "text": q.text, "order_index": q.order_index, "q_quantity": qz.count_questions, "q_type": q.type}
+    variants = []
+    for var in q.correct_answer.split('|'):
+        print(var)
+        variants.append(var.split(':')[0])
+    return {"id": q.id, "text": q.text, "order_index": q.order_index, "q_quantity": qz.count_questions, "q_type": q.type, "q_variants": variants}
 
 def normalize(text: str) -> str:
     if not text:
@@ -23,21 +27,8 @@ def normalize(text: str) -> str:
 def is_correctt(user_text: str, correct_raw: str, type: str) -> bool:
     if type == 'fform' or type == 'letters':
         return normalize(user_text) == normalize(correct_raw or "")
-    if type == 'selection': 
-        correct_answers = set()
-        for answer in correct_raw.split('|'):
-            if ':true' in answer.lower():
-                answer_name = answer.split(':')[0].strip()
-                correct_answers.add(answer_name)
-        
-        user_answers = set()
-        if user_text:
-            for answer in user_text.split('|'):
-                if ':true' in answer.lower():
-                    answer_name = answer.split(':')[0].strip()
-                    user_answers.add(answer_name)
-
-        return user_answers == correct_answers
+    if type == 'select': 
+        return user_text == correct_raw
 
 def current_question(session: QuizSession):
     if session.current_order is None:
@@ -240,6 +231,7 @@ def on_answer(data):
     if exists:
         return
 
+    print("YOYOYOY", answer_text)
     i_correct = is_correctt(answer_text, cur_quest.correct_answer, type=cur_quest.type)
     
     answr = SessionAnswer(

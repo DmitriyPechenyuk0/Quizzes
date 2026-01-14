@@ -8,15 +8,15 @@
 {% endblock %}
 
 {% block main %}
-    <!-- <div id="current_user_id" style="display: none;">{{ current_user.id }}</div>
+    <div id="current_user_id" style="display: none;">{{ current_user.id }}</div>
     <div id="particles-js"></div>
 
     <div class="join-code-div display-flex">
         <input id="code" type="text" maxlength="6" placeholder="Код для приєднання">
         <button id="joinBtn" >Приєднатися</button>
     </div>
-    -->
-    <!-- <div class="main-window display-flex">
+   
+    <div class="main-window display-flex">
         <div class="main-window-main">
             <p class="mwm-name">
                 {{ name }}
@@ -29,7 +29,7 @@
         </div>
         <div class="main-window-other-participants" >
         </div>
-    </div> -->
+    </div>
     
     <div class="waiting-overlay display-none">
         <div class="waiting-div">
@@ -38,7 +38,8 @@
         </div>
     </div>
     
-    <!-- <div class="div-section-answer display-flex">
+    <!-- fform -->
+    <div id="divfformAnswer" class="div-section-answer display-none">
         <div class="div-section-answer-title">
             <p id="QuizNameArea" >
                 
@@ -47,16 +48,19 @@
         <div class="div-section-answer-content-main" >
             <div class="div-section-answer-content">
                 <div class="div-section-answer-content-question">
-                    <p id="questionBlockP"></p>
+                    <p id="questionBlockPFF"></p>
                 </div>
                 <div class="div-section-answer-content-answer">
                     <input placeholder="Напишіть відповідь" id="answerInputI" type="text">
-                    <button id="enterQuestion" >Enter</button>
+                    <button id="enterQuestionFF" >Enter</button>
                 </div>
             </div>
         </div>
-    </div> -->
-    <div class="div-section-answer display-flex">
+    </div>
+
+    <!-- selection -->
+
+    <div id="divSelectionAnswer" class="div-section-answer display-none">
         <div class="div-section-answer-title">
             <p id="QuizNameArea" >
                 Python
@@ -65,7 +69,8 @@
         <div class="div-section-answer-content-main" >
             <div class="div-section-answer-content">
                 <div class="div-section-answer-content-question">
-                    <p id="questionBlockP">Exception при спробі змінити tuple?</p>
+                    <p id="questionBlockPS"></p>
+                    <button id="enterQuestionS" >Enter</button>
                 </div>
                 <div class="div-section-answer-content-answer">
                     <div class="answers-section-qz" id="answersSection">
