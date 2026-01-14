@@ -32,7 +32,7 @@
                         <div class="answers-question-type-fill-numberoid-true"><p>{{ item.order }}</p></div>
                         <div class="answers-question-type-fill-main">
                             <div class="answers-quesiton-type-fill-main-ques"><p>{{ item.question }}</p></div>
-                            <div class="answers-quesiton-type-fill-main-answ">
+                            <div class="answers-quesiton-type-fill-main-answ truthy">
                                 <p>Відповідь: {{ item.user_answer }}</p>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                         <div class="answers-question-type-fill-numberoid-false"><p>{{ item.order }}</p></div>
                         <div class="answers-question-type-fill-main">
                             <div class="answers-quesiton-type-fill-main-ques"><p>{{ item.question }}</p></div>
-                            <div class="answers-quesiton-type-fill-main-answ">
+                            <div class="answers-quesiton-type-fill-main-answ untruthy">
                                 <p>Відповідь: {{ item.user_answer }}</p>
                                 <span>Правильна відповідь: {{ item.correct_answer }}</span>
                             </div>
@@ -58,4 +58,6 @@
         </div>
     </div>
 </div>
+
+<script defer src="{{ url_for('history.static', filename='js/quiz_student_result.js') }}"></script>
 {% endblock %}
