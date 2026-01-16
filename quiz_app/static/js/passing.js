@@ -120,11 +120,11 @@
     document.querySelector('.mwm-participants-count-count').textContent = data.counter
   }
   function attachEvents() {
-    $("enterQuestionFF").onclick = () => {
+    document.querySelector('#enterQuestionFF').addEventListener('click',() => {
       let answer = document.querySelector('#answerInputI').value
       socket.emit('participant:answer', {code: state.code, answer: answer})
       activeWaitingOverlay()
-    }
+    })
     document.querySelector('#enterQuestionS').addEventListener('click', () => {
       let answer = getAnswersString()
       console.log(answer, '12341234324')
