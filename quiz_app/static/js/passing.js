@@ -125,17 +125,17 @@
       socket.emit('participant:answer', {code: state.code, answer: answer})
       activeWaitingOverlay()
     }
-    $("enterQuestionS").onclick = () => {
+    document.querySelector('#enterQuestionS').addEventListener('click', () => {
       let answer = getAnswersString()
       console.log(answer, '12341234324')
       socket.emit('participant:answer', {code: state.code, answer: answer})
       activeWaitingOverlay()
-    }
+    })
     socket.on("error", (e) => {
       console.log(e)
     });
     socket.on("finish_session", () => {
-    });
+    })
 
     socket.on("room:state", (s) => {
       console.log(s)
