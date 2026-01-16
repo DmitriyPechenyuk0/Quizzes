@@ -222,7 +222,6 @@ main{
     height: 100%;
     gap: 20px;
     padding: 28px;
-    border: 2px solid black;
     border-radius: 10px;
 }
 .div-section-answer-content-main{

@@ -120,16 +120,6 @@
     document.querySelector('.mwm-participants-count-count').textContent = data.counter
   }
   function attachEvents() {
-    $("joinBtn").onclick = () => {
-      let codde = document.querySelector('#code').value
-      socket.emit("join", { code: codde });
-      state.code = codde
-    };
-
-    $("code").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") $("joinBtn").click();
-    });
-
     $("enterQuestionFF").onclick = () => {
       let answer = document.querySelector('#answerInputI').value
       socket.emit('participant:answer', {code: state.code, answer: answer})
