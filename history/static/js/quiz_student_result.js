@@ -11,26 +11,43 @@ document.querySelectorAll('.untruthy').forEach(el => {
 })
 
 document.querySelectorAll('.untruthy').forEach(el => {
-    let answers = el.lastElementChild.textContent.split(' ')[2].split('|')
-    let tAns = []
+    let text = el.lastElementChild.textContent;
     
-    answers.forEach(el => {
-        if(el.split(':')[1] === 'true'){
-            tAns.push(el.split(':')[0])
-        }
-    })
-    el.lastElementChild.textContent = `Правильні відповідь: ${tAns.join(', ')}`
-})
+    if (!text.includes('|')) return
+    
+    let answersText = text.substring(text.lastIndexOf(' ', text.indexOf('|')) + 1)
+    let answers = answersText.split('|')
+    
+    if (answers.length !== 4) return
+    
+    let tAns = answers
+        .filter(answer => answer.split(':')[1] === 'true')
+        .map(answer => answer.split(':')[0])
+    
+    if (tAns.length > 0) {
+        el.lastElementChild.textContent = `Правильна відповідь: ${tAns.join(', ')}`
+    }
+});
 
 
 document.querySelectorAll('.truthy').forEach(el => {
-    let answers = el.lastElementChild.textContent.split(' ')[1].split('|')
+    let text = el.lastElementChild.textContent
+    let answersText = text.includes('Відповідь: ') 
+        ? text.split('Відповідь: ')[1] 
+        : text
+
+    let answers = answersText.split('|')
+
+    if (answers.length !== 4) return
+    
     let tAns = []
     
-    answers.forEach(el => {
-        if(el.split(':')[1] === 'true'){
-            tAns.push(el.split(':')[0])
+    answers.forEach(answer => {
+        let parts = answer.split(':')
+        if (parts[1] === 'true') {
+            tAns.push(parts[0])
         }
     })
+    
     el.lastElementChild.textContent = `Відповідь: ${tAns.join(', ')}`
 })

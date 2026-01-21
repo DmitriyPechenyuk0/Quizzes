@@ -77,12 +77,16 @@
     document.querySelector('.main-window').classList.add('display-none')
     document.querySelector('#divSelectionAnswer').classList.remove('display-none')
     document.querySelector('#divSelectionAnswer').classList.add('display-flex')
+    document.querySelector('#divfformAnswer').classList.remove('display-flex')
+    document.querySelector('#divfformAnswer').classList.add('display-none')
   }
   function switchInterfaceToFFormAnswerRoom(){
     document.querySelector('.main-window').classList.remove('display-flex')
     document.querySelector('.main-window').classList.add('display-none')
     document.querySelector('#divfformAnswer').classList.remove('display-none')
     document.querySelector('#divfformAnswer').classList.add('display-flex')
+    document.querySelector('#divSelectionAnswer').classList.remove('display-flex')
+    document.querySelector('#divSelectionAnswer').classList.add('display-none')
   }
   function switchInterfaceToLettersAnswerRoom(){
     document.querySelector('.main-window').classList.remove('display-flex')
