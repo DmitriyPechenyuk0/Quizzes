@@ -1,94 +1,6 @@
-// $(document).ready(function() {
-    // $('.big-choice').click(function() {
-    //     $('.big-choice').addClass('active');
-    //     $('.fill-form').removeClass('active');
-    //     $('.large-selection-view').show();
-    //     $('.fill-form-view').hide();
-    // });
-
-    // $('.fill-form').click(function() {
-    //     $('.fill-form').addClass('active');
-    //     $('.big-choice').removeClass('active');
-    //     $('.fill-form-view').show();
-    //     $('.large-selection-view').hide();
-    // });
-
-    // $('.ai-icon, .ia-label').click(function() {
-        // $('#modalOverlay').addClass('active');
-        // $('body').css('overflow', 'hidden');
-    // });
-
-    // $('#modalOverlay').click(function(e) {
-    //     if (e.target === this) {
-    //         $(this).removeClass('active');
-    //         $('body').css('overflow', '');
-    //     }
-    // });
-
-    // $(document).keydown(function(e) {
-    //     if (e.key === 'Escape') {
-    //         $('#modalOverlay').removeClass('active');
-    //         $('body').css('overflow', '');
-    //     }
-    // });
-
-    // $('.submit-ai-promt-btn').click(function() {
-    //     var topic = $('.input-ai-promt').val().trim();
-    //     if (topic) {
-    //         console.log('Topic:', topic);
-    //         $.ajax({
-    //             url: '/save_topic',
-    //             method: 'POST',
-    //             contentType: 'application/json',
-    //             data: JSON.stringify({ topic: topic }),
-    //             success: function(response) {
-    //                 console.log('Topic saved:', response);
-    //                 $('#modalOverlay').removeClass('active');
-    //                 $('body').css('overflow', '');
-    //             },
-    //             error: function(error) {
-    //                 console.error('Error saving topic:', error);
-    //             }
-    //         });
-    //     }
-    // });
-
-//     $('.enter-btn').click(function() {
-//         let quizData = {
-//             quiz_name: $('#quiz-name').val().trim() || 'default_quiz',
-//             mode: '',
-//             question: '',
-//             answers: [],
-//             topic: $('.input-ai-promt').val().trim() || ''
-//         };
-
-//         if ($('.large-selection-view').is(':visible')) {
-//             quizData.mode = 'large-selection';
-//             quizData.question = $('.large-selection-view .question-input').val().trim();
-
-//             $('.answers-options-frame .answer-container').each(function() {
-//                 let answerText = $(this).find('input[type="text"]').val().trim();
-//                 if (answerText) {
-//                     quizData.answers.push({
-//                         text: answerText,
-//                         correct: $(this).find('.answer-checkbox').prop('checked'),
-//                     });
-//                 }
-//             });
-//         } else {
-//             quizData.mode = 'fill-form';
-//             quizData.question = $('.fill-form-view .question-input').val().trim();
-//             let answerText = $('.fill-form-view .answer-input').val().trim();
-//             if (answerText) {
-//                 quizData.answers.push({ text: answerText, correct: true });
-//             }
-//         }
-//     });
-// });
-
 
 localStorage.setItem('qIndex', 1)
-
+indexedDB.open('images', 1)
 
 function loadQuestionData() {
     const qIndex = localStorage.getItem('qIndex')
@@ -105,6 +17,10 @@ function loadQuestionData() {
     if (answerInput) answerInput.value = answerValue
 }
 loadQuestionData()
+
+function useInputImage() {
+    document.getElementById('imageInput').click()
+}
 
 const totalQuestions = document.querySelectorAll('.question-bar-setter').length
 const questionsData = [];
@@ -176,3 +92,41 @@ document.querySelectorAll('.question-bar-setter').forEach( (ques) => {
     if (localStorage.getItem(`qtype${ques.id[2]}`) != null) return
     localStorage.setItem(`qtype${ques.id[2]}`, 'fform')
 })
+
+const dbName = "ImageDB";
+const storeName = "images";
+
+const request = indexedDB.open(dbName, 1);
+
+request.onupgradeneeded = (e) => {
+    const db = e.target.result;
+    db.createObjectStore(storeName, { keyPath: "id"});
+};
+
+request.onsuccess = (e) => {
+    const db = e.target.result;
+    const input = document.getElementById('imageInput');
+
+    input.onchange = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        current_index = localStorage.getItem('')
+        const transaction = db.transaction([storeName], "readwrite");
+        const store = transaction.objectStore(storeName);
+
+        const record = {
+            id: customId,
+            data: imageBlob,
+            updatedAt: new Date()
+        };
+        const request = store.put(record);
+
+        request.onsuccess = () => {
+            console.log(`Image saved successfully with ID: ${customId}`);
+        };
+
+        request.onerror = () => {
+            console.error("Error saving file:", addRequest.error);
+        }
+    }
+}

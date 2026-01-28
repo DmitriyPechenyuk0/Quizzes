@@ -167,8 +167,8 @@ img {
     cursor: pointer;
 }
 
-.fill-form-frame input,
-.fill-form-frame-2 input {
+.question-input,
+.answer-input{
     width: 450px;
     height: 65px;
     border: 1px solid;
@@ -181,8 +181,8 @@ img {
     background-color: transparent;
 }
 
-.fill-form-frame input::placeholder,
-.fill-form-frame-2 input::placeholder {
+.question-input::placeholder,
+.answer-input::placeholder {
     color: hsla(0, 0%, 0%, 0.25);
 }
 
@@ -447,4 +447,52 @@ img {
     color: #FFFFFF;
     outline: none;
     border: none;
+}
+.imageSelectorDiv{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    width: 240px;
+    height: 60px;
+    font-size: 20px;
+    font-weight: 700;
+    background-color: transparent;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 8px 10px;
+}
+.imageDeleter{
+    position: absolute;
+    top: 10px;
+    right: 260px;
+    width: 220px;
+    height: 60px;
+    font-size: 20px;
+    font-weight: 700;
+    background-color: transparent;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 8px 10px;
+}
+.imagePreview{
+    background-color: black;
+    width: 230px;
+    height: 230px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 12px;
 }

@@ -48,9 +48,11 @@
                             <p class="ia-label">Generate a question</p>
                         </div>
                         <input id="questionInpt" type="text" class="question-input" placeholder="Напишіть запитання">
-                        <input type="file" id="imageInput" accept="image/*" onchange="handleImageSelect(event)">
-                        <img id="imagePreview" style="max-width: 300px; display: none;">
-                        <button onclick="removeImage()">Удалить</button>
+                        <input style="display: none;" type="file" id="imageInput" accept="image/*" onchange="handleImageSelect(event)">
+                        <div class="imageSelectorDiv" onclick="useInputImage()">Додати зображення</div>
+                        <img class="imagePreview" id="imagePreview" style="max-width: 300px; display: flex;">
+                        
+                        <button class="imageDeleter" onclick="removeImage()">Видалити</button>
                     </div>
                     
                     <div class="fill-form-frame-2">
