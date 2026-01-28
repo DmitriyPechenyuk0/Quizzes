@@ -8,6 +8,7 @@ class Question(db.Model):
     text = db.Column(db.Text, nullable=False)
     correct_answer = db.Column(db.Text, nullable=False)
     type = db.Column(db.Integer, nullable=False)
+    image_path = db.Column(db.String(255), nullable=True)
 
 class QuizSession(db.Model):
     id = db.Column(db.Integer, primary_key=True)
