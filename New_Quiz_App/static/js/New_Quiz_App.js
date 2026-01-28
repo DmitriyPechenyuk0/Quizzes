@@ -121,7 +121,6 @@ request.onsuccess = (e) => {
         };
 
         const request = store.put(record);
-
         request.onsuccess = () => {
             console.log(`Image saved successfully with index: ${current_index}`);
         };
