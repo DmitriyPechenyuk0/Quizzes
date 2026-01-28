@@ -100,7 +100,8 @@ const request = indexedDB.open(dbName, 1);
 
 request.onupgradeneeded = (e) => {
     const db = e.target.result;
-    db.createObjectStore(storeName, { keyPath: "id"});
+    const objectStore = db.createObjectStore(storeName, { keyPath: "index"});
+
 };
 
 request.onsuccess = (e) => {
@@ -110,15 +111,16 @@ request.onsuccess = (e) => {
     input.onchange = (event) => {
         const file = event.target.files[0];
         if (!file) return;
-        current_index = localStorage.getItem('')
+        file.
+        current_index = localStorage.getItem('qIndex')
         const transaction = db.transaction([storeName], "readwrite");
         const store = transaction.objectStore(storeName);
-
         const record = {
-            id: customId,
+            index: current_index,
             data: imageBlob,
             updatedAt: new Date()
         };
+
         const request = store.put(record);
 
         request.onsuccess = () => {
