@@ -151,17 +151,27 @@ def join_next_page():
     return render_template('join_next.html', **context)
 
 def save_questions(quiz_id):
-    data = request.get_json()
-    data = data["questions"]
+    data = request.form.get('questions')
+    data = json.loads(data)
 
     for item in data:
         print(item)
+        
+        image_path = None
+        if item.get('hasImage'):
+            image_file = request.files.get(f"image_{item['id']}")
+            if image_file:
+                filename = f"quiz_{quiz_id}_q_{item['id']}_{image_file.filename}"
+                image_path = os.path.join('uploads', filename)
+                image_file.save(image_path)
+                
         quest = Question(
             quiz_id = quiz_id,
             type = item['type'],
             order_index = item['id'],
             text = item['question'],
-            correct_answer = item['answer']
+            correct_answer = item['answer'],
+            image_path = image_path
         )
         db.session.add(quest)
         
