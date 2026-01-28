@@ -111,20 +111,19 @@ request.onsuccess = (e) => {
     input.onchange = (event) => {
         const file = event.target.files[0];
         if (!file) return;
-        file.
-        current_index = localStorage.getItem('qIndex')
+        let current_index = localStorage.getItem('qIndex')
         const transaction = db.transaction([storeName], "readwrite");
         const store = transaction.objectStore(storeName);
         const record = {
             index: current_index,
-            data: imageBlob,
+            data: file,
             updatedAt: new Date()
         };
 
         const request = store.put(record);
 
         request.onsuccess = () => {
-            console.log(`Image saved successfully with ID: ${customId}`);
+            console.log(`Image saved successfully with index: ${current_index}`);
         };
 
         request.onerror = () => {
