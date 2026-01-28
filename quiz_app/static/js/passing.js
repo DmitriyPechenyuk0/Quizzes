@@ -94,10 +94,17 @@
     document.querySelector('#divLettersAnswer').classList.remove('display-none')
     document.querySelector('#divLettersAnswer').classList.add('display-flex')
   }
-  function activeWaitingOverlay(){
+  function activeWaitingOverlay(answer){
+    console.log('active waiting_overlay', answer)
     document.querySelector('#answerInputI').value = ''
     document.querySelector('.waiting-overlay').classList.remove('display-none')
     document.querySelector('.waiting-overlay').classList.add('display-flex')
+    if(answer){
+      console.log(document.querySelector('.waiting-div-answer'))
+      document.querySelector('.waiting-div-answer').textContent = 'Ваша відповідь правильна'
+    } else{
+      document.querySelector('.waiting-div-answer').textContent = 'Ваша відповідь неправильна'
+    }
   }
   function inactiveWaitingOverlay(){
     document.querySelector('.waiting-overlay').classList.add('display-none')
@@ -127,13 +134,11 @@
     document.querySelector('#enterQuestionFF').addEventListener('click',() => {
       let answer = document.querySelector('#answerInputI').value
       socket.emit('participant:answer', {code: state.code, answer: answer})
-      activeWaitingOverlay()
     })
     document.querySelector('#enterQuestionS').addEventListener('click', () => {
       let answer = getAnswersString()
       console.log(answer, '12341234324')
       socket.emit('participant:answer', {code: state.code, answer: answer})
-      activeWaitingOverlay()
     })
     socket.on("error", (e) => {
       console.log(e)
@@ -177,6 +182,13 @@
     });
     socket.on("kickedd", (data) => {
       window.location.href = '/'
+    })
+    socket.on('waiting_overlay', data => {
+      console.log(data)
+      if(data.overlay){
+        console.log("overlayed")
+        activeWaitingOverlay(data.answer)
+      }
     })
   }
 

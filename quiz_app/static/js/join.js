@@ -83,12 +83,16 @@
     document.querySelector('.main-window').classList.add('display-none')
     document.querySelector('#divSelectionAnswer').classList.remove('display-none')
     document.querySelector('#divSelectionAnswer').classList.add('display-flex')
+    document.querySelector('#divfformAnswer').classList.add('display-none')
+    document.querySelector('#divfformAnswer').classList.remove('display-flex')
   }
   function switchInterfaceToFFormAnswerRoom(){
     document.querySelector('.main-window').classList.remove('display-flex')
     document.querySelector('.main-window').classList.add('display-none')
     document.querySelector('#divfformAnswer').classList.remove('display-none')
     document.querySelector('#divfformAnswer').classList.add('display-flex')
+    document.querySelector('#divSelectionAnswer').classList.add('display-none')
+    document.querySelector('#divSelectionAnswer').classList.remove('display-flex')
   }
   function switchInterfaceToLettersAnswerRoom(){
     document.querySelector('.main-window').classList.remove('display-flex')
@@ -96,10 +100,17 @@
     document.querySelector('#divLettersAnswer').classList.remove('display-none')
     document.querySelector('#divLettersAnswer').classList.add('display-flex')
   }
-  function activeWaitingOverlay(){
+  function activeWaitingOverlay(answer){
+    console.log('active waiting_overlay', answer)
     document.querySelector('#answerInputI').value = ''
     document.querySelector('.waiting-overlay').classList.remove('display-none')
     document.querySelector('.waiting-overlay').classList.add('display-flex')
+    if(answer){
+      console.log(document.querySelector('.waiting-div-answer'))
+      document.querySelector('.waiting-div-answer').textContent = 'Ваша відповідь правильна'
+    } else{
+      document.querySelector('.waiting-div-answer').textContent = 'Ваша відповідь неправильна'
+    }
   }
   function inactiveWaitingOverlay(){
     document.querySelector('.waiting-overlay').classList.add('display-none')
@@ -139,13 +150,11 @@
     $("enterQuestionFF").onclick = () => {
       let answer = document.querySelector('#answerInputI').value
       socket.emit('participant:answer', {code: state.code, answer: answer})
-      activeWaitingOverlay()
     }
     $("enterQuestionS").onclick = () => {
       let answer = getAnswersString()
       console.log(answer, '12341234324')
       socket.emit('participant:answer', {code: state.code, answer: answer})
-      activeWaitingOverlay()
     }
     socket.on("error", (e) => {
       console.log(e)
@@ -189,6 +198,13 @@
     });
     socket.on("kickedd", (data) => {
       window.location.href = '/'
+    })
+    socket.on('waiting_overlay', data => {
+      console.log(data)
+      if(data.overlay){
+        console.log("overlayed")
+        activeWaitingOverlay(data.answer)
+      }
     })
   }
 

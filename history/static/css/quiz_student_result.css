@@ -1053,13 +1053,19 @@ main {
     display: flex;
     flex-direction: column;
     width: 800px;
-    height: 1660px;
+    height: 900px;
     gap: 10px;
     padding: 0px;
     justify-content: start;
     align-items: center;
     background-color: none;
     background: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.false-answers::-webkit-scrollbar,
+.true-answers::-webkit-scrollbar{
+    width: 0px;
 }
 .false-answers-t{
     font-size: 34px;

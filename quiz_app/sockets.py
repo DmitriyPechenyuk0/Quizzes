@@ -235,13 +235,19 @@ def on_answer(data):
     i_correct = is_correctt(answer_text, cur_quest.correct_answer, type=cur_quest.type)
     
     answr = SessionAnswer(
-    session_id=session.id,
-    user_id=current_user.id,
-    question_id=cur_quest.id,
-    answer_text=answer_text,
-    is_correct=i_correct)
+        session_id=session.id,
+        user_id=current_user.id,
+        question_id=cur_quest.id,
+        answer_text=answer_text,
+        is_correct=i_correct)
     db.session.add(answr)
     db.session.commit()
+    print(type(current_user.id), user_sessions)
+    if current_user.id in user_sessions:
+        
+        sid = user_sessions[current_user.id]
+        print(sid)
+        emit("waiting_overlay", {"overlay": True, "answer": i_correct}, to=sid)
 
     all_participants = SessionParticipant.query.filter_by(session_id=session.id).all()
 

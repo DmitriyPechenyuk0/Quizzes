@@ -316,11 +316,11 @@ main{
     display: flex;
     flex-direction: column;
     width: 700px;
-    height: 135px;
+    height: fit-content;
     gap: 17px;
     justify-content: start;
     align-items: center;
-    padding: 10px 20px;
+    padding: 20px 20px;
     border-radius: 30px;
     background-color: #fff;
 }
@@ -471,4 +471,10 @@ main{
     cursor: pointer;
     right: 20px;
     bottom: 20px;
+}
+.waiting-div-answer{
+    width: fit-content;
+    font-size: 20px;
+    background-color: transparent;
+    font-weight: 500;
 }
