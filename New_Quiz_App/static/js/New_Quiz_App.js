@@ -89,6 +89,36 @@
 
 localStorage.setItem('qIndex', 1)
 
+const imageFiles = new Map();
+
+function handleImageSelect(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  imageFiles.set(localStorage.getItem('qIndex'), file);
+  updateImagePreview();
+}
+
+function updateImagePreview() {
+  const preview = document.getElementById('imagePreview');
+  const fileInput = document.getElementById('imageInput');
+  
+  if (imageFiles.has(localStorage.getItem('qIndex'))) {
+    const file = imageFiles.get(localStorage.getItem('qIndex'));
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = 'block';
+  } else {
+    preview.src = '';
+    preview.style.display = 'none';
+  }
+  
+  fileInput.value = '';
+}
+
+function removeImage() {
+  imageFiles.delete(localStorage.getItem('qIndex'));
+  updateImagePreview();
+}
 
 function loadQuestionData() {
     const qIndex = localStorage.getItem('qIndex')
