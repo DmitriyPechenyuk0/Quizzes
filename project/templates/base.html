@@ -32,7 +32,7 @@
                             <i class="bi bi-person-fill"></i><span>Зареєструватись</span>
                         </a>
                         <a href="/login" class="btn-primary">
-                            <i class="bi bi-person-fill"></i><span>Увійти</span>
+                            <i class="bi bi-door-open"></i><span>Увійти</span>
                         </a>
                     {% elif page == 'home' and is_auth == True and is_teacher == True %}
                         <a href="/new-quiz" class="btn-primary">
@@ -59,6 +59,7 @@
             <p>Scientific work • Quizzes © 2025 • Dmytro Pecheniuk</p>
         </footer>
     {% block scripts %}
+        <script src="{{ url_for('static', filename='js/base.js') }}" defer></script>
     {% endblock %}
     </body>
     
