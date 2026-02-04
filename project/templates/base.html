@@ -11,23 +11,40 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
     <body>
+
         <nav class="navbar">
             <div class="nav-container">
                 <a href="#" class="nav-logo">
                     <div class="logo-icon"><i class="bi bi-lightbulb-fill"></i></div>
                     <span class="logo-text">Quizzes</span>
                 </a>
-                <ul class="nav-links">
-                    <li><a href="#home">Головна</a></li>
-                    <li><a href="#about">Про проєкт</a></li>
-                    <li><a href="#how-it-works">Як це працює</a></li>
-                    <li><a href="#tech">Технології</a></li>
-                </ul>
+                {% if page == 'home' %}
+                    <ul class="nav-links">
+                        <li><a href="#home">Головна</a></li>
+                        <li><a href="#about">Про проєкт</a></li>
+                        <li><a href="#how-it-works">Як це працює</a></li>
+                        <li><a href="#tech">Технології</a></li>
+                    </ul>
+                {% endif %}
                 <div class="nav-actions">
-                    <a href="/new-quiz" class="btn-primary">
-                        <i class="bi bi-plus-lg"></i><span>Новий тест</span>
-                    </a>
-                    <a href="/profile" class="btn-icon"><i class="bi bi-person-fill"></i></a>
+                    {% if page == 'home' and is_auth != True %}
+                        <a href="/registration" class="btn-primary">
+                            <i class="bi bi-person-fill"></i><span>Зареєструватись</span>
+                        </a>
+                        <a href="/login" class="btn-primary">
+                            <i class="bi bi-person-fill"></i><span>Увійти</span>
+                        </a>
+                    {% elif page == 'home' and is_auth == True and is_teacher == True %}
+                        <a href="/new-quiz" class="btn-primary">
+                            <i class="bi bi-plus-lg"></i><span>Новий тест</span>
+                        </a>
+                        <a href="/profile" class="btn-icon"><i class="bi bi-person-fill"></i></a>
+                    {% elif page == 'home' and is_auth == True and is_teacher != True %}
+                        <a href="/join" class="btn-primary">
+                            <i class="bi bi-plus-lg"></i><span>Доєднатись до тесту</span>
+                        </a>
+                        <a href="/profile" class="btn-icon"><i class="bi bi-person-fill"></i></a>
+                    {% endif %}
                     <div class="mobile-menu-btn"><i class="bi bi-list"></i></div>
                 </div>
             </div>

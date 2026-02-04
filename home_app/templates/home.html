@@ -174,7 +174,9 @@
         <div class="cta-box">
             <h2>Частина наукового дослідження</h2>
             <p>Цей проєкт — це експериментальна платформа для вивчення впливу цифрових технологій на навчальний процес у сучасних освітніх закладах</p>
-            <a href="/new-quiz" class="btn-hero">Створити тест<i class="bi bi-arrow-right"></i></a>
+            {% if is_teacher == 'True' %}
+                <a href="/new-quiz" class="btn-hero">Створити тест<i class="bi bi-arrow-right"></i></a>
+            {% endif %}
         </div>
     </section>
     <script defer src="{{ url_for('home_app.static', filename='js/home.js') }}" ></script>

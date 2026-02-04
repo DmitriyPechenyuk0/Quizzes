@@ -18,7 +18,6 @@ project = flask.Flask(
     instance_path= os.path.abspath(__file__ + '/..')
 )
 
-
 project.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 project.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 project.config["SECRET_KEY"] = "dev" 
