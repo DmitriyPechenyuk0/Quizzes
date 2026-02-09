@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Registration page {% endblock %}
+{% block title %} Реєстрація - Quizzes {% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('registration.static', filename='css/registration.css') }}">
@@ -9,72 +9,90 @@
 
 {% block main %}
 
-
-<div class="flash-messages" id="flash-container">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="flash-message flash-{{ category }}">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-</div>
-
-<div class="registration-box">
-    <h2>Реєстрація</h2>
-    <form method="post" id="registration-form">
-        <div class='input-pass'>
-            <label for="login" class="input-title">Логін:</label>
-            <input type="text" id="login" name="login" class="input-field" required>
-        </div>
-        <div class='input-pass'>
-            <label for="email" class="input-title">Електронна пошта:</label>
-            <input type="email" id="email" name="email" class="input-field" placeholder="example@gmail.com" required>
-        </div>
-        <div class='input-pass'>
-            <label for="password" class="input-title">Пароль:</label>
-            <input type="password" id="password" name="password" class="input-field" required>
-        </div>
-        <div class='input-pass'> 
-            <label for="confirm" class="input-title"> Підтвердження пароля:</label>
-            <input type="password" id="confirm" name="confirm" class="input-field" required>
+<div class="container">
+    <div class="card">
+        <div class="logo">
+            <h1>QUIZZES</h1>
         </div>
 
-        <div class="role-selection">
-            <div class="label-text">
-                <label>Студент або Вчитель:</label>
+        <div class="oauth-buttons">
+            <button class="oauth-btn" id="googleAuthBtn" type="button">
+                <i class="bi bi-google oauth-icon"></i>
+                <span>Увійти через Google</span>
+            </button>
+
+            <button class="oauth-btn" id="githubAuthBtn" type="button">
+                <i class="bi bi-github oauth-icon"></i>
+                <span>Увійти через GitHub</span>
+            </button>
+        </div>
+
+        <div class="divider">АБО</div>
+
+        <form id="registrationForm" method="POST">
+            <div class="form-group">
+                <label for="username">Ім'я користувача</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Name_Surname"
+                    required
+                >
             </div>
-            <div class="choose-choose">
-                <div>
-                    <input type="radio" id="Student" name="Teacher" value="0" class="choose-btn" checked>
-                    <label for="Student" class="label"> Студент</label>
-                </div>
-                <div>
-                    <input type="radio" id="Teacher" name="Teacher" value="1" class="choose-btn">
-                    <label for="Teacher" class="label"> Вчитель</label>
-                </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="name@example.com"
+                    required
+                >
             </div>
-        </div>
-        
-        <p><a class="n-underline">Вже зареєстровані? </a><a href="{{ url_for('authorization.show_authorization') }}" class="input">Перейти до авторизації</a></p> {# <-- ИСПРАВЛЕНО ЗДЕСЬ #}
-        <button type="submit" class="submit-btn">Надіслати</button>
-    </form>
-</div>
 
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="••••••••"
+                    required
+                    minlength="8"
+                >
+            </div>
 
-<div id="successModal" class="modal" style="display:none;">
-    <div class="modal-content">
-        <p>Виберіть свій клас</p>
-        <div class="button-grid">
-            {% if classes and classes|length > 0 %}
-                {% for cls in classes %}
-                    <button type="button" class="btn" data-id="{{ cls.id }}">{{ cls.name }}</button>
-                {% endfor %}
-            {% else %}
-                <p class="no-classes-msg">Немає доступних класів. Якщо Ви вчитель, під час підтвердження реєстрації буде створено новий клас.</p>
-            {% endif %}
-        </div>
-        <button class="sub">Submit</button>      
+            <div class="form-group">
+                <label for="confirmPassword">Підтвердіть пароль</label>
+                <input 
+                    type="password" 
+                    id="confirmPassword" 
+                    name="confirmPassword" 
+                    placeholder="••••••••"
+                    required
+                    minlength="8"
+                >
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">
+                    Я погоджуюся з <a href="#">умовами використання</a> та <a href="#">політикою конфіденційності</a>
+                </label>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+
+            <button type="submit" class="submit-btn">
+                Створити акаунт
+            </button>
+        </form>
+
+        <p class="footer-text">
+            Вже є акаунт? <a href="/login">Увійти</a>
+        </p>
     </div>
 </div>
 

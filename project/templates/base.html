@@ -14,7 +14,7 @@
 
         <nav class="navbar">
             <div class="nav-container">
-                <a href="#" class="nav-logo">
+                <a href="/" class="nav-logo">
                     <div class="logo-icon"><i class="bi bi-lightbulb-fill"></i></div>
                     <span class="logo-text">Quizzes</span>
                 </a>
@@ -26,27 +26,29 @@
                         <li><a href="#tech">Технології</a></li>
                     </ul>
                 {% endif %}
-                <div class="nav-actions">
-                    {% if page == 'home' and is_auth != True %}
-                        <a href="/registration" class="btn-primary">
-                            <i class="bi bi-person-fill"></i><span>Зареєструватись</span>
-                        </a>
-                        <a href="/login" class="btn-primary">
-                            <i class="bi bi-door-open"></i><span>Увійти</span>
-                        </a>
-                    {% elif page == 'home' and is_auth == True and is_teacher == True %}
-                        <a href="/new-quiz" class="btn-primary">
-                            <i class="bi bi-plus-lg"></i><span>Новий тест</span>
-                        </a>
-                        <a href="/profile" class="btn-icon"><i class="bi bi-person-fill"></i></a>
-                    {% elif page == 'home' and is_auth == True and is_teacher != True %}
-                        <a href="/join" class="btn-primary">
-                            <i class="bi bi-plus-lg"></i><span>Доєднатись до тесту</span>
-                        </a>
-                        <a href="/profile" class="btn-icon"><i class="bi bi-person-fill"></i></a>
-                    {% endif %}
-                    <div class="mobile-menu-btn"><i class="bi bi-list"></i></div>
-                </div>
+                {% if nav_act == True %}
+                    <div class="nav-actions">
+                        {% if page == 'home' and is_auth != True %}
+                            <a href="/registration" class="btn-primary">
+                                <i class="bi bi-person-fill"></i><span>Зареєструватись</span>
+                            </a>
+                            <a href="/login" class="btn-primary">
+                                <i class="bi bi-door-open"></i><span>Увійти</span>
+                            </a>
+                        {% elif page == 'home' and is_auth == True and is_teacher == True %}
+                            <a href="/new-quiz" class="btn-primary">
+                                <i class="bi bi-plus-lg"></i><span>Новий тест</span>
+                            </a>
+                            <a href="/profile" class="btn-icon"><i class="bi bi-person-fill"></i></a>
+                        {% elif page == 'home' and is_auth == True and is_teacher != True %}
+                            <a href="/join" class="btn-primary">
+                                <i class="bi bi-plus-lg"></i><span>Доєднатись до тесту</span>
+                            </a>
+                            <a href="/profile" class="btn-icon"><i class="bi bi-person-fill"></i></a>
+                        {% endif %}
+                        <div class="mobile-menu-btn"><i class="bi bi-list"></i></div>
+                    </div>
+                {% endif %}
             </div>
         </nav>
             
