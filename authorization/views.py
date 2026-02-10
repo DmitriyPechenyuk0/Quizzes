@@ -13,9 +13,11 @@ def show_authorization():
                    'page': 'authorization'}
 
     if flask.request.method == "POST":
-        username = flask.request.form.get("name")
+        username = flask.request.form.get("username")
         password = flask.request.form.get("password")
 
+        print(username, password)
+        
         user = User.query.filter_by(name=username).first()
 
         if not user:

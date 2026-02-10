@@ -134,7 +134,8 @@ body::-webkit-scrollbar-thumb{
 }
 
 .btn-icon {
-    width: 40px;
+    width: fit-content;
+    min-width: 40px;
     height: 40px;
     background-color: #27272a;
     border-radius: 12px;

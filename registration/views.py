@@ -3,7 +3,7 @@ from flask import current_app, render_template, redirect, url_for, flash
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
 from profile_app.models import User, db
-from control.moduls import Class, RequestsToClass
+from control.models import Class, RequestsToClass
 
 from project.email import send_confirmation_email
 
@@ -52,9 +52,29 @@ def show_page_registration():
 
         flash('На вашу електронну пошту надіслано посилання для підтвердження.', 'success')
         return redirect(url_for('registration.show_page_registration'))
-
-    classes = Class.query.order_by(Class.name).all()
-    return render_template('registration.html', classes=classes, show_class_selector=True)
+    context={
+        "groups": [
+            {
+            'id': 1,
+            "name": 'ПЗ-25-2',
+            "students_count": 30,
+            "course": 1,
+            'specialization': 'Математика',
+            "teacher_name": "Тетяна Вишневська",
+            "teacher_initials": "ТВ" 
+            },
+            {
+            'id': 2,
+            "name": '10-A',
+            "students_count": 12,
+            "teacher_name": "Іван Франко",
+            "teacher_initials": "ІФ" 
+            }
+        ]
+        
+    }
+    # classes = Class.query.order_by(Class.name).all()
+    return render_template('registration.html', **context)
 
 
 def confirm_email(token):

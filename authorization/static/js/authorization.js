@@ -26,23 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
 
-        if (username.length < 3) {
-            showFlash('Ім\'я користувача повинно містити мінімум 3 символи');
-            return false;
-        }
-
-        if (username.length > 50) {
-            showFlash('Ім\'я користувача занадто довге');
-            return false;
-        }
-
         if (!password) {
             showFlash('Будь ласка, введіть пароль');
-            return false;
-        }
-
-        if (password.length < 6) {
-            showFlash('Пароль повинен містити мінімум 6 символів');
             return false;
         }
 

@@ -5,6 +5,11 @@ class Class(db.Model):
     __tablename__ = 'classes'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(120), nullable = False)
+    users_count = db.Column(db.Integer, default=0)
+    course = db.Column(db.Integer, nullable = False)
+    teacher_name = db.Column(db.String(200), nullable = False)
+    teacher_initials = db.Column(db.String(200), nullable = False)
+
 
 class RequestsToClass(db.Model):
     __tablename__ = 'requests_to_class'

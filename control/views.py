@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, url_for, flash, render_template, jsonify
 import flask_login
 from profile_app.models import User, db 
-from .moduls import Class, RequestsToClass
+from .models import Class, RequestsToClass
 from project.email import send_student_approval_email
 from flask import jsonify
 from New_Quiz_App.models import Quiz
