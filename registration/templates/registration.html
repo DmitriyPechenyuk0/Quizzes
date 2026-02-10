@@ -10,7 +10,7 @@
 
 {% block main %}
 
-<!-- <div class="container">
+<div class="container">
     <div class="card">
         <div class="logo">
             <h1>QUIZZES</h1>
@@ -77,13 +77,6 @@
                 >
             </div>
 
-            <div class="checkbox-group">
-                <input type="checkbox" id="terms" name="terms" required>
-                <label for="terms">
-                    Я погоджуюся з <a href="#">умовами використання</a> та <a href="#">політикою конфіденційності</a>
-                </label>
-            </div>
-
             <div id="errorMessage" class="error-message"></div>
 
             <button type="submit" class="submit-btn">
@@ -95,14 +88,11 @@
             Вже є акаунт? <a href="/login">Увійти</a>
         </p>
     </div>
-</div> -->
+</div>
 
-<div class="modal-overlay" id="groupModal">
+<div class="modal-overlay noned" id="groupModal">
     <div class="modal-container" role="dialog" aria-labelledby="modal-title">
         <div class="modal-header">
-            <button class="close-button" onclick="closeModal()" aria-label="Закрити">
-                <i class="bi bi-x-lg"></i>
-            </button>
             <div class="brand">
                 <div class="logo-icon"><i class="bi bi-lightbulb-fill"></i></div>
                 <div class="brand-name">Quizzes</div>

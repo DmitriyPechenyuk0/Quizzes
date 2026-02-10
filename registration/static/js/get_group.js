@@ -84,7 +84,7 @@ function sendJoinRequest() {
     joinBtn.innerHTML = '<span style="opacity: 0.7;">Надсилання...</span>';
     joinBtn.disabled = true;
 
-    fetch('/api/join-group', {
+    fetch('/registration', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ function sendJoinRequest() {
                 `Група: ${groupName}\nВикладач: ${teacher}\n\nОчікуйте підтвердження від викладача.`
             );
             setTimeout(() => {
-                window.location.href = data.redirect_url || '/dashboard';
+                window.location.href = data.redirect_url || '/login';
             }, 2000);
         } else {
             showNotification('error', 'Помилка', data.message || 'Не вдалося надіслати запит');

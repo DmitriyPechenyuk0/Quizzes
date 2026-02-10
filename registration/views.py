@@ -16,9 +16,10 @@ def show_page_registration():
         email = flask.request.form.get('email')
         password = flask.request.form.get('password')
         confirm = flask.request.form.get('confirm')
-        _teacher_val = flask.request.form.get('Teacher')
-        is_teacher = bool(_teacher_val and str(_teacher_val).lower() in ('1', 'true', 'on', 'yes'))
-        group = flask.request.form.get('group')
+        print(flask.request.form)
+        # _teacher_val = flask.request.form.get('Teacher')
+        # is_teacher = bool(_teacher_val and str(_teacher_val).lower() in ('1', 'true', 'on', 'yes'))
+        # group = flask.request.form.get('group')
 
         if User.query.filter_by(email=email).first():
             flash('Користувач з такою електронною поштою вже існує.', 'error')

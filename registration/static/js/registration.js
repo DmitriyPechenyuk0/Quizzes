@@ -136,37 +136,7 @@ githubAuthBtn.addEventListener('click', function() {
 registrationForm.addEventListener('submit', function(event) {
     event.preventDefault();
     
-    hideError();
-    
-
-    const formData = new FormData(registrationForm);
-    const password = formData.get('password');
-    const confirmPassword = formData.get('confirmPassword');
-
-    if (password !== confirmPassword) {
-        showError('Паролі не збігаються!');
-        return;
-    }
-
-    registrationForm.classList.add('loading');
-
-    fetch('/register', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        registrationForm.classList.remove('loading');
-        
-        if (data.success) {
-            window.location.href = data.redirect || '/login';
-        } else {
-            showError(data.message || 'Помилка реєстрації. Спробуйте ще раз.');
-        }
-    })
-    .catch(error => {
-        registrationForm.classList.remove('loading');
-        console.error('Error:', error);
-        showError('Помилка з\'єднання з сервером. Спробуйте пізніше.');
-    });
+   let modal = document.querySelector('.modal-overlay')
+   modal.classList.remove('noned')
+   modal.classList.add('flexed')
 })
