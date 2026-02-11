@@ -12,67 +12,41 @@ from registration import registration
 
 def show_page_registration():
     if flask.request.method == 'POST':
-        login = flask.request.form.get('login')
-        email = flask.request.form.get('email')
-        password = flask.request.form.get('password')
-        confirm = flask.request.form.get('confirm')
-        print(flask.request.form)
-        # _teacher_val = flask.request.form.get('Teacher')
-        # is_teacher = bool(_teacher_val and str(_teacher_val).lower() in ('1', 'true', 'on', 'yes'))
-        # group = flask.request.form.get('group')
+        print(flask.request.json)
+        name = flask.request.json['name']
+        email = flask.request.json['email']
+        password = flask.request.json['passw']
+        group_id = flask.request.json['groupId']
 
         if User.query.filter_by(email=email).first():
             flash('Користувач з такою електронною поштою вже існує.', 'error')
             return redirect(url_for('registration.show_page_registration'))
-
-        if login and User.query.filter_by(name=login).first():
-            flash('Користувач з таким логіном вже існує.', 'error')
-            return redirect(url_for('registration.show_page_registration'))
-
-        if password != confirm:
-            flash('Паролі не співпадають', 'error')
-            return redirect(url_for('registration.show_page_registration'))
-
-        if not group:
-            flash('Будь ласка, виберіть ваш клас', 'error')
-            return redirect(url_for('registration.show_page_registration'))
-
-        user_data = {
-            'name': login,
-            'email': email,
-            'password': password,
-            'is_teacher': is_teacher,
-            'group': group,
-            'group_name': group,
-        }
-        
+        if group_id:
+            user_data = {
+                'name': name,
+                'email': email,
+                'password': password,
+                'is_teacher': 0,
+                'group': group_id,
+            }
+        else: 
+           user_data = {
+                'name': name,
+                'email': email,
+                'password': password,
+                'is_teacher': 0,
+            }
         s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         token = s.dumps(user_data, salt='email-confirm')
         
         send_confirmation_email(user_data['email'], token)
 
-        flash('На вашу електронну пошту надіслано посилання для підтвердження.', 'success')
-        return redirect(url_for('registration.show_page_registration'))
+        # flash('На вашу електронну пошту надіслано посилання для підтвердження.', 'success')
+        return {"success": True}
+    
+    groups = Class.query.all()
     context={
-        "groups": [
-            {
-            'id': 1,
-            "name": 'ПЗ-25-2',
-            "students_count": 30,
-            "course": 1,
-            'specialization': 'Математика',
-            "teacher_name": "Тетяна Вишневська",
-            "teacher_initials": "ТВ" 
-            },
-            {
-            'id': 2,
-            "name": '10-A',
-            "students_count": 12,
-            "teacher_name": "Іван Франко",
-            "teacher_initials": "ІФ" 
-            }
-        ]
-        
+        "groups": groups
     }
     # classes = Class.query.order_by(Class.name).all()
     return render_template('registration.html', **context)
@@ -94,24 +68,23 @@ def confirm_email(token):
         return redirect(url_for('authorization.show_authorization'))
 
     try:
-        group_raw = user_data.get('group_name')
+        group_raw = user_data.get('group')
         print(group_raw)
+        new_user = User(
+            name=user_data.get('name'),
+            email=user_data.get('email'),
+            password=user_data.get('password'),
+            is_teacher=user_data.get('is_teacher', False),
+            is_approved=False, 
+        )
+
+        db.session.add(new_user)
+        db.session.flush()
         if group_raw:
-            
+            print(group_raw)
             target_class = Class.query.filter_by(id=group_raw).first()
 
             if target_class:
-                new_user = User(
-                    name=user_data.get('name'),
-                    email=user_data.get('email'),
-                    password=user_data.get('password'),
-                    is_teacher=user_data.get('is_teacher', False),
-                    is_email_confirmed=True,
-                    is_approved=True, 
-                )
-                db.session.add(new_user)
-                db.session.flush()
-
                 request_obj = RequestsToClass(
                     user_id=new_user.id,
                     class_id=target_class.id,
@@ -125,9 +98,6 @@ def confirm_email(token):
                 return redirect(url_for('registration.show_page_registration'))
         else:
             return redirect(url_for('registration.show_page_registration'))
-        
-        db.session.add(new_user)
-        db.session.commit()
 
         flash('Ваш обліковий запис успішно підтверджено! Тепер ви можете увійти.', 'success')
         return redirect(url_for('authorization.show_authorization'))

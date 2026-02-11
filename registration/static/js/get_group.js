@@ -74,81 +74,96 @@ function sendJoinRequest() {
     if (!selectedCard) {
         return;
     }
-
+    
     const groupId = selectedCard.dataset.groupId;
     const groupName = selectedCard.dataset.groupName;
     const teacher = selectedCard.dataset.teacher;
     const joinBtn = document.getElementById('joinBtn');
-
+    
+    const cPassw = document.getElementById('confirmPassword').value;
+    const passw = document.getElementById('password').value;
+    const email = document.getElementById('email').value;
+    const name = document.getElementById('username').value;
+    if(cPassw !== passw){
+        return;
+    }
+    const zapros = {
+        name,
+        email,
+        passw,
+        groupId
+    }
+    console.log(zapros)
     const originalText = joinBtn.innerHTML;
     joinBtn.innerHTML = '<span style="opacity: 0.7;">Надсилання...</span>';
     joinBtn.disabled = true;
-
     fetch('/registration', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            group_id: groupId
-        })
+        body: JSON.stringify(zapros)
     })
     .then(response => response.json())
     .then(data => {
+        console.log(data)
         if (data.success) {
-            showNotification(
-                'success',
-                `Запит успішно надіслано!`,
-                `Група: ${groupName}\nВикладач: ${teacher}\n\nОчікуйте підтвердження від викладача.`
-            );
+            
             setTimeout(() => {
-                window.location.href = data.redirect_url || '/login';
+                window.location.href = '/login';
             }, 2000);
         } else {
-            showNotification('error', 'Помилка', data.message || 'Не вдалося надіслати запит');
             joinBtn.innerHTML = originalText;
             joinBtn.disabled = false;
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        showNotification('error', 'Помилка', 'Сталася помилка при надсиланні запиту');
         joinBtn.innerHTML = originalText;
         joinBtn.disabled = false;
     });
 }
 
 function skipSelection() {
-    if (confirm('Ви впевнені, що хочете пропустити приєднання до групи?\n\nБез групи ви не матимете доступу до тестів та матеріалів. Ви зможете приєднатися пізніше в налаштуваннях.')) {
-        fetch('/api/skip-group-selection', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.href = data.redirect_url || '/dashboard';
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            window.location.href = '/dashboard';
-        });
+    const cPassw = document.getElementById('confirmPassword').value;
+    const passw = document.getElementById('password').value;
+    const email = document.getElementById('email').value;
+    const name = document.getElementById('username').value;
+    if(cPassw !== passw){
+        return;
     }
-}
-
-function closeModal() {
-    if (confirm('Закрити вікно вибору групи?')) {
-        window.location.href = '/dashboard';
+    const zapros = {
+        name,
+        email,
+        passw
     }
-}
-
-function showNotification(type, title, message) {
-    if (type === 'success') {
-        alert(`✅ ${title}\n\n${message}`);
-    } else {
-        alert(`❌ ${title}\n\n${message}`);
-    }
+    console.log(zapros)
+    const originalText = joinBtn.innerHTML;
+    joinBtn.innerHTML = '<span style="opacity: 0.7;">Надсилання...</span>';
+    joinBtn.disabled = true;
+    fetch('/registration', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(zapros)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        if (data.success) {
+            
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 2000);
+        } else {
+            joinBtn.innerHTML = originalText;
+            joinBtn.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        joinBtn.innerHTML = originalText;
+        joinBtn.disabled = false;
+    });
 }

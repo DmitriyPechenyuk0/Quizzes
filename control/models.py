@@ -9,6 +9,7 @@ class Class(db.Model):
     course = db.Column(db.Integer, nullable = False)
     teacher_name = db.Column(db.String(200), nullable = False)
     teacher_initials = db.Column(db.String(200), nullable = False)
+    specialization = db.Column(db.String(250), nullable = False)
 
 
 class RequestsToClass(db.Model):
