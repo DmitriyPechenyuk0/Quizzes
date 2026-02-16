@@ -6,52 +6,53 @@ from profile_app.models import User
 from New_Quiz_App.models import Quiz, db
 from quiz_app.models import QuizSession, SessionParticipant 
 
-@login_required
+# @login_required
 def show_profile_page():
 
 
 
-    if current_user.is_teacher:
-        completed_quizzes = QuizSession.query.filter_by(who_host = current_user.id).all()
-        sessionss = []
+    # if current_user.is_teacher:
+    #     completed_quizzes = QuizSession.query.filter_by(who_host = current_user.id).all()
+    #     sessionss = []
 
-        for itm in completed_quizzes:
-            sessionss.append({"session":itm, "quiz":Quiz.query.filter_by(id=itm.quiz_id).first()})
-    else:
+    #     for itm in completed_quizzes:
+    #         sessionss.append({"session":itm, "quiz":Quiz.query.filter_by(id=itm.quiz_id).first()})
+    # else:
         
-        completed_quizzes = SessionParticipant.query.filter_by(user_id = current_user.id).all()
+    #     completed_quizzes = SessionParticipant.query.filter_by(user_id = current_user.id).all()
 
-        quizz = []
+    #     quizz = []
         
-        for item in completed_quizzes:
-            quizz.append(item.session_id)
+    #     for item in completed_quizzes:
+    #         quizz.append(item.session_id)
         
-        completed_quizzes = quizz
+    #     completed_quizzes = quizz
         
-        sess = []
+    #     sess = []
         
-        for item in completed_quizzes:
-            sess.append(QuizSession.query.filter_by(id=item).first())
+    #     for item in completed_quizzes:
+    #         sess.append(QuizSession.query.filter_by(id=item).first())
         
-        completed_quizzes= sess
-        sessionss = []
-        for itm in completed_quizzes:
-            sessionss.append({"session":itm, "quiz":Quiz.query.filter_by(id=itm.quiz_id).first()})
-    completed_counts = len(completed_quizzes)
+    #     completed_quizzes= sess
+    #     sessionss = []
+    #     for itm in completed_quizzes:
+    #         sessionss.append({"session":itm, "quiz":Quiz.query.filter_by(id=itm.quiz_id).first()})
+    # completed_counts = len(completed_quizzes)
 
-    created_quizzes = Quiz.query.filter_by(owner=current_user.id).all()
+    # created_quizzes = Quiz.query.filter_by(owner=current_user.id).all()
     
     context = {
         'page': 'profile',
-        'name': current_user.name,
-        'email': current_user.email,
-        'is_auth': current_user.is_authenticated,
-        'created_quizzes': created_quizzes, 
-        'created_quizzes_count': len(created_quizzes),
-        'completed_quizzes': sessionss,
-        'completed_quizzes_count': completed_counts,
-        'is_admin': current_user.is_teacher,
-        'is_teacher': current_user.is_teacher
+        'user_active': True
+        # 'name': current_user.name,
+        # 'email': current_user.email,
+        # 'is_auth': current_user.is_authenticated,
+        # 'created_quizzes': created_quizzes, 
+        # 'created_quizzes_count': len(created_quizzes),
+        # 'completed_quizzes': sessionss,
+        # 'completed_quizzes_count': completed_counts,
+        # 'is_admin': current_user.is_teacher,
+        # 'is_teacher': current_user.is_teacher
     }
 
     return flask.render_template("profile.html", **context)

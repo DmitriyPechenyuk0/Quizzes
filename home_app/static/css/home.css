@@ -1,7 +1,7 @@
 .hero {
-    max-width: 1400px;
+    max-width: 75vw;
     margin: 0 auto;
-    padding: 4rem 1.5rem;
+    padding: 3.7vh 0.78vw;
     text-align: center;
     position: relative;
 }
@@ -11,10 +11,10 @@
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 600px;
-    height: 600px;
+    width: 31.25vw;
+    height: 55.56vh;
     background: radial-gradient(circle, rgba(34, 197, 94, 0.15), transparent);
-    filter: blur(80px);
+    filter: blur(4.17vw);
     pointer-events: none;
 }
 
@@ -24,28 +24,28 @@
 }
 
 .hero-icon {
-    width: 100px;
-    height: 100px;
+    width: 5.21vw;
+    height: 9.26vh;
     background: linear-gradient(135deg, #22c55e, #16a34a);
-    border-radius: 28px;
+    border-radius: 1.46vw;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 2rem;
+    margin: 0 auto 1.85vh;
     animation: float 3s ease-in-out infinite;
-    box-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
-    font-size: 3rem;
+    box-shadow: 0 0 2.08vw rgba(34, 197, 94, 0.4);
+    font-size: 2.78vh;
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-0.93vh); }
 }
 
 .hero h1 {
-    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-size: 4.63vh;
     font-weight: 800;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.39vh;
     background: linear-gradient(135deg, #ffffff, #22c55e, #ffffff);
     background-size: 200% 200%;
     -webkit-background-clip: text;
@@ -60,90 +60,90 @@
 }
 
 .hero-description {
-    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-size: 1.39vh;
     color: #d1d5db;
-    max-width: 900px;
-    margin: 0 auto 2rem;
+    max-width: 46.88vw;
+    margin: 0 auto 1.85vh;
     line-height: 1.8;
 }
 
 .hero-badges {
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    margin-bottom: 3rem;
+    gap: 0.52vw;
+    margin-bottom: 2.78vh;
     flex-wrap: wrap;
 }
 
 .badge {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.26vw;
     background-color: #18181b;
     border: 1px solid #27272a;
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    padding: 0.46vh 0.52vw;
+    border-radius: 2.6vw;
+    font-size: 0.83vh;
     font-weight: 500;
 }
 
 .btn-hero {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.39vw;
     background: linear-gradient(135deg, #22c55e, #16a34a);
     color: black;
-    padding: 1.25rem 2.5rem;
-    border-radius: 16px;
+    padding: 1.16vh 1.3vw;
+    border-radius: 0.83vw;
     text-decoration: none;
     font-weight: 700;
-    font-size: clamp(1rem, 2.5vw, 1.125rem);
+    font-size: 1.04vh;
     transition: all 0.3s;
-    box-shadow: 0 10px 40px rgba(34, 197, 94, 0.3);
+    box-shadow: 0 0.93vh 2.08vw rgba(34, 197, 94, 0.3);
 }
 
 .btn-hero:hover {
     transform: scale(1.05);
-    box-shadow: 0 15px 50px rgba(34, 197, 94, 0.5);
+    box-shadow: 0 1.39vh 2.6vw rgba(34, 197, 94, 0.5);
 }
 
 .section {
-    max-width: 1400px;
+    max-width: 75vw;
     margin: 0 auto;
-    padding: 3rem 1.5rem;
+    padding: 2.78vh 0.78vw;
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2.78vh;
 }
 
 .section-header h2 {
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: 2.78vh;
     font-weight: 800;
-    margin-bottom: 1rem;
+    margin-bottom: 0.93vh;
 }
 
 .section-header p {
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-size: 1.16vh;
     color: #9ca3af;
-    max-width: 800px;
+    max-width: 41.67vw;
     margin: 0 auto;
 }
 
 .about-content {
     background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(34, 197, 94, 0.02));
     border: 1px solid #27272a;
-    border-radius: 24px;
-    padding: clamp(1.5rem, 4vw, 3rem);
-    margin-bottom: 3rem;
+    border-radius: 1.25vw;
+    padding: 2.78vh 1.56vw;
+    margin-bottom: 2.78vh;
 }
 
 .about-text {
-    font-size: clamp(1rem, 2.2vw, 1.125rem);
+    font-size: 1.04vh;
     color: #d1d5db;
     line-height: 2;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.39vh;
 }
 
 .about-highlight {
@@ -153,31 +153,31 @@
 
 .flow-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(15.63vw, 1fr));
+    gap: 1.04vw;
+    margin-top: 2.78vh;
 }
 
 .flow-card {
     background-color: #18181b;
     border: 1px solid #27272a;
-    border-radius: 20px;
-    padding: 2rem;
+    border-radius: 1.04vw;
+    padding: 1.85vh 1.04vw;
     position: relative;
     transition: all 0.3s;
 }
 
 .flow-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-0.46vh);
     border-color: rgba(34, 197, 94, 0.3);
 }
 
 .flow-number {
     position: absolute;
-    top: -15px;
-    left: 20px;
-    width: 40px;
-    height: 40px;
+    top: -1.39vh;
+    left: 1.04vw;
+    width: 2.08vw;
+    height: 3.7vh;
     background: linear-gradient(135deg, #22c55e, #16a34a);
     border-radius: 50%;
     display: flex;
@@ -185,98 +185,343 @@
     justify-content: center;
     font-weight: 800;
     color: black;
-    font-size: 1.25rem;
+    font-size: 1.16vh;
 }
 
 .flow-icon {
-    width: 60px;
-    height: 60px;
+    width: 3.13vw;
+    height: 5.56vh;
     background: rgba(34, 197, 94, 0.1);
-    border-radius: 16px;
+    border-radius: 0.83vw;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 1.5rem 0 1rem 0;
-    font-size: 2rem;
+    margin: 1.39vh 0 0.93vh 0;
+    font-size: 1.85vh;
     color: #22c55e;
 }
 
 .flow-card h3 {
-    font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+    font-size: 1.39vh;
     font-weight: 700;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.69vh;
 }
 
 .flow-card p {
     color: #9ca3af;
     line-height: 1.8;
-    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-size: 0.93vh;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(13.02vw, 1fr));
+    gap: 0.78vw;
+    margin-top: 2.78vh;
 }
 
 .card {
     background-color: #18181b;
     border: 1px solid #27272a;
-    border-radius: 20px;
-    padding: clamp(1.5rem, 3vw, 2rem);
+    border-radius: 1.04vw;
+    padding: 1.85vh 1.04vw;
     transition: all 0.3s;
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-0.46vh);
     border-color: rgba(34, 197, 94, 0.3);
 }
 
 .card-icon {
-    width: 60px;
-    height: 60px;
+    width: 3.13vw;
+    height: 5.56vh;
     background: rgba(34, 197, 94, 0.1);
-    border-radius: 16px;
+    border-radius: 0.83vw;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.5rem;
-    font-size: 2rem;
+    margin-bottom: 1.39vh;
+    font-size: 1.85vh;
     color: #22c55e;
 }
 
 .card h3, .card h4 {
-    font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+    font-size: 1.39vh;
     font-weight: 700;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.69vh;
 }
 
 .card p {
     color: #9ca3af;
     line-height: 1.8;
-    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-size: 0.93vh;
 }
 
 .cta-box {
     background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05));
     border: 1px solid rgba(34, 197, 94, 0.2);
-    border-radius: 28px;
-    padding: clamp(2rem, 5vw, 4rem);
+    border-radius: 1.46vw;
+    padding: 3.7vh 2.08vw;
     text-align: center;
 }
 
 .cta-box h2 {
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: 2.78vh;
     font-weight: 800;
-    margin-bottom: 1rem;
+    margin-bottom: 0.93vh;
 }
 
 .cta-box p {
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-size: 1.16vh;
     color: #d1d5db;
-    margin-bottom: 2rem;
-    max-width: 600px;
+    margin-bottom: 1.85vh;
+    max-width: 31.25vw;
     margin-left: auto;
     margin-right: auto;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        max-width: 90vw;
+        padding: 4vh 5vw;
+    }
+
+    .hero-glow {
+        width: 80vw;
+        height: 40vh;
+        filter: blur(10vw);
+    }
+
+    .hero-icon {
+        width: 15vw;
+        height: 8vh;
+        border-radius: 4vw;
+        margin-bottom: 3vh;
+        box-shadow: 0 0 5vw rgba(34, 197, 94, 0.4);
+        font-size: 4vh;
+    }
+
+    .hero h1 {
+        font-size: 5vh;
+        margin-bottom: 2vh;
+    }
+
+    .hero-description {
+        font-size: 2vh;
+        max-width: 85vw;
+        margin-bottom: 3vh;
+        line-height: 1.6;
+    }
+
+    .hero-badges {
+        gap: 2vw;
+        margin-bottom: 4vh;
+    }
+
+    .badge {
+        gap: 2vw;
+        padding: 1vh 3vw;
+        border-radius: 6vw;
+        font-size: 1.6vh;
+    }
+
+    .btn-hero {
+        gap: 3vw;
+        padding: 1.8vh 6vw;
+        border-radius: 3vw;
+        font-size: 2vh;
+        box-shadow: 0 1.5vh 5vw rgba(34, 197, 94, 0.3);
+    }
+
+    .btn-hero:hover {
+        box-shadow: 0 2vh 6vw rgba(34, 197, 94, 0.5);
+    }
+
+    .section {
+        max-width: 90vw;
+        padding: 4vh 5vw;
+    }
+
+    .section-header {
+        margin-bottom: 4vh;
+    }
+
+    .section-header h2 {
+        font-size: 4vh;
+        margin-bottom: 2vh;
+    }
+
+    .section-header p {
+        font-size: 2vh;
+        max-width: 85vw;
+    }
+
+    .about-content {
+        border-radius: 4vw;
+        padding: 3vh 5vw;
+        margin-bottom: 4vh;
+    }
+
+    .about-text {
+        font-size: 1.8vh;
+        line-height: 1.7;
+        margin-bottom: 2.5vh;
+    }
+
+    .flow-container {
+        grid-template-columns: 1fr;
+        gap: 3vh;
+        margin-top: 4vh;
+    }
+
+    .flow-card {
+        border-radius: 4vw;
+        padding: 3vh 5vw;
+    }
+
+    .flow-card:hover {
+        transform: translateY(-1vh);
+    }
+
+    .flow-number {
+        top: -2vh;
+        left: 5vw;
+        width: 8vw;
+        height: 4vh;
+        font-size: 2vh;
+    }
+
+    .flow-icon {
+        width: 12vw;
+        height: 6vh;
+        border-radius: 3vw;
+        margin: 2vh 0 1.5vh 0;
+        font-size: 3.5vh;
+    }
+
+    .flow-card h3 {
+        font-size: 2.5vh;
+        margin-bottom: 1.5vh;
+    }
+
+    .flow-card p {
+        font-size: 1.8vh;
+        line-height: 1.6;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 3vh;
+        margin-top: 4vh;
+    }
+
+    .card {
+        border-radius: 4vw;
+        padding: 3vh 5vw;
+    }
+
+    .card:hover {
+        transform: translateY(-1vh);
+    }
+
+    .card-icon {
+        width: 12vw;
+        height: 6vh;
+        border-radius: 3vw;
+        margin-bottom: 2vh;
+        font-size: 3.5vh;
+    }
+
+    .card h3, .card h4 {
+        font-size: 2.5vh;
+        margin-bottom: 1.5vh;
+    }
+
+    .card p {
+        font-size: 1.8vh;
+        line-height: 1.6;
+    }
+
+    .cta-box {
+        border-radius: 5vw;
+        padding: 4vh 6vw;
+    }
+
+    .cta-box h2 {
+        font-size: 4vh;
+        margin-bottom: 2vh;
+    }
+
+    .cta-box p {
+        font-size: 2vh;
+        margin-bottom: 3vh;
+        max-width: 80vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 3vh 4vw;
+    }
+
+    .hero-icon {
+        width: 18vw;
+        height: 7vh;
+        font-size: 3.5vh;
+    }
+
+    .hero h1 {
+        font-size: 4.5vh;
+    }
+
+    .hero-description {
+        font-size: 1.8vh;
+    }
+
+    .badge {
+        font-size: 1.4vh;
+        padding: 0.8vh 2.5vw;
+    }
+
+    .btn-hero {
+        padding: 1.5vh 5vw;
+        font-size: 1.8vh;
+    }
+
+    .section-header h2 {
+        font-size: 3.5vh;
+    }
+
+    .section-header p {
+        font-size: 1.8vh;
+    }
+
+    .about-text {
+        font-size: 1.6vh;
+    }
+
+    .flow-card h3 {
+        font-size: 2.2vh;
+    }
+
+    .flow-card p {
+        font-size: 1.6vh;
+    }
+
+    .card h3, .card h4 {
+        font-size: 2.2vh;
+    }
+
+    .card p {
+        font-size: 1.6vh;
+    }
+
+    .cta-box h2 {
+        font-size: 3.5vh;
+    }
+
+    .cta-box p {
+        font-size: 1.8vh;
+    }
 }

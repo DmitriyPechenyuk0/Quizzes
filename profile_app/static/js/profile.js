@@ -1,96 +1,56 @@
-let currentQuizId = null;
-
-function openModal(quizId, quizName) {
-    console.log('Opening modal:', quizId, quizName);
-    currentQuizId = quizId;
-
-    document.getElementById('startBtn').href = `/quiz/start/${quizId}`;
-
-    const modal = document.getElementById('quizModal');
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-    console.log('Closing modal');
-    const modal = document.getElementById('quizModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-    currentQuizId = null;
-}
-
-async function deleteQuiz() {
-    if (!currentQuizId) return;
-
-    try {
-        const response = await fetch(`/quiz/delete/${currentQuizId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-
-        if (response.ok) {
-            console.log('Quiz deleted:', currentQuizId);
-            const card = document.querySelector(`.quiz-card[onclick*="'${currentQuizId}'"]`);
-            if (card) card.remove();
-            closeModal();
-            updateQuizCount();
-        } else {
-            const data = await response.json();
-            console.error('Ошибка при удалении квиза:', data.message);
-        }
-    } catch (err) {
-        console.error('Ошибка при удалении квиза:', err);
+// Function to switch between student and teacher views
+function switchRole(role) {
+    // Update body class
+    if (role === 'teacher') {
+        document.body.className = 'teacher-view';
+    } else {
+        document.body.className = 'student-view';
     }
-}
-
-function updateQuizCount() {
-    const quizCards = document.querySelectorAll('#created-quizzes-section .quiz-card');
-    const countElement = document.querySelector('#show-created-btn p');
-    if (countElement) {
-        countElement.textContent = quizCards.length;
-    }
-}
-
-document.getElementById('quizModal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-});
-
-function historyTeacherSwitcher(session_id){
-    window.location.href = `/history/${session_id}`
-}
-function historyStudentSwitcher(session_id, user_id){
-    window.location.href = `/history/${session_id}/${user_id}`
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    const showCreatedBtn = document.getElementById('show-created-btn');
-    const showCompletedBtn = document.getElementById('show-completed-btn');
-    const createdSection = document.getElementById('created-quizzes-section');
-    const completedSection = document.getElementById('completed-quizzes-section');
-
-
-    if (showCreatedBtn && showCompletedBtn && createdSection && completedSection) {
+    
+    // Update active button
+    const buttons = document.querySelectorAll('.role-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Show first visible section
+    const firstVisibleTab = document.querySelector('.tab:not(.teacher-only)');
+    if (firstVisibleTab) {
+        // Reset all tabs
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+        firstVisibleTab.classList.add('active');
         
-        showCreatedBtn.addEventListener('click', () => {
-
-            createdSection.style.display = 'block';
-            completedSection.style.display = 'none';
-
-            showCreatedBtn.classList.add('active');
-            showCompletedBtn.classList.remove('active');
-        });
-
-        showCompletedBtn.addEventListener('click', () => {
-
-            createdSection.style.display = 'none';
-            completedSection.style.display = 'block';
-   
-            showCompletedBtn.classList.add('active');
-            showCreatedBtn.classList.remove('active');
-        });
+        // Show corresponding section
+        const sectionId = firstVisibleTab.getAttribute('onclick').match(/'([^']+)'/)[1];
+        showSectionById(sectionId);
     }
+}
 
+// Function to show specific section
+function showSection(sectionId) {
+    showSectionById(sectionId);
+    
+    // Update active tab
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    event.target.classList.add('active');
+}
+
+// Helper function to show section by ID
+function showSectionById(sectionId) {
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // Show selected section
+    const selectedSection = document.getElementById(sectionId);
+    if (selectedSection) {
+        selectedSection.style.display = 'block';
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Dashboard initialized');
 });
