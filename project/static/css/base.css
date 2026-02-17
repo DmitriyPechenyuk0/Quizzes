@@ -11,6 +11,7 @@
     --text-primary: #e8e8e8;
     --text-secondary: #9a9a9a;
     --error-color: #ff4444;
+    font-family: 'Outfit', "Golos Text";
 }
 
 html {
@@ -20,7 +21,6 @@ html {
 }
 
 body {
-    font-family: 'Outfit', "Golos Text";
     background-color: #000000;
     color: #ffffff;
     line-height: 1.6;

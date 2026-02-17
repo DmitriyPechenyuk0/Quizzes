@@ -97,3 +97,7 @@ def passing_page(code):
         return redirect('/')
         
     return render_template('student_passing.html', **context)
+
+
+def newDesignTestingT():
+    return render_template('new_design/teacher_room.html')

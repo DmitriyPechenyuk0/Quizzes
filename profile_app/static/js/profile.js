@@ -1,13 +1,11 @@
 // Function to switch between student and teacher views
 function switchRole(role) {
-    // Update body class
     if (role === 'teacher') {
         document.body.className = 'teacher-view';
     } else {
         document.body.className = 'student-view';
     }
     
-    // Update active button
     const buttons = document.querySelectorAll('.role-btn');
     buttons.forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
@@ -49,8 +47,3 @@ function showSectionById(sectionId) {
         selectedSection.style.display = 'block';
     }
 }
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Dashboard initialized');
-});

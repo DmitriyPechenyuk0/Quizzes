@@ -1,0 +1,650 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    background: black;
+    color: white;
+}
+
+.main-containerq {
+    min-height: 100vh;
+    background: black;
+    color: white;
+}
+
+.content-wrapperq {
+    max-width: 90vw;
+    margin: 0 auto;
+    padding: 3vh 4vw;
+}
+
+/* Header */
+.headerq {
+    margin-bottom: 8vh;
+}
+
+.header-topq {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 4vh;
+    padding-bottom: 4vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.1);
+}
+
+.titleq {
+    font-size: 4vw;
+    font-weight: 300;
+    letter-spacing: -0.05em;
+    margin-bottom: 1vh;
+    line-height: 1;
+}
+
+.subtitleq {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8vw;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+}
+
+.toggle-wrapperq {
+    display: flex;
+    gap: 0.2vw;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.3vw;
+    border-radius: 1vw;
+}
+
+.toggle-btnq {
+    padding: 1vh 2vw;
+    font-size: 0.9vw;
+    font-weight: 500;
+    transition: all 0.3s;
+    border-radius: 0.8vw;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+.toggle-btnq.activeq {
+    background: white;
+    color: black;
+}
+
+.toggle-btnq:hover:not(.activeq) {
+    color: white;
+}
+
+/* Quiz Info Grid */
+.quiz-info-gridq {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4vw;
+}
+
+.info-labelq {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.7vw;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1vh;
+    font-weight: 500;
+}
+
+.info-valueq {
+    font-size: 1.5vw;
+    font-weight: 300;
+}
+
+/* Main Grid */
+.main-gridq {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3vw;
+}
+
+/* Status Panel */
+.panel-cardq {
+    background: rgba(255, 255, 255, 0.02);
+    border: 0.1vh solid rgba(255, 255, 255, 0.1);
+    border-radius: 2vw;
+    padding: 3vw;
+}
+
+.count-sectionq {
+    margin-bottom: 4vh;
+    padding-bottom: 4vh;
+    border-bottom: 0.1vh solid rgba(255, 255, 255, 0.1);
+}
+
+.count-wrapperq {
+    display: flex;
+    align-items: baseline;
+    gap: 1vw;
+    margin-bottom: 1vh;
+}
+
+.count-numberq {
+    font-size: 3.5vw;
+    font-weight: 300;
+}
+
+.count-totalq {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.9vw;
+}
+
+.count-labelq {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9vw;
+}
+
+/* Waiting Section */
+.waiting-sectionq {
+    margin-top: 2vh;
+}
+
+.waiting-contentq {
+    display: flex;
+    align-items: flex-start;
+    gap: 1vw;
+}
+
+.status-dotq {
+    width: 0.6vw;
+    height: 0.6vw;
+    border-radius: 50%;
+    background: rgb(16, 185, 129);
+    margin-top: 0.8vh;
+    animation: pulse 2s infinite;
+}
+
+.waiting-titleq {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1vh;
+    font-weight: 300;
+    font-size: 1vw;
+}
+
+.waiting-textq {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8vw;
+    font-weight: 300;
+    line-height: 1.6;
+}
+
+/* Controls Section */
+.controls-sectionq {
+    margin-top: 2vh;
+}
+
+.start-btnq {
+    width: 100%;
+    background: rgb(16, 185, 129);
+    color: black;
+    font-weight: 500;
+    padding: 2vh 2vw;
+    border-radius: 1.2vw;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1vw;
+    font-size: 1vw;
+}
+
+.start-btnq:hover:not(.disabledq) {
+    background: rgb(5, 150, 105);
+}
+
+.start-btnq.disabledq {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.2);
+    cursor: not-allowed;
+}
+
+.btn-iconq {
+    font-size: 1.2vw;
+}
+
+.controls-hintq {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.7vw;
+    text-align: center;
+    font-weight: 300;
+    margin-top: 2vh;
+}
+
+/* Participants Panel */
+.participants-headerq {
+    margin-bottom: 3vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.participants-titleq {
+    font-size: 1.1vw;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+}
+
+.title-iconq {
+    font-size: 1.2vw;
+}
+
+.participants-listq {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+}
+
+/* Student Card */
+.student-cardq {
+    background: rgba(255, 255, 255, 0.02);
+    border: 0.1vh solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.2vw;
+    padding: 2.5vh 2vw;
+    transition: all 0.3s;
+}
+
+.student-cardq:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.student-contentq {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.student-infoq {
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+    flex: 1;
+}
+
+.avatarq {
+    width: 3vw;
+    height: 3vw;
+    min-width: 3vw;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 0.1vh solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-textq {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9vw;
+    font-weight: 500;
+}
+
+.student-detailsq {
+    flex: 1;
+    min-width: 0;
+}
+
+.student-nameq {
+    color: white;
+    font-weight: 300;
+    font-size: 1.2vw;
+    margin-bottom: 0.5vh;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.student-statusq {
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+.status-iconq {
+    font-size: 0.5vw;
+}
+
+.status-iconq.connectedq {
+    color: rgb(16, 185, 129);
+}
+
+.status-iconq.connectingq {
+    color: rgba(255, 255, 255, 0.2);
+    animation: pulse 2s infinite;
+}
+
+.status-textq {
+    font-size: 0.7vw;
+    font-weight: 300;
+}
+
+.connected-textq {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.connecting-textq {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.remove-btnq {
+    opacity: 0;
+    width: 2.5vw;
+    height: 2.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.8vw;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.4);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.student-cardq:hover .remove-btnq {
+    opacity: 1;
+}
+
+.remove-btnq:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.remove-iconq {
+    font-size: 1.2vw;
+}
+
+/* Footer */
+.footerq {
+    margin-top: 10vh;
+    padding-top: 4vh;
+    border-top: 0.1vh solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+}
+
+.footer-textq {
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 0.7vw;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .content-wrapperq {
+        padding: 2vh 4vw;
+    }
+
+    .header-topq {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3vh;
+    }
+
+    .titleq {
+        font-size: 8vw;
+        margin-bottom: 1vh;
+    }
+
+    .subtitleq {
+        font-size: 2.5vw;
+    }
+
+    .toggle-wrapperq {
+        width: 100%;
+        padding: 1vw;
+        border-radius: 2vw;
+        gap: 1vw;
+    }
+
+    .toggle-btnq {
+        flex: 1;
+        padding: 1.5vh 0;
+        font-size: 3vw;
+        border-radius: 1.5vw;
+    }
+
+    .quiz-info-gridq {
+        grid-template-columns: 1fr;
+        gap: 4vh;
+    }
+
+    .info-labelq {
+        font-size: 2.5vw;
+        margin-bottom: 1vh;
+    }
+
+    .info-valueq {
+        font-size: 4.5vw;
+    }
+
+    .main-gridq {
+        grid-template-columns: 1fr;
+        gap: 4vh;
+    }
+
+    .panel-cardq {
+        border-radius: 4vw;
+        padding: 5vw;
+    }
+
+    .count-numberq {
+        font-size: 12vw;
+    }
+
+    .count-totalq {
+        font-size: 3.5vw;
+    }
+
+    .count-labelq {
+        font-size: 3vw;
+    }
+
+    .status-dotq {
+        width: 2vw;
+        height: 2vw;
+        margin-top: 1vh;
+    }
+
+    .waiting-contentq {
+        gap: 3vw;
+    }
+
+    .waiting-titleq {
+        font-size: 3.5vw;
+        margin-bottom: 1.5vh;
+    }
+
+    .waiting-textq {
+        font-size: 3vw;
+        line-height: 1.8;
+    }
+
+    .start-btnq {
+        padding: 2.5vh 4vw;
+        border-radius: 3vw;
+        font-size: 3.5vw;
+        gap: 2vw;
+    }
+
+    .btn-iconq {
+        font-size: 4vw;
+    }
+
+    .controls-hintq {
+        font-size: 2.5vw;
+        margin-top: 2vh;
+    }
+
+    .participants-titleq {
+        font-size: 3.5vw;
+        gap: 2vw;
+    }
+
+    .title-iconq {
+        font-size: 4vw;
+    }
+
+    .participants-listq {
+        gap: 2vh;
+    }
+
+    .student-cardq {
+        border-radius: 3vw;
+        padding: 2.5vh 4vw;
+    }
+
+    .student-infoq {
+        gap: 3vw;
+    }
+
+    .avatarq {
+        width: 10vw;
+        height: 10vw;
+        min-width: 10vw;
+    }
+
+    .avatar-textq {
+        font-size: 3.5vw;
+    }
+
+    .student-nameq {
+        font-size: 4vw;
+        margin-bottom: 1vh;
+    }
+
+    .student-statusq {
+        gap: 1.5vw;
+    }
+
+    .status-iconq {
+        font-size: 2vw;
+    }
+
+    .status-textq {
+        font-size: 2.8vw;
+    }
+
+    .remove-btnq {
+        opacity: 1;
+        width: 8vw;
+        height: 8vw;
+        min-width: 8vw;
+        border-radius: 2vw;
+    }
+
+    .remove-iconq {
+        font-size: 4vw;
+    }
+
+    .footerq {
+        margin-top: 8vh;
+        padding-top: 4vh;
+    }
+
+    .footer-textq {
+        font-size: 2.5vw;
+    }
+}
+
+/* Tablet Responsiveness */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .titleq {
+        font-size: 6vw;
+    }
+
+    .subtitleq {
+        font-size: 1.5vw;
+    }
+
+    .toggle-btnq {
+        font-size: 1.5vw;
+        padding: 1.5vh 3vw;
+    }
+
+    .quiz-info-gridq {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3vw;
+    }
+
+    .info-labelq {
+        font-size: 1.2vw;
+    }
+
+    .info-valueq {
+        font-size: 2.5vw;
+    }
+
+    .main-gridq {
+        grid-template-columns: 1fr 1.5fr;
+    }
+
+    .count-numberq {
+        font-size: 5vw;
+    }
+
+    .count-totalq {
+        font-size: 1.5vw;
+    }
+
+    .count-labelq {
+        font-size: 1.4vw;
+    }
+
+    .waiting-titleq {
+        font-size: 1.5vw;
+    }
+
+    .waiting-textq {
+        font-size: 1.3vw;
+    }
+
+    .start-btnq {
+        font-size: 1.5vw;
+    }
+
+    .btn-iconq {
+        font-size: 2vw;
+    }
+
+    .student-nameq {
+        font-size: 1.8vw;
+    }
+
+    .avatarq {
+        width: 4vw;
+        height: 4vw;
+    }
+
+    .avatar-textq {
+        font-size: 1.5vw;
+    }
+}

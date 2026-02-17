@@ -9,6 +9,7 @@ quiz.add_url_rule("/join", view_func=quiz_views.join_page, methods=["GET"])
 quiz.add_url_rule("/join/<code>", view_func=quiz_views.passing_page, methods=["GET"])
 quiz.add_url_rule("/host/<code>", view_func=quiz_views.host_page, methods=["GET"])
 quiz.add_url_rule("/start/<int:quiz_id>", view_func=quiz_views.start_session_redirect, methods=["GET"])
+quiz.add_url_rule("/new/teacher", view_func=quiz_views.newDesignTestingT, methods=["GET"])
 
 profile_app.profille.add_url_rule('/quiz/delete/<int:quiz_id>', view_func=profile_app.delete_quiz, methods=['DELETE'])
 
