@@ -1,7 +1,7 @@
 from flask_login import login_required, current_user, logout_user, UserMixin
 from flask import redirect, url_for, jsonify
 import flask
-
+from control.models import Class, Group, RequestsToClass
 from profile_app.models import User
 from New_Quiz_App.models import Quiz, db
 from quiz_app.models import QuizSession, SessionParticipant 
@@ -44,16 +44,26 @@ def show_profile_page():
         
         name = current_user.name
         email = current_user.email
+        if Class.query.filter_by(id=current_user.group).all():
+            user_class = Class.query.filter_by(id=current_user.group).all()[0]
+        else:
+            user_class = False
         user_initials = current_user.name.split(' ')
         final_initials = []
 
         for initial in user_initials:
             final_initials.append(list(initial)[0])
         final_initials = ''.join(final_initials)
+
+        created_tests = Quiz.query.filter_by(owner = current_user.id).all()
+
+        print(created_tests)
+
     else:
         name = 'Unknown User'
         email = 'example@gmail.com'
         final_initials = 'U'
+        user_class = False
 
     context = {
         'page': 'profile',
@@ -62,7 +72,8 @@ def show_profile_page():
         'user_name': name,
         'user_email': email,
         'user_initials': final_initials,
-
+        'created_tests': created_tests,
+        "user_class" : user_class
         # 'is_auth': current_user.is_authenticated,
         # 'created_quizzes': created_quizzes, 
         # 'created_quizzes_count': len(created_quizzes),
