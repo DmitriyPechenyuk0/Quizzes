@@ -45,7 +45,7 @@ def show_profile_page():
         name = current_user.name
         email = current_user.email
         if Class.query.filter_by(id=current_user.group).all():
-            user_class = Class.query.filter_by(id=current_user.group).all()[0]
+            user_class = Class.query.filter_by(id=current_user.group).all()[0].name
         else:
             user_class = False
         user_initials = current_user.name.split(' ')
