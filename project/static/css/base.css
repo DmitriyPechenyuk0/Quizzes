@@ -22,7 +22,7 @@ html {
 
 body {
     background-color: #000000;
-    color: #ffffff;
+    color: #d1d5db;
     line-height: 1.6;
     overflow-x: hidden;
     width: 100vw;
@@ -126,7 +126,7 @@ body::-webkit-scrollbar-thumb {
     align-items: center;
     gap: 0.7vw;
     text-decoration: none;
-    color: white;
+    color: #d1d5db;
 }
 
 .logo-icon {
@@ -178,7 +178,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .btn-primaryy {
-    background: linear-gradient(135deg, #22c55e, #16a34a);
+    background: linear-gradient(135deg, #22c55eea, #16a34ac5);
     color: black;
     padding: 0.46vh 0.52vw;
     border-radius: 0.63vw;
