@@ -7,15 +7,8 @@
 {% endblock %}
 
 {% block main %}
+    <div id="is_teach" style="display: none; opacity: 0;">{{ is_teacher }}</div>
     <div id="maiCont" class="student-view">
-        <div class="role-toggle">
-            <button class="role-btn active" onclick="switchRole('student')">
-                <i class="bi bi-person"></i> Учень
-            </button>
-            <button class="role-btn" onclick="switchRole('teacher')">
-                <i class="bi bi-person-workspace"></i> Вчитель
-            </button>
-        </div>
 
         <div class="container">
 

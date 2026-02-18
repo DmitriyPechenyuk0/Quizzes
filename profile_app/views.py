@@ -1,4 +1,4 @@
-from flask_login import login_required, current_user, logout_user
+from flask_login import login_required, current_user, logout_user, UserMixin
 from flask import redirect, url_for, jsonify
 import flask
 
@@ -40,12 +40,29 @@ def show_profile_page():
     # completed_counts = len(completed_quizzes)
 
     # created_quizzes = Quiz.query.filter_by(owner=current_user.id).all()
-    
+    if isinstance(current_user, UserMixin):
+        
+        name = current_user.name
+        email = current_user.email
+        user_initials = current_user.name.split(' ')
+        final_initials = []
+
+        for initial in user_initials:
+            final_initials.append(list(initial)[0])
+        final_initials = ''.join(final_initials)
+    else:
+        name = 'Unknown User'
+        email = 'example@gmail.com'
+        final_initials = 'U'
+
     context = {
         'page': 'profile',
-        'user_active': True
-        # 'name': current_user.name,
-        # 'email': current_user.email,
+        'user_active': True,
+        'is_teacher': True,
+        'user_name': name,
+        'user_email': email,
+        'user_initials': final_initials,
+
         # 'is_auth': current_user.is_authenticated,
         # 'created_quizzes': created_quizzes, 
         # 'created_quizzes_count': len(created_quizzes),

@@ -15,7 +15,6 @@ class Class(db.Model):
     course = db.Column(db.Integer, nullable = False)
     
 
-
 class RequestsToClass(db.Model):
     __tablename__ = 'requests_to_class'
     id = db.Column(db.Integer, primary_key=True)

@@ -4,7 +4,6 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('registration.static', filename='css/registration.css') }}">
-<link rel="stylesheet" href="{{ url_for('registration.static', filename='css/get_group.css') }}">
 {% endblock %}
 
 
@@ -89,92 +88,5 @@
         </p>
     </div>
 </div>
-
-<div class="modal-overlay noned" id="groupModal">
-    <div class="modal-container" role="dialog" aria-labelledby="modal-title">
-        <div class="modal-header">
-            <div class="brand">
-                <div class="logo-icon"><i class="bi bi-lightbulb-fill"></i></div>
-                <div class="brand-name">Quizzes</div>
-            </div>
-            <div class="header-content">
-                <h1 id="modal-title">Приєднайтесь до групи</h1>
-                <p>Оберіть академічну групу для доступу до тестів та навчальних матеріалів</p>
-            </div>
-        </div>
-
-        <div class="search-container">
-            <div class="search-box">
-                <i class="bi bi-search search-icon"></i>
-                <input 
-                    type="text" 
-                    class="search-input" 
-                    placeholder="Пошук групи за назвою або викладачем..."
-                    id="searchInput"
-                >
-            </div>
-        </div>
-
-        <div class="modal-body">
-            <div class="groups-list" id="groupsList">
-                {% for group in groups %}
-                <div class="group-card" tabindex="0" 
-                        data-group-id="{{ group.id }}" 
-                        data-group-name="{{ group.name }}" 
-                        data-teacher="{{ group.teacher_name }}">
-                    <div class="group-header">
-                        <div class="group-info">
-                            <div class="group-name">{{ group.name }}</div>
-                            <div class="group-meta">
-                                <div class="meta-item">
-                                    <i class="bi bi-people"></i>
-                                    {{ group.users_count }} студентів
-                                </div>
-                                {% if group.course %}
-                                    <div class="meta-item">
-                                        <i class="bi bi-calendar3"></i>
-                                        {{ group.course }} курс
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="selection-indicator">
-                            <i class="bi bi-check-lg"></i>
-                        </div>
-                    </div>
-                    <p class="group-description">{{ group.specialization }}</p>
-                    <div class="group-teacher">
-                        <div class="teacher-avatar">{{ group.teacher_initials }}</div>
-                        <span>{{ group.teacher_name }}</span>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-
-            <div class="empty-state" id="emptyState" style="display: none;">
-                <i class="bi bi-search empty-icon"></i>
-                <h3>Групи не знайдено</h3>
-                <p>Спробуйте змінити параметри пошуку</p>
-            </div>
-        </div>
-
-        <div class="modal-footer">
-            <div class="footer-info">
-                <i class="bi bi-info-circle info-icon"></i>
-                <p>Після надсилання запиту викладач групи розгляне його та підтвердить або відхилить ваше приєднання</p>
-            </div>
-            <div class="footer-actions">
-                <button class="btn btn-secondary" onclick="skipSelection()">
-                    Пропустити зараз
-                </button>
-                <button class="btn btn-primary" id="joinBtn" disabled>
-                    Надіслати запит
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script defer src="{{ url_for('registration.static', filename='js/registration.js') }}"></script>
-<script defer src="{{ url_for('registration.static', filename='js/get_group.js') }}"></script>
 {% endblock %}

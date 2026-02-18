@@ -55,14 +55,16 @@
                     <div class="user-info">
                         <div class="user-details">
                             <div class="user-name">
-                                Олександр Петренко
-                                <span class="group-badge">
-                                    <i class="bi bi-book"></i> ПЗ-25-2
-                                </span>
+                                {{ user_name }}
+                                {% if user_class %}
+                                    <span class="group-badge">
+                                        <i class="bi bi-book"></i> {{ user_class }}
+                                    </span>
+                                {% endif %}
                             </div>
-                            <div class="user-email">oleksandr.petrenko@example.com</div>
+                            <div class="user-email">{{ user_email }}</div>
                         </div>
-                        <div class="avatar">ОП</div>
+                        <div class="avatar">{{ user_initials }}</div>
                     </div>
                 {% endif %}
             </div>

@@ -3,7 +3,7 @@ from flask import current_app, render_template, redirect, url_for, flash
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
 from profile_app.models import User, db
-from control.models import Class, RequestsToClass
+from control.models import Class, RequestsToClass, Group
 
 from project.email import send_confirmation_email
 
@@ -54,6 +54,7 @@ def show_page_registration():
 
 def confirm_email(token):
     s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+    
     try:
         user_data = s.loads(token, salt='email-confirm', max_age=3600)
     except SignatureExpired:
@@ -68,8 +69,6 @@ def confirm_email(token):
         return redirect(url_for('authorization.show_authorization'))
 
     try:
-        group_raw = user_data.get('group')
-        print(group_raw)
         new_user = User(
             name=user_data.get('name'),
             email=user_data.get('email'),
@@ -80,30 +79,30 @@ def confirm_email(token):
 
         db.session.add(new_user)
         db.session.flush()
-        if group_raw:
-            print(group_raw)
-            target_class = Class.query.filter_by(id=group_raw).first()
+        
+        resp = flask.make_response(redirect(url_for('registration.get_group')))
+        resp.set_cookie('group', 'none')
+        resp.set_cookie('user_id', new_user.id)
+        return 
 
-            if target_class:
-                request_obj = RequestsToClass(
-                    user_id=new_user.id,
-                    class_id=target_class.id,
-                    status='Pending'
-                )
-                db.session.add(request_obj)
-                db.session.commit()
-            else:
-                db.session.rollback()
-                flash('Клас з таким номером не існує.', 'error')
-                return redirect(url_for('registration.show_page_registration'))
-        else:
-            return redirect(url_for('registration.show_page_registration'))
-
-        flash('Ваш обліковий запис успішно підтверджено! Тепер ви можете увійти.', 'success')
-        return redirect(url_for('authorization.show_authorization'))
 
     except Exception as e:
         db.session.rollback()
         print(f"Error in email confirmation: {e}")
         flash('Сталася помилка під час активації облікового запису.', 'error')
         return redirect(url_for('registration.show_page_registration'))
+    
+def get_group():
+    if flask.request.method == 'POST':
+        group =flask.request.cookies.get('group')
+        user_id = flask.request.cookies.get('user_id')
+        usr = User.query.get(id=user_id)
+        if usr:
+            if group != "none":
+                grp = Class.query.filter_by(name=group)
+        
+
+        else:
+            print("else")
+            return redirect(url_for('authorization.show_authorization'))
+
