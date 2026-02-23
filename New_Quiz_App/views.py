@@ -13,7 +13,7 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 
 @login_required
 def render_new_quiz(id):
-    if not current_user.is_admin:
+    if not current_user.is_teacher:
         return render_template('error_403.html')
     
     if not id:
@@ -24,8 +24,9 @@ def render_new_quiz(id):
     questions = [f"{i + 1}" for i in range(quiz.count_questions )]
 
     context = {
-        'page': 'home',
+        'page': 'new_quiz',
         'is_auth': current_user.is_authenticated,
+        'is_teacher': current_user.is_teacher,
         'name': current_user.name,
         'quiz_name': quiz.name,
         'quiz': quiz,
@@ -35,7 +36,7 @@ def render_new_quiz(id):
 
 @login_required
 def render_new_quiz_settigs():
-    if not current_user.is_admin:
+    if not current_user.is_teacher:
         return render_template('error_403.html')
 
     if request.method == 'POST':
@@ -102,8 +103,9 @@ def render_new_quiz_settigs():
 
 
     context = {
-        'page': 'home',
+        'page': 'new_quiz',
         'is_auth': current_user.is_authenticated,
+        'is_teacher': current_user.is_teacher,
         'name': current_user.name
     }
     return render_template('New_Quiz_Settings.html', **context)
@@ -112,8 +114,9 @@ def render_new_quiz_settigs():
 @login_required
 def render_new_quiz_student():
     context = {
-        'page': 'home',
+        'page': 'new_quiz',
         'is_auth': current_user.is_authenticated,
+        'is_teacher': current_user.is_teacher,
         'name': current_user.name
     }
     return render_template('New_Quiz_App_Student.html', **context)
@@ -139,25 +142,6 @@ def render_join():
 
 saved_topic = None
 
-@login_required
-def save_topic():
-    data = request.get_json()
-    topic = data.get('topic')
-
-    if topic:
-        if any(char in "абвгдеєжзиіїйклмнопрстуфхцчшщьюяАБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ" for char in topic):
-            language = "Ukrainian"
-        elif any(char in string.ascii_letters for char in topic):
-            language = "English"
-        else:
-            language = "Unknown"
-
-        print(f"Received topic: {topic}, Language: {language}")
-        return jsonify({"status": "success", "topic": topic, "language": language})
-    else:
-        return jsonify({"status": "error", "message": "No topic provided"}), 400
-
-
 def join_next_page():
     context = {
         'page': 'join',
@@ -171,9 +155,10 @@ def save_questions(quiz_id):
     data = data["questions"]
 
     for item in data:
-
+        print(item)
         quest = Question(
             quiz_id = quiz_id,
+            type = item['type'],
             order_index = item['id'],
             text = item['question'],
             correct_answer = item['answer']

@@ -16,16 +16,18 @@
     
     <div class="div-content">
         <div class="side-bar-content">
-            <button class="big-choice active">
-                <img src="{{ url_for('New_Quiz.static', filename='img/Big-Choice.svg') }}" alt="Big choice">
-                <p>Великий вибір</p>
-            </button>
-            
-            <button class="fill-form">
+            <button id="fform" class="fill-form active">
                 <img src="{{ url_for('New_Quiz.static', filename='img/Fill-Form.svg') }}" alt="Fill Form">
                 <p>Заповнити форму</p>
             </button>
-            
+            <button id="letters" class="fill-form">
+                <img src="{{ url_for('New_Quiz.static', filename='img/Fill-Form.svg') }}" alt="Fill Form">
+                <p>Заповнити літери</p>
+            </button>
+            <button id="select" class="fill-form">
+                <img src="{{ url_for('New_Quiz.static', filename='img/filledbox.svg') }}" alt="Fill Form">
+                <p>Великий вибір</p>
+            </button>
             <div class="scroll-frame">
                 <button id="finish-editing" type="button">
                     Закінчити редагування
@@ -39,45 +41,18 @@
         <div class="new-quiz-content">
             <input type="hidden" id="quiz-name" value="{{ quiz_name }}">
             <div class="view-container">
-                <div class="view large-selection-view" data-view="large-selection">
-                    <div class="fill-form-frame">
-                        <div class="ai-container">
-                            <img class="ai-icon" src="{{ url_for('New_Quiz.static', filename='img/ai-icon.svg') }}" alt="AI Icon"/>
-                            <p class="ia-label">Створити за допомогою ШІ</p>
-                        </div>
-                        <input type="text" class="question-input" placeholder="Напишіть запитання">
-                    </div>
-                    
-                    <div class="answers-options-frame">
-                        <div class="answer-container">
-                            <input type="text" class="answers-options-frame-blue" placeholder="Answer 1">
-                            <input type="checkbox" class="answer-checkbox">
-                        </div>
-                        
-                        <div class="answer-container">
-                            <input type="text" class="answers-options-frame-green" placeholder="Answer 2">
-                            <input type="checkbox" class="answer-checkbox">
-                        </div>
-                        
-                        <div class="answer-container">
-                            <input type="text" class="answers-options-frame-yellow" placeholder="Answer 3">
-                            <input type="checkbox" class="answer-checkbox">
-                        </div>
-                        
-                        <div class="answer-container">
-                            <input type="text" class="answers-options-frame-red" placeholder="Answer 4">
-                            <input type="checkbox" class="answer-checkbox">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="view fill-form-view" data-view="fill-form" style="display: none;">
+                <div class="view fill-form-view" data-view="fill-form" style="display: flex;">
                     <div class="fill-form-frame">
                         <div class="ai-container">
                             <img class="ai-icon" src="{{ url_for('New_Quiz.static', filename='img/ai-icon.svg') }}" alt="AI Icon"/>
                             <p class="ia-label">Generate a question</p>
                         </div>
                         <input id="questionInpt" type="text" class="question-input" placeholder="Напишіть запитання">
+                        <input style="display: none;" type="file" id="imageInput" accept="image/*" onchange="handleImageSelect(event)">
+                        <div class="imageSelectorDiv" onclick="useInputImage()">Додати зображення</div>
+                        <img class="imagePreview" id="imagePreview" style="max-width: 300px; display: flex;">
+                        
+                        <button class="imageDeleter" onclick="removeImage()">Видалити</button>
                     </div>
                     
                     <div class="fill-form-frame-2">

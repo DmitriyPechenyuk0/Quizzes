@@ -80,7 +80,6 @@ target/
 celerybeat-schedule
 
 # dotenv
-.env
 
 # virtualenv
 venv/
@@ -91,6 +90,3 @@ ENV/
 
 # Rope project settings
 .ropeproject
-
-quiz_data/
-media/

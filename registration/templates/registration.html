@@ -1,47 +1,92 @@
 {% extends 'base.html' %}
 
-{% block title %} Registration page {% endblock %}
+{% block title %} Реєстрація - Quizzes {% endblock %}
 
-{% block head %} 
+{% block head %}
 <link rel="stylesheet" href="{{ url_for('registration.static', filename='css/registration.css') }}">
 {% endblock %}
 
+
 {% block main %}
-<div class="registration-box">
-    <h2>Registration</h2>
-    <form method="post">
-        <div class='input-pass'>
-            <label for="login" class="input-title">Login:</label>
-            <input type="text" id="login" name="login" class="input-field">
+
+<div class="container">
+    <div class="card">
+        <div class="logo">
+            <h1>QUIZZES</h1>
         </div>
-        <div class='input-pass'>
-            <label for="email" class="input-title">Email:</label>
-            <input type="email" id="email" name="email" class="input-field" placeholder="example@gmail.com">
+
+        <div class="oauth-buttons">
+            <button class="oauth-btn" id="googleAuthBtn" type="button">
+                <i class="bi bi-google oauth-icon"></i>
+                <span>Увійти через Google</span>
+            </button>
+
+            <button class="oauth-btn" id="githubAuthBtn" type="button">
+                <i class="bi bi-github oauth-icon"></i>
+                <span>Увійти через GitHub</span>
+            </button>
         </div>
-        <div class='input-pass'>
-            <label for="password" class="input-title">Password:</label>
-            <input type="password" id="password" name="password" class="input-field">
-        </div>
-        <div class='input-pass'> 
-            <label for="confirm" class="input-title"> Confirm Password:</label>
-            <input type="password" id="confirm" name="confirm" class="input-field">
-        </div>
-        <div class="label-text">
-            <label for="login">Student or teacher</label>
-        </div>
-        <div class="choose-choose">
-            <div>
-                <input type="radio" id="Student" name="Teacher" value="0" class="choose-btn" checked>
-                <label for="Student" class="label"> Student</label>
+
+        <div class="divider">АБО</div>
+
+        <form id="registrationForm" method="POST">
+            <div class="form-group">
+                <label for="username">Ім'я користувача</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Name_Surname"
+                    required
+                >
             </div>
-            <div>
-                <input type="radio" id="Teacher" name="Teacher" value="1" class="choose-btn">
-                <label for="Teacher" class="label"> Teacher</label>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="name@example.com"
+                    required
+                >
             </div>
-        </div>
-            
-        <p><a class="n-underline">Already registered? </a><a href="/login" class="input">Go to authorization</a></p>
-        <button type="submit" class="submit-btn">Submit</button>
-    </form>
+
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="••••••••"
+                    required
+                    minlength="8"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Підтвердіть пароль</label>
+                <input 
+                    type="password" 
+                    id="confirmPassword" 
+                    name="confirmPassword" 
+                    placeholder="••••••••"
+                    required
+                    minlength="8"
+                >
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+
+            <button type="submit" class="submit-btn">
+                Створити акаунт
+            </button>
+        </form>
+
+        <p class="footer-text">
+            Вже є акаунт? <a href="/login">Увійти</a>
+        </p>
+    </div>
 </div>
+<script defer src="{{ url_for('registration.static', filename='js/registration.js') }}"></script>
 {% endblock %}

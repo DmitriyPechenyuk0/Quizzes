@@ -1,122 +1,314 @@
-body {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    flex-direction: column;
-    
-
-}
 main {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height : 100vh;
-    width: 100vw
-    
+    height: 100vh;
+    width: 100vw;
 }
-form{
+
+.container {
+    position: relative;
+    z-index: 1;
+    width: 22.92vw;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(0.93vh);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    background: var(--black-primary);
+    border: 0.05208vw solid rgba(0, 255, 136, 0.2);
+    border-radius: 0.83vw;
+    padding: 4.44vh 2.08vw;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 0 3.125vw rgba(0, 255, 136, 0.1),
+        inset 0 0.09259vh 0 rgba(0, 255, 136, 0.1);
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 3.33vh;
+}
+
+.logo h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.96vh;
+    font-weight: 900;
+    letter-spacing: 0.208vw;
+    color: var(--green-neon);
+    margin-bottom: 0.74vh;
+}
+
+.logo p {
+    font-size: 1.2vh;
+    color: var(--text-secondary);
+    letter-spacing: 0.104vw;
+}
+
+.oauth-buttons {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
+    gap: 1.11vh;
+    margin-bottom: 2.96vh;
 }
-.login-window{
+
+.oauth-btn {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding: 20px;
-    width: 580px;
-    height: 439px;
-    border: 2px solid #000000;
-    border-radius: 30px;
-    gap: 30px;
-
-
-}
-.button{
-
-    width: 210px;
-    height: 48px;
-    border: 0px solid ;
-    border-radius: 10px;     
-    background-color: #2382FF;
-    font-size: 18px;
-    color: white;
-    box-shadow: 0px 5px 10px 5px rgb(0 0 0 / 10%);
-    font-weight: bold ;
+    justify-content: center;
+    gap: 0.625vw;
+    padding: 1.3vh 1.25vw;
+    background: var(--black-secondary);
+    border: 0.05208vw solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.417vw;
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.3vh;
     cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
 }
 
-.username{
-    width: 420px;
-    height: 45px;
-    border: 1px solid #000000;
-    border-radius: 10px;
-    background: none ;
-    padding: 0 0 0 10px;
-}
-.password{
-    width: 420px;
-    height: 45px;
-    border: 1px solid #000000;
-    border-radius: 10px;
-    background: none ;
-    padding: 0 0 0 10px;
-}
-.password-confirm{
-    width: 420px;
-    height: 45px;
-    border: 1px solid #000000;
-    border-radius: 10px;
-    background: none ;
-    padding: 0 0 0 10px;
-}
-a{
-    text-decoration: underline;
-    font-size: 14px;
-    font-weight: normal;
-    font-family: 'Quicksand';
-    text-align: center;
-    background: none ;
-    color: #929292 ;
-    
-}
-.text{
-    font-size: 14px;
-    font-weight: normal;
-    font-family: "Quicksand";
-    color: #929292;
-    text-align: center;
-    background: none ;
-
-}
-.title{
-    font-size: 30px;
-    font-weight: bold;
-    font-family: "Quicksand";
-    color: #000000;
-    text-align: center;
-    background: none ;
-}
-.text-up-input{
-    font-size: 16px;
-    font-weight: medium;
-    font-family: "Quicksand";
-    color: #000000;
-    background: none ;
-    font-weight: 500;
-    padding: 0 0 3 0 ;
+.oauth-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(0, 255, 136, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
 }
 
+.oauth-btn:hover::before {
+    width: 15.625vw;
+    height: 27.78vh;
+}
 
-.text-div{
+.oauth-btn:hover {
+    border-color: var(--green-neon);
+    transform: translateY(-0.185vh);
+    box-shadow: 0 0.37vh 1.042vw rgba(0, 255, 136, 0.2);
+}
+
+.oauth-btn span {
+    position: relative;
+    z-index: 1;
+}
+
+.oauth-icon {
+    font-size: 1.85vh;
+    position: relative;
+    z-index: 1;
+}
+
+.divider {
     display: flex;
-    justify-content: center;
-    align-items: start;
-    flex-direction: column;
+    align-items: center;
+    gap: 0.833vw;
+    margin: 2.96vh 0;
+    color: var(--text-secondary);
+    font-size: 1.11vh;
+    letter-spacing: 0.104vw; 
+}
 
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 0.09259vh; 
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+}
 
+.form-group {
+    margin-bottom: 2.22vh;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.74vh;
+    font-size: 1.11vh;
+    color: var(--green-neon);
+    letter-spacing: 0.05208vw;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+input {
+    width: 100%;
+    padding: 1.3vh 0.833vw;
+    background: var(--black-deep);
+    border: 0.05208vw solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.417vw;
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.3vh;
+    transition: all 0.3s;
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--green-neon);
+    box-shadow: 
+        0 0 0 0.15625vw rgba(0, 255, 136, 0.1),
+        inset 0 0 1.042vw rgba(0, 255, 136, 0.05);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 92.59vh var(--black-deep) inset;
+    -webkit-text-fill-color: #fff;
+}
+
+input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.5;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.52vw;
+    margin: 2.22vh 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 1.042vw;
+    height: 1.85vh;
+    cursor: pointer;
+    accent-color: var(--green-neon);
+}
+
+.checkbox-group label {
+    margin: 0;
+    font-size: 1.2vh;
+    text-transform: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    letter-spacing: 0;
+}
+
+.checkbox-group a {
+    color: var(--green-neon);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.checkbox-group a:hover {
+    text-shadow: 0 0 0.417vw var(--green-glow);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 1.48vh;
+    background: var(--green-neon);
+    border: none;
+    border-radius: 0.417vw;
+    color: var(--black-deep);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.39vh;
+    font-weight: 700;
+    letter-spacing: 0.104vw;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0.37vh 1.042vw rgba(0, 255, 136, 0.3);
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.submit-btn:hover::before {
+    left: 100%;
+}
+
+.submit-btn:hover {
+    transform: translateY(-0.185vh);
+    box-shadow: 0 0.556vh 1.5625vw rgba(0, 255, 136, 0.5);
+    background: var(--green-dark);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.footer-text {
+    text-align: center;
+    margin-top: 2.22vh;
+    font-size: 1.2vh;
+    color: var(--text-secondary);
+}
+
+.footer-text a {
+    color: var(--green-neon);
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s;
+}
+
+.footer-text a:hover {
+    text-shadow: 0 0 0.417vw var(--green-glow);
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 90vw;
+    }
+    
+    .card {
+        padding: 3.33vh 1.46vw;
+    }
+    
+    .logo h1 {
+        font-size: 2.59vh;
+    }
+}
+
+.loading {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.loading .submit-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1.042vw;
+    height: 1.85vh;
+    margin: -0.926vh 0 0 -0.521vw;
+    border: 0.104vw solid var(--black-deep);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }

@@ -4,54 +4,227 @@
 
     function $(id) { return document.getElementById(id); }
 
-    function clearUI({ keepState = false } = {}) {
-      $("question").innerHTML = "";
-      $("progress").innerText = "";
-      if (!keepState) $("state").innerText = "";
+    function updateUserCounter(){
+      let counter = document.querySelector('.right-content-title-count');
+      counter.textContent = document.querySelectorAll('.right-content-user').length
+    }
+    
+    function userRemover(user_id){
+      let div = document.querySelector(`#usr_${user_id}`)
+      div.remove()
     }
 
-    function renderQuestion(q) {
-      clearUI({ keepState: false });
-      $("question").innerHTML = `<div><strong>${q.text}</strong></div>`;
-    }
-
-        function attachEvents() {
+    function attachEvents() {
       $("start").onclick = () => {
-        socket.emit("teacher:start", { code })
-        socket.emit('switch_content', { code })
+        let users = document.querySelectorAll('.mlcupud-user')
+        
+        console.log(users)
+
+        if (users.length >= 1){
+          document.querySelector('.left-content').classList.remove('display-flex'); document.querySelector('.left-content').classList.add('display-none')
+          document.querySelector('.left-content-afterstart').classList.remove('display-none'); document.querySelector('.left-content-afterstart').classList.add('display-flex')
+          document.querySelector('.right-content-q-skipper').classList.remove('display-none'); document.querySelector('.right-content-q-skipper').classList.add('display-flex')
+          
+          updateUserCounter()   
+          
+          socket.emit("teacher:start", { code })
+          socket.emit('switch_content', { code })
+          socket.emit('check_answers', { code })
+        } else{
+          console.log("Потрібен хочаб один учасник у ролі студента")
+        }
       };
-      $("next").onclick = () => socket.emit("teacher:next", { code });
-      $("finish").onclick = () => socket.emit("teacher:finish", { code });
-
+      $("nextQ").onclick = () => {
+        console.log(document.querySelectorAll('.right-content-user-more'))
+        document.querySelectorAll('.right-content-user-more').forEach(el => {console.log(el) ;el.style.backgroundColor = "#DCDCDC"})
+        socket.emit('teacher:next', { code })
+        socket.emit('check_answers', { code })
+      }
+      socket.on("update_answers", (info) => {
+        document.querySelector('.rcqsCount').textContent = `${info.answered} / ${info.total}`
+      })
       socket.on("room:state", (info) => {
-        $("state").innerText = JSON.stringify(info, null, 2);
-        console.log(JSON.stringify(info))
-        console.log(JSON.stringify(info.participants))
-        if (info.question) renderQuestion(info.question);
-      });
+        console.log(`room:state \n\n`, info)
 
-      socket.on("room:question", (q) => {
-        renderQuestion(q);
-      });
+        if ($("lcaTitleElement").textContent != info.quiz_name){
+          $("lcaTitleElement").textContent = info.quiz_name
+        }
+        if (info.status == 'IN_PROGRESS'){
+          document.querySelector('.left-content').classList.remove('display-flex'); document.querySelector('.left-content').classList.add('display-none')
+          
+          document.querySelector('.left-content-afterstart').classList.remove('display-none'); document.querySelector('.left-content-afterstart').classList.add('display-flex')
+          document.querySelector('.right-content-q-skipper').classList.remove('display-none'); document.querySelector('.right-content-q-skipper').classList.add('display-flex')
+          document.querySelector('.right-content').classList.add('display-flex'); document.querySelector('.right-content').classList.remove('display-none')
+        }
+        if (info.question){
+          document.getElementById('lcacQQuantity').textContent = `${ info.current_order } / ${info.question.q_quantity}`
+          document.getElementById('lcaccmQuestion').textContent = info.question.text       
+        }
+        if (info.participants && info.participants.length > 0) {
+          info.participants.forEach(participant => {
+            if (document.getElementById(`usr_${participant.user_id}`)) {
+              return;
+            }
+          let div = document.createElement("div");
+          div.id = `usr_${participant.user_id}`;
+          div.className = "right-content-user";
+          
+          let morediv = document.createElement("div");
+          morediv.className = "right-content-user-more";
+          
+          if (info.status == 'IN_PROGRESS') {
+            if (participant.answered) {
+              morediv.style.backgroundColor = '#d4edda';
+            } else {
+              morediv.style.backgroundColor = '#DCDCDC';
+            }
+          }
+          
+          let rmusrButton = document.createElement("img");
+          rmusrButton.className = "remove-user-button";
+          rmusrButton.id = `rmusr_${participant.user_id}`;
+          rmusrButton.src = 'http://127.0.0.1:5000/quiz/quiz_static/images/remove-btn.svg';
 
+          let profimg = document.createElement("img");
+          profimg.className = "right-content-user-more-profile-avatar";
+          profimg.src = "http://127.0.0.1:5000/quiz/quiz_static/images/profile-avatar.svg";
+          
+          let spanName = document.createElement("span");
+          spanName.className = "right-content-user-more-name";
+          spanName.textContent = participant.nickname;
+
+          morediv.appendChild(profimg);
+          morediv.appendChild(spanName);
+          div.appendChild(morediv);
+          div.appendChild(rmusrButton);
+          document.querySelector('.right-content-users-div').append(div);
+
+          if (!document.getElementById(`${participant.user_id}`)) {
+            let pokaznik = document.querySelector('.mlcupud');
+            let p = document.createElement('p');
+            p.classList.add('mlcupud-user-p');
+            p.textContent = `${participant.nickname}`;
+            let divu = document.createElement('div');
+            divu.classList.add('mlcupud-user');
+            divu.appendChild(p);
+            divu.id = `${participant.user_id}`;
+            pokaznik.appendChild(divu);
+            }
+          });
+          
+          updateUserCounter()
+
+          const answeredCount = info.participants.filter(p => p.answered).length;
+          const totalCount = info.participants.length;
+          document.querySelector('.rcqsCount').textContent = `${answeredCount} / ${totalCount}`;
+
+          for (let btn of document.querySelectorAll('.remove-user-button')) {
+            btn.addEventListener('click', () => {
+              userRemover(btn.id.split('_')[1]);
+              socket.emit('rm_user_from_session', {code, user_id: btn.id.split('_')[1]});
+              updateUserCounter();
+            });
+          }
+          document.querySelectorAll('.mlcupud-user').forEach((stud) => {
+            stud.addEventListener('click', () => {
+              document.querySelector('.overlay-kick-user').classList.add('display-flex');
+              document.querySelector('.overlay-kick-user').classList.remove('display-none');
+              document.getElementById('vignaty-nick').textContent = stud.textContent;
+
+              document.getElementById('zalyshyty').addEventListener('click', () => {
+                document.querySelector('.overlay-kick-user').classList.add('display-none');
+                document.querySelector('.overlay-kick-user').classList.remove('display-flex');
+                document.getElementById('vignaty-nick').textContent = ' ';
+              });
+              
+              document.getElementById('vignatiuchasnika').addEventListener('click', () => {
+                socket.emit('rm_user_from_session', {code, user_id: stud.id});
+                stud.remove();
+                document.querySelector('.overlay-kick-user').classList.add('display-none');
+                document.querySelector('.overlay-kick-user').classList.remove('display-flex');
+                document.getElementById('vignaty-nick').textContent = ' ';
+              });
+            });
+          });
+        }
+      })
       socket.on("room:answers_progress", (p) => {
-        $("progress").innerText = `Passed: ${p.answered}/${p.total}`;
+        console.log("ANSWER_PROGGRES:", p)
+
+        document.querySelector('.rcqsCount').textContent = `${p.answered} / ${p.total}`
+        const userElements = document.querySelectorAll('.right-content-user-more');
+
+        userElements.forEach(userElement => {
+
+          const lastChild = userElement.lastElementChild
+          if (!lastChild) return;
+          
+          const nickname = lastChild.textContent.trim();
+          
+          const participant = p.participants.find(p => p.username === nickname);
+          
+          if (participant) {
+
+            if (participant.answered) {
+              userElement.style.backgroundColor = '#d4edda';
+            } else {
+              userElement.style.backgroundColor = '#DCDCDC';
+            }
+          }
+        });
+      });
+      
+      socket.on("finish_session", (datas) => {
+        window.location.href = `/history/${datas.session_id}`
       });
 
-      socket.on("room:question_closed", (d) => {
+      socket.on("room:participants_update", (info) => {
+        console.log(info)
+        let div = document.createElement("div");  div.id = `usr_${info.id}`; div.className = "right-content-user";
+        let morediv = document.createElement("div"); morediv.className = "right-content-user-more";
+        let rmusrButton = document.createElement("img"); rmusrButton.className = "remove-user-button"; rmusrButton.id = `rmusr_${info.id}`; rmusrButton.src = 'http://127.0.0.1:5000/quiz/quiz_static/images/remove-btn.svg'
 
-        const ans = Array.isArray(d.correct_answer)
-          ? d.correct_answer.join(" | ")
-          : (d.correct_answer || "не задан");
-        $("state").innerText = `Close question ${d.question_id || d.question_index}. True answer: ${ans}`;
-        clearUI({ keepState: true });
-      });
+        let profimg = document.createElement("img"); profimg.className = "right-content-user-more-profile-avatar"; profimg.src = "http://127.0.0.1:5000/quiz/quiz_static/images/profile-avatar.svg"
+        let spanName = document.createElement("span"); spanName.className = "right-content-user-more-name"; spanName.textContent = info.nickname
 
-      socket.on("room:final_results", (res) => {
-        clearUI();
-        $("question").innerHTML = `<h3>Results</h3>`;
-        $("stats").innerHTML = `<pre>${JSON.stringify(res, null, 2)}</pre>`
-      });
+        morediv.appendChild(profimg); morediv.appendChild(spanName)
+        div.appendChild(morediv); div.appendChild(rmusrButton)
+        document.querySelector('.right-content-users-div').append(div)
+        updateUserCounter()
+        for (let btn of document.querySelectorAll('.remove-user-button')){
+          btn.addEventListener('click', () => {
+            userRemover(btn.id.split('_')[1])
+            socket.emit('rm_user_from_session', {code, user_id: btn.id.split('_')[1]})
+            updateUserCounter()
+          })
+        }
+        
+        let pokaznik = document.querySelector('.mlcupud');
+        let p = document.createElement('p'); p.classList.add('mlcupud-user-p'); p.textContent = `${info.nickname}`;
+        let divu = document.createElement('div'); divu.classList.add('mlcupud-user'); divu.appendChild(p); divu.id = `${info.id}`
+        pokaznik.appendChild(divu)
+        
+        document.querySelectorAll('.mlcupud-user').forEach((stud) => {
+          stud.addEventListener('click', () => {
+            document.querySelector('.overlay-kick-user').classList.add('display-flex'); document.querySelector('.overlay-kick-user').classList.remove('display-none');
+            document.getElementById('vignaty-nick').textContent = stud.textContent
+
+            
+            document.getElementById('zalyshyty').addEventListener('click', () => {
+              document.querySelector('.overlay-kick-user').classList.add('display-none'); document.querySelector('.overlay-kick-user').classList.remove('display-flex');
+              document.getElementById('vignaty-nick').textContent = ' '
+            })
+            document.getElementById('vignatiuchasnika').addEventListener('click', () => {
+              socket.emit('rm_user_from_session', {code, user_id: stud.id})
+              stud.remove()
+              
+              document.querySelector('.overlay-kick-user').classList.add('display-none'); document.querySelector('.overlay-kick-user').classList.remove('display-flex');
+              document.getElementById('vignaty-nick').textContent = ' '
+            })
+          })
+        })
+      })
+
     }
     
     document.addEventListener("DOMContentLoaded", () => {
@@ -64,5 +237,13 @@
       socket = io();
       socket.emit("join", { code, as_host: true });
       attachEvents();
+      document.querySelector('#copyCodeButton').addEventListener('click', () => {
+        navigator.clipboard.writeText(document.querySelector('#copyCodeButton').className).then(() => console.log("Done!")).catch(err => console.error(err))
+      })
+      document.querySelectorAll('.mlcupud-user').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          console.log(btn)
+        })
+      })
     });
 })();

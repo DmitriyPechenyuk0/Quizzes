@@ -1,23 +1,115 @@
-<!doctype html>
-<html>
-    <head>
-    <meta charset="utf-8">
-    <title>Комната ведущего</title>
-    </head>
-    <body>
-        <h3>Code of session: {{ code }}</h3>
-        <div id="host-root" data-code="{{ code }}"></div>
+{% extends 'base.html' %}
 
-        <button id="start">Start</button>
-        <button id="next">Next</button>
-        <button id="finish">Complete</button>
 
-        <div id="state"></div>
-        <div id="question"></div>
-        <div id="progress"></div>
-        <div id="stats"></div>
+{% block title  %}
+Кімната вчителя
+{% endblock %}
 
-        <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
-        <script src="{{ url_for('quiz_app.static', filename='js/teacher_room.js') }}?v=1"></script>
-    </body>
-</html>
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('quiz_app.static', filename='css/teacher_room.css') }}">
+{% endblock %}
+
+{% block main %}
+<div id="host-root" data-code="{{ code }}"></div>
+<div class="overlay-kick-user display-none">
+    <div id="vignatyp"><p id="vignatyp-p" >Ви дійсно хочете видалити <b><span id="vignaty-nick" ></span></b> ?</p></div>
+    <div class="buttonsvignatydiv" >
+        <button id="vignatiuchasnika" >Так</button>
+        <button id="zalyshyty" >Ні</button>
+    </div>
+</div>
+<div class="left-content-afterstart display-none">
+    <div class="lca-title">
+        <p id="lcaTitleElement"></p>
+    </div>
+    <div class="lca-content">
+        <div class="lcac-content">
+            <div class="lcac-content-info" >
+                <span>Запитання: <p id="lcacQQuantity" ></p></span>
+            </div>
+            <div class="lcac-content-main" >
+                <span id="lcaccmQuestion" >
+
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="left-content-afterstart display-none">
+    <div class="lca-title">
+        <p id="lcaTitleElement"></p>
+    </div>
+    <div class="lca-content">
+        <div class="lcac-content">
+            <div class="lcac-content-info" >
+                <span>Запитання: <p id="lcacQQuantity" ></p></span>
+            </div>
+            <div class="lcac-content-main" >
+                <span id="lcaccmQuestion" >
+
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="particles-js" class="left-content display-flex">
+    <div class="main-left-content">
+        <div class="main-left-content-connection-link">
+            <span class="main-left-content-connection-link-icn" >1</span>
+            <span class="main-left-content-cnt" >Приєднуйтесь з будь-якого пристрою</span>
+            <span class="main-left-content-linkk" >http://127.0.0.1:5000/quiz/join</span>
+            <img src="{{ url_for('quiz_app.static', filename='images/copy-icon.svg') }}">
+        </div>
+        <div class="main-left-content-connection-code">
+            <span class="main-left-content-connection-link-icn" >2</span>
+            <span class="main-left-content-cnt" >Введіть код підключення</span>
+            <span class="main-left-content-code" >{{ code }}</span>
+            <img id="copyCodeButton" class="{{ code }}" src="{{ url_for('quiz_app.static', filename='images/copy-icon.svg') }}">
+        </div>
+        <div class="main-left-content-connection-btn">
+            <button id="start" class="main-left-content-button-start" >
+                Почати зараз
+            </button>
+        </div>
+    </div>
+    <div class="main-left-content-user-pokaznik">
+        <div class="mlcupd">
+            <p>Учасники</p>
+        </div>
+        <div class="mlcupud">
+            <!-- <div class="mlcupud-user">
+                <p class="mlcupud-user-p">
+                    Dmytro Pechenyuk
+                </p>
+            </div> -->
+        </div>
+    </div>
+    <svg width="0" height="0" style="position:absolute">
+        <filter id="distorsion">
+            <feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="2" seed="7" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="15" xChannelSelector="G" yChannelSelector="B" />
+        </filter>
+    </svg>
+</div>
+<div class="right-content display-none">
+    <p class="right-content-title">Учасники (<span class="right-content-title-count"></span>)</p>
+    <div class="right-content-users-div">
+        <!-- <div class="right-content-user">
+            <div class="right-content-user-more">
+                <img class="right-content-user-more-profile-avatar" src="{{ url_for('quiz_app.static', filename='images/profile-avatar.svg') }}">
+                <span class="right-content-user-more-name" >Dmitriy Pecheniuk</span>
+            </div>
+            <img class="remove-user-button" src="{{ url_for('quiz_app.static', filename='images/remove-btn.svg') }}">
+        </div> -->
+    </div>
+    <div class="right-content-q-skipper display-none">
+        <span class="rcqsTitle">Відповіли ( <span class="rcqsCount" ></span> )</span>
+        <button id="nextQ" >Закінчити питання</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script defer src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+    <script defer src="{{ url_for('quiz_app.static', filename='js/teacher_room.js') }}?v=1"></script>
+{% endblock %}

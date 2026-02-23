@@ -1,23 +1,90 @@
-from flask_login import login_required, current_user, logout_user
+from flask_login import login_required, current_user, logout_user, UserMixin
 from flask import redirect, url_for, jsonify
 import flask
-
+from control.models import Class, Group, RequestsToClass
 from profile_app.models import User
 from New_Quiz_App.models import Quiz, db
-@login_required
+from quiz_app.models import QuizSession, SessionParticipant 
+
+# @login_required
 def show_profile_page():
- 
-    quizzes = Quiz.query.filter_by(owner=current_user.id).all()
+
+
+
+    # if current_user.is_teacher:
+    #     completed_quizzes = QuizSession.query.filter_by(who_host = current_user.id).all()
+    #     sessionss = []
+
+    #     for itm in completed_quizzes:
+    #         sessionss.append({"session":itm, "quiz":Quiz.query.filter_by(id=itm.quiz_id).first()})
+    # else:
+        
+    #     completed_quizzes = SessionParticipant.query.filter_by(user_id = current_user.id).all()
+
+    #     quizz = []
+        
+    #     for item in completed_quizzes:
+    #         quizz.append(item.session_id)
+        
+    #     completed_quizzes = quizz
+        
+    #     sess = []
+        
+    #     for item in completed_quizzes:
+    #         sess.append(QuizSession.query.filter_by(id=item).first())
+        
+    #     completed_quizzes= sess
+    #     sessionss = []
+    #     for itm in completed_quizzes:
+    #         sessionss.append({"session":itm, "quiz":Quiz.query.filter_by(id=itm.quiz_id).first()})
+    # completed_counts = len(completed_quizzes)
+
+    # created_quizzes = Quiz.query.filter_by(owner=current_user.id).all()
+    if isinstance(current_user, UserMixin):
+        
+        name = current_user.name
+        email = current_user.email
+        if Class.query.filter_by(id=current_user.group).all():
+            user_class = Class.query.filter_by(id=current_user.group).all()[0].name
+        else:
+            user_class = False
+        user_initials = current_user.name.split(' ')
+        final_initials = []
+
+        for initial in user_initials:
+            final_initials.append(list(initial)[0])
+        final_initials = ''.join(final_initials)
+
+        created_tests = Quiz.query.filter_by(owner = current_user.id).all()
+
+        print(created_tests)
+
+    else:
+        name = 'Unknown User'
+        email = 'example@gmail.com'
+        final_initials = 'U'
+        user_class = False
 
     context = {
         'page': 'profile',
-        'name': current_user.name,
-        'email': current_user.email,
-        'quizzes': quizzes,
-        'created_quizzes_count': len(quizzes)  
+        'user_active': True,
+        'is_teacher': True,
+        'user_name': name,
+        'user_email': email,
+        'user_initials': final_initials,
+        'created_tests': created_tests,
+        "user_class" : user_class
+        # 'is_auth': current_user.is_authenticated,
+        # 'created_quizzes': created_quizzes, 
+        # 'created_quizzes_count': len(created_quizzes),
+        # 'completed_quizzes': sessionss,
+        # 'completed_quizzes_count': completed_counts,
+        # 'is_admin': current_user.is_teacher,
+        # 'is_teacher': current_user.is_teacher
     }
-    
+
     return flask.render_template("profile.html", **context)
+
 
 @login_required
 def logout():
@@ -43,9 +110,4 @@ def delete_quiz(quiz_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': f'Error deleting quiz: {str(e)}'}), 500
-    
-
-# def add_code_to_cookie(code):
-#     responce = redirect(url_for('home_app.show_home_page'))
-#     responce.set_cookie('code', code)
-#     return responce
+ 

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Join{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('quiz_app.static', filename='css/join.css') }}">
+    {% endblock %}
+    
+    {% block main %}
+    <div id="current_user_id" style="display: none;">{{ current_user.id }}</div>
+    
+    <div class="main-window display-none">
+        <div class="main-window-main">
+            <p class="mwm-name">
+                {{ name }}
+            </p>
+            <p class="main-window-quiz-name"></p>
+            <div class="mwm-participants-count" >
+                <p class="mwm-participants-count-title">Учасники</p>
+                <p class="mwm-participants-count-count"></p>
+            </div>
+        </div>
+        <div class="main-window-other-participants" >
+        </div>
+    </div>
+    
+    <div class="waiting-overlay display-none">
+        <div class="waiting-div">
+            <div class="waiting-div-answer"></div>
+            <p>Очікуйте поки вчитель завершить питання</p>
+            <img src="{{ url_for('quiz_app.static', filename='images/loading.svg') }}">
+        </div>
+    </div>
+    
+    <!-- fform -->
+    <div id="divfformAnswer" class="div-section-answer display-none">
+        <div class="div-section-answer-title">
+            <p id="QuizNameArea" >
+                
+            </p>
+        </div>
+        <div class="div-section-answer-content-main" >
+            <div class="div-section-answer-content">
+                <div class="div-section-answer-content-question">
+                    <p id="questionBlockPFF"></p>
+                </div>
+                <div class="div-section-answer-content-answer">
+                    <input placeholder="Напишіть відповідь" id="answerInputI" type="text">
+                    <button id="enterQuestionFF" >Enter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- selection -->
+
+    <div id="divSelectionAnswer" class="div-section-answer display-none">
+        <div class="div-section-answer-title">
+            <p id="QuizNameArea" >
+                Python
+            </p>
+        </div>
+        <div class="div-section-answer-content-main" >
+            <div class="div-section-answer-content">
+                <div class="div-section-answer-content-question">
+                    <p id="questionBlockPS"></p>
+                    <button id="enterQuestionS" >Enter</button>
+                </div>
+                <div class="div-section-answer-content-answer">
+                    <div class="answers-section-qz" id="answersSection">
+                        <div class="answer-card-qz" data-id="1">
+                            <div class="checkbox-qz"></div>
+                            <div class="answer-text-qz"></div>
+                        </div>
+                        <div class="answer-card-qz" data-id="2">
+                            <div class="checkbox-qz"></div>
+                            <div class="answer-text-qz"></div>
+                        </div>
+                        <div class="answer-card-qz" data-id="3">
+                            <div class="checkbox-qz"></div>
+                            <div class="answer-text-qz"></div>
+                        </div>
+                        <div class="answer-card-qz" data-id="4">
+                            <div class="checkbox-qz"></div>
+                            <div class="answer-text-qz"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script defer src="{{ url_for('New_Quiz.static', filename='js/jquery-3.7.1.min.js') }}"></script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="{{ url_for('quiz_app.static', filename='js/passing.js') }}?v=6"></script>
+    {% endblock %}

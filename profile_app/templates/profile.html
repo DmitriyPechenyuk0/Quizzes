@@ -1,71 +1,603 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}Профиль{% endblock %}
+{% block title %} Dashboard {% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('profile_app.static', filename='css/profile.css') }}">
-<script src="{{ url_for('profile_app.static', filename='js/profile.js') }} " defer></script>
+    <link rel="stylesheet" href="{{ url_for('profile_app.static', filename='css/profile.css') }}">
 {% endblock %}
 
 {% block main %}
-<div class="profile-container">
-  
-    <div class="profile-header">
-        <div class="profile-info">
-            <img src="{{ url_for('profile_app.static', filename='img/Avatar.png') }}" alt="Avatar">
-            <div class="l">
-                <h1>{{ name }}</h1>
-                <a href="mailto:{{ email }}">{{ email }}</a>
+    <div id="is_teach" style="display: none; opacity: 0;">{{ is_teacher }}</div>
+    <div id="maiCont" class="student-view">
+
+        <div class="container">
+
+            <div class="tabs-container">
+                <div class="tab active" onclick="showSection('active-tests')">
+                    <i class="bi bi-play-circle"></i> Активні тести
+                </div>
+                <div class="tab" onclick="showSection('completed-tests')">
+                    <i class="bi bi-check-circle"></i> Пройдені тести
+                </div>
+                <div class="tab teacher-only" onclick="showSection('created-tests')">
+                    <i class="bi bi-file-text"></i> Створені тести
+                </div>
+                <div class="tab teacher-only" onclick="showSection('group-results')">
+                    <i class="bi bi-bar-chart"></i> Результати групи
+                </div>
+                <div class="tab teacher-only" onclick="showSection('class-results')">
+                    <i class="bi bi-mortarboard"></i> Результати класу
+                </div>
+                <div class="tab teacher-only" onclick="showSection('group-management')">
+                    <i class="bi bi-gear"></i> Управління
+                </div>
             </div>
-        </div>
-        <div class="quiz-stats">
-            <div class="quiz-count-box">
-                <p>{{ created_quizzes_count }}</p>
-                <span>Created quizzes</span>
+
+            <div id="active-tests" class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Активні тести класу ПЗ-25-2</h2>
+                    <p class="section-description">Доступні тести для проходження в вашому класі</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Квадратні рівняння</div>
+                                <div class="card-subtitle">Математика • ПЗ-25-2</div>
+                            </div>
+                            <span class="status-badge status-active">Активний</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Питань:</span>
+                            <span class="info-value">15</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Час:</span>
+                            <span class="info-value">30 хв</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Вчитель:</span>
+                            <span class="info-value">Марія Іванівна</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary">
+                                <i class="bi bi-play-fill"></i> Почати тест
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Алгоритми сортування</div>
+                                <div class="card-subtitle">Інформатика • ПЗ-25-2</div>
+                            </div>
+                            <span class="status-badge status-active">Активний</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Питань:</span>
+                            <span class="info-value">20</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Час:</span>
+                            <span class="info-value">45 хв</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Вчитель:</span>
+                            <span class="info-value">Сергій Володимирович</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary">
+                                <i class="bi bi-play-fill"></i> Почати тест
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Тригонометрія</div>
+                                <div class="card-subtitle">Математика • ПЗ-25-2</div>
+                            </div>
+                            <span class="status-badge status-active">Активний</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Питань:</span>
+                            <span class="info-value">18</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Час:</span>
+                            <span class="info-value">40 хв</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Вчитель:</span>
+                            <span class="info-value">Марія Іванівна</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary">
+                                <i class="bi bi-play-fill"></i> Почати тест
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="quiz-count-box">
-                <p>0</p>
-                <span>Passed quizzes</span>
+
+            <div id="completed-tests" class="section" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Пройдені тести</h2>
+                    <p class="section-description">Ваша історія проходження тестів</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Лінійні рівняння</div>
+                                <div class="card-subtitle">Математика • ПЗ-25-2</div>
+                            </div>
+                            <div class="card-meta">
+                                <span class="status-badge status-completed">Завершено</span>
+                            </div>
+                        </div>
+                        
+                        <div class="test-result-card">
+                            <div class="result-info">
+                                <div class="result-stat">
+                                    <div class="result-stat-icon">
+                                        <i class="bi bi-clock"></i>
+                                    </div>
+                                    <span class="result-stat-label">Час</span>
+                                    <span class="result-stat-value">23 хв</span>
+                                </div>
+                                <div class="result-stat">
+                                    <div class="result-stat-icon">
+                                        <i class="bi bi-check-circle"></i>
+                                    </div>
+                                    <span class="result-stat-label">Відповіді</span>
+                                    <span class="result-stat-value">17/20</span>
+                                </div>
+                                <div class="result-stat">
+                                    <div class="result-stat-icon">
+                                        <i class="bi bi-award"></i>
+                                    </div>
+                                    <span class="result-stat-label">Бали</span>
+                                    <span class="result-stat-value">10/12</span>
+                                </div>
+                            </div>
+                            
+                            <div class="circular-progress">
+                                <svg width="100%" height="100%" viewBox="0 0 100 100">
+                                    <circle class="circular-progress-bg" cx="50" cy="50" r="42"></circle>
+                                    <circle class="circular-progress-fill" cx="50" cy="50" r="42"
+                                            stroke-dasharray="264" stroke-dashoffset="40"></circle>
+                                </svg>
+                                <div class="circular-progress-text">85%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-secondary">
+                                <i class="bi bi-file-earmark-text"></i> Деталі
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Структури даних</div>
+                                <div class="card-subtitle">Інформатика • ПЗ-25-2</div>
+                            </div>
+                            <div class="card-meta">
+                                <span class="status-badge status-completed">Завершено</span>
+                            </div>
+                        </div>
+                        
+                        <div class="test-result-card">
+                            <div class="result-info">
+                                <div class="result-stat">
+                                    <div class="result-stat-icon">
+                                        <i class="bi bi-clock"></i>
+                                    </div>
+                                    <span class="result-stat-label">Час</span>
+                                    <span class="result-stat-value">35 хв</span>
+                                </div>
+                                <div class="result-stat">
+                                    <div class="result-stat-icon">
+                                        <i class="bi bi-check-circle"></i>
+                                    </div>
+                                    <span class="result-stat-label">Відповіді</span>
+                                    <span class="result-stat-value">23/25</span>
+                                </div>
+                                <div class="result-stat">
+                                    <div class="result-stat-icon">
+                                        <i class="bi bi-award"></i>
+                                    </div>
+                                    <span class="result-stat-label">Бали</span>
+                                    <span class="result-stat-value">11/12</span>
+                                </div>
+                            </div>
+                            
+                            <div class="circular-progress">
+                                <svg width="100%" height="100%" viewBox="0 0 100 100">
+                                    <circle class="circular-progress-bg" cx="50" cy="50" r="42"></circle>
+                                    <circle class="circular-progress-fill" cx="50" cy="50" r="42"
+                                            stroke-dasharray="264" stroke-dashoffset="21"></circle>
+                                </svg>
+                                <div class="circular-progress-text">92%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-secondary">
+                                <i class="bi bi-file-earmark-text"></i> Деталі
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Геометрія: Трикутники</div>
+                                <div class="card-subtitle">Математика • ПЗ-25-2</div>
+                            </div>
+                            <div class="card-meta">
+                                <span class="status-badge status-completed">Завершено</span>
+                            </div>
+                        </div>
+                        
+                        <div class="test-result-card">
+                            <div class="result-info">
+                                <div class="result-stat">
+                                    <div class="result-stat-icon">
+                                        <i class="bi bi-clock"></i>
+                                    </div>
+                                    <span class="result-stat-label">Час</span>
+                                    <span class="result-stat-value">28 хв</span>
+                                </div>
+                                <div class="result-stat">
+                                    <div class="result-stat-icon">
+                                        <i class="bi bi-check-circle"></i>
+                                    </div>
+                                    <span class="result-stat-label">Відповіді</span>
+                                    <span class="result-stat-value">12/16</span>
+                                </div>
+                                <div class="result-stat">
+                                    <div class="result-stat-icon">
+                                        <i class="bi bi-award"></i>
+                                    </div>
+                                    <span class="result-stat-label">Бали</span>
+                                    <span class="result-stat-value">9/12</span>
+                                </div>
+                            </div>
+                            
+                            <div class="circular-progress">
+                                <svg width="100%" height="100%" viewBox="0 0 100 100">
+                                    <circle class="circular-progress-bg" cx="50" cy="50" r="42"></circle>
+                                    <circle class="circular-progress-fill" cx="50" cy="50" r="42"
+                                            stroke-dasharray="264" stroke-dashoffset="66"></circle>
+                                </svg>
+                                <div class="circular-progress-text">75%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-secondary">
+                                <i class="bi bi-file-earmark-text"></i> Деталі
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="created-tests" class="section teacher-only" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Мої створені тести</h2>
+                    <p class="section-description">Управління тестами для групи Математика</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card action-card" onclick="alert('Перехід на сторінку створення тесту')">
+                        <div class="action-icon"><i class="bi bi-plus-circle"></i></div>
+                        <div class="action-text">Створити новий тест</div>
+                    </div>
+                    {% for test in created_tests %}
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <div class="card-title">{{ test.name }}</div>
+                                    <div class="card-subtitle">{{ test.subject }}{% if user_class %}• {{ user_class }}{% endif %}</div>
+                                </div>
+                                <span class="status-badge status-active">Створено</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Питань:</span>
+                                <span class="info-value">{{ test.count_questions }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Створено:</span>
+                                <span class="info-value">{{ test.created_at }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Кількість проходжень:</span>
+                                <span class="info-value">{{ test.runs_count }}</span>
+                            </div>
+                            <div class="card-actions">
+                                <a style="text-decoration: none;" href="/quiz/start_quiz/{{test.id}}" class="btn btn-primary">
+                                    <i class="bi bi-rocket-takeoff"></i> Запустити
+                                </a>
+                                <a style="text-decoration: none;" href="/quiz/delete/{{test.id}}" class="btn btn-danger">
+                                    <i class="bi bi-trash"></i> Видалити
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="group-results" class="section teacher-only" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Результати групи Математика</h2>
+                    <p class="section-description">Статистика проходження тестів учнями вашої групи</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Лінійні рівняння</div>
+                                <div class="card-subtitle">Математика • ПЗ-25-2</div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%"></div>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value">78%</div>
+                                <div class="stat-label">Успішність</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">9.4</div>
+                                <div class="stat-label">Серед. бал</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">15/18</div>
+                                <div class="stat-label">Пройшли</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">26 хв</div>
+                                <div class="stat-label">Серед. час</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-secondary">
+                                <i class="bi bi-graph-up"></i> Статистика
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Тригонометрія</div>
+                                <div class="card-subtitle">Математика • ПЗ-25-2</div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 65%"></div>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value">65%</div>
+                                <div class="stat-label">Успішність</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">7.8</div>
+                                <div class="stat-label">Серед. бал</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">8/18</div>
+                                <div class="stat-label">Пройшли</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">31 хв</div>
+                                <div class="stat-label">Серед. час</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-secondary">
+                                <i class="bi bi-graph-up"></i> Статистика
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="class-results" class="section teacher-only" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Результати класу ПЗ-25-2</h2>
+                    <p class="section-description">Всі тести, запущені в класі ПЗ-25-2</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Квадратні рівняння</div>
+                                <div class="card-subtitle">Математика • ПЗ-25-2</div>
+                            </div>
+                            <span class="status-badge status-active">Активний</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Вчитель:</span>
+                            <span class="info-value">Марія Іванівна</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Запущено:</span>
+                            <span class="info-value">16.02.2026, 10:00</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Проходять:</span>
+                            <span class="info-value">12 учнів</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-secondary">
+                                <i class="bi bi-eye"></i> Спостерігати
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Алгоритми сортування</div>
+                                <div class="card-subtitle">Інформатика • ПЗ-25-2</div>
+                            </div>
+                            <span class="status-badge status-completed">Завершено</span>
+                        </div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 71%"></div>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value">71%</div>
+                                <div class="stat-label">Успішність</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">8.5</div>
+                                <div class="stat-label">Серед. бал</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">18/20</div>
+                                <div class="stat-label">Пройшли</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">38 хв</div>
+                                <div class="stat-label">Серед. час</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-secondary">
+                                <i class="bi bi-graph-up"></i> Результати
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="group-management" class="section teacher-only" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Управління групою Математика</h2>
+                    <p class="section-description">Налаштування та учасники групи</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">Налаштування групи</div>
+                        
+                        <div class="info-row">
+                            <span class="info-label">Назва групи:</span>
+                            <span class="info-value">Математика</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Клас:</span>
+                            <span class="info-value">ПЗ-25-2</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Спеціалізація:</span>
+                            <span class="info-value">Математика</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Учнів у групі:</span>
+                            <span class="info-value">18</span>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-primary">
+                                <i class="bi bi-pencil"></i> Змінити спеціалізацію
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="grid-column: span 2;">
+                        <div class="card-title">Учні класу ПЗ-25-2</div>
+                        <div class="card-subtitle">Ви можете переглядати список учнів</div>
+                        
+                        <div class="student-list">
+                            <div class="student-item">
+                                <div class="student-avatar">ОП</div>
+                                <div class="student-info">
+                                    <div class="student-name">Олександр Петренко</div>
+                                    <div class="student-email">oleksandr.petrenko@example.com</div>
+                                </div>
+                                <span class="group-badge">
+                                    <i class="bi bi-book"></i> ПЗ-25-2
+                                </span>
+                            </div>
+                            
+                            <div class="student-item">
+                                <div class="student-avatar">МК</div>
+                                <div class="student-info">
+                                    <div class="student-name">Марія Коваленко</div>
+                                    <div class="student-email">maria.kovalenko@example.com</div>
+                                </div>
+                                <span class="group-badge">
+                                    <i class="bi bi-book"></i> ПЗ-25-2
+                                </span>
+                            </div>
+                            
+                            <div class="student-item">
+                                <div class="student-avatar">ДШ</div>
+                                <div class="student-info">
+                                    <div class="student-name">Дмитро Шевченко</div>
+                                    <div class="student-email">dmytro.shevchenko@example.com</div>
+                                </div>
+                                <span class="group-badge">
+                                    <i class="bi bi-book"></i> ПЗ-25-2
+                                </span>
+                            </div>
+                            
+                            <div class="student-item">
+                                <div class="student-avatar">АБ</div>
+                                <div class="student-info">
+                                    <div class="student-name">Анна Бондаренко</div>
+                                    <div class="student-email">anna.bondarenko@example.com</div>
+                                </div>
+                                <span class="group-badge">
+                                    <i class="bi bi-book"></i> ПЗ-25-2
+                                </span>
+                            </div>
+                            
+                            <div class="student-item">
+                                <div class="student-avatar">ІМ</div>
+                                <div class="student-info">
+                                    <div class="student-name">Іван Мельник</div>
+                                    <div class="student-email">ivan.melnyk@example.com</div>
+                                </div>
+                                <span class="group-badge">
+                                    <i class="bi bi-book"></i> ПЗ-25-2
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-secondary">Показати всіх (18 учнів)</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="create-quiz-section">
-        <h2>Created quizzes</h2>
-        {% if quizzes %}
-        <div class="quiz-grid">
-            {% for quiz in quizzes %}
-            <div class="quiz-card" onclick="openModal('{{ quiz.id }}', '{{ quiz.name }}')">
-                {% if quiz.image %}
-                <img src="{{ url_for('New_Quiz.static', filename='media/' + quiz.image) }}" alt="Quiz Image">
-                {% else %}
-                <img src="{{ url_for('profile_app.static', filename='img/placeholder.png') }}" alt="Quiz Image">
-                {% endif %}
-                <p>{{ quiz.name }}</p>
-            </div>
-            {% endfor %}
-        </div>
-        {% else %}
-        <p>You have no quizzes completed or created</p>
-        {% endif %}
-
-        <a href="new-quiz-settings" class="create-button">Create a quiz</a>
-    </div>
-</div>
-
-<div id="quizModal" class="modal-backdrop">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="modalTitle"></h3>
-        </div>
-        
-        <div class="modal-buttons">
-            <button onclick="deleteQuiz()">Delete</button>
-            <a id="startBtn" href="#">Start</a>
-        </div>
-    </div>
-</div>
-
+    <script defer src="{{ url_for('profile_app.static', filename='js/profile.js') }}"></script>
 {% endblock %}
-
-<!--  -->

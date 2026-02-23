@@ -3,8 +3,10 @@ from flask import request, jsonify, abort, render_template, redirect, url_for
 from sqlalchemy import text
 from flask_login import current_user
 from project.settings import db
-from .models import QuizSession, Question
+from .models import QuizSession, Question, SessionParticipant
+from profile_app.models import User
 from New_Quiz_App.models import Quiz
+
 def _gen_code():
     while True:
         code = f"{random.randint(0, 999999):06d}"
@@ -12,7 +14,7 @@ def _gen_code():
             return code
 
 def _quiz_exists(quiz_id: int) -> bool:
-    row = db.session.execute(text("SELECT 1 FROM quiz WHERE id = :id LIMIT 1"), {"id": quiz_id}).first()
+    row = Quiz.query.filter_by(id=quiz_id).first()
     return bool(row)
 
 def create_session():
@@ -33,29 +35,30 @@ def create_session():
     if Question.query.filter_by(quiz_id=quiz_id).count() == 0:
         abort(400, "Quiz has no questions")
 
-    s = QuizSession(quiz_id=quiz_id, code=_gen_code(), status="WAITING", current_order=None)
+    s = QuizSession(quiz_id=quiz_id, code=_gen_code(), status="WAITING", current_order=None, who_host=current_user.id)
     db.session.add(s); db.session.commit()
     return jsonify({"session_id": s.id, "code": s.code})
 
 def start_session_redirect(quiz_id: int):
     if not getattr(current_user, "is_authenticated", False):
         abort(401)
-    if not getattr(current_user, "is_admin", False):
+    if not getattr(current_user, "is_teacher", False):
         abort(403)
 
     if not _quiz_exists(quiz_id):
         abort(404, "Quiz not found")
     if Question.query.filter_by(quiz_id=quiz_id).count() == 0:
         abort(400, "Quiz has no questions")
-
-    s = QuizSession(quiz_id=quiz_id, code=_gen_code(), status="WAITING", current_order=None)
+    usr =User.query.filter_by(id=current_user.id).first()
+    
+    s = QuizSession(quiz_id=quiz_id, code=_gen_code(), status="WAITING", current_order=None, who_host=current_user.id, group = usr.group)
     db.session.add(s); db.session.commit()
     return redirect(url_for("quiz_app.host_page", code=s.code))
 
 def join_page():
     code = request.args.get("code", "")
     quizzes = Quiz.query.all()
-    context = {'page': 'home',
+    context = {'page': 'join',
                'is_auth': current_user.is_authenticated,
                'name': current_user.name,
                'quizzes': quizzes}
@@ -63,4 +66,38 @@ def join_page():
     return render_template("join.html", code=code, **context)
 
 def host_page(code):
-    return render_template("teacher_room.html", code=code)
+    context = {'page': 'host',
+               'is_auth': current_user.is_authenticated,
+               "is_teacher": current_user.is_teacher,
+               'name': current_user.name}
+    return render_template("teacher_room.html", code=code, **context)
+
+def passing_page(code):
+
+    session = QuizSession.query.filter_by(code = code).first()
+    if session.status == 'FINISHED':
+        return redirect('/')
+    quiz = Quiz.query.filter_by(id= session.quiz_id).first()
+    
+    if_part = SessionParticipant.query.filter_by(user_id = current_user.id).first()
+    
+    context = {
+        'page': 'join_passing',
+        'is_auth': current_user.is_authenticated,
+        'name': current_user.name,
+        "quiz_name": quiz.name
+    }
+    if if_part:
+        if session.status == 'IN_PROGRESS':
+            current_question = Question.query.filter_by(id=session.current_order).first()
+            context['qes'] = current_question.text
+        else:
+            return redirect('/')
+    else:
+        return redirect('/')
+        
+    return render_template('student_passing.html', **context)
+
+
+def newDesignTestingT():
+    return render_template('new_design/teacher_room.html')

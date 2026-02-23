@@ -107,11 +107,12 @@ main {
     flex-direction: column;
     align-items: center;
     width: 322px;
-    height: 141px;
+    height: fit-content;
     border: 2px solid;
-    border-radius: 20px;
+    border-radius: 10px;
     transition: box-shadow 0.3s ease;
     font-family: 'Quicksand', sans-serif;
+    padding: 10px 46px;
 }
 
 .big-choice:hover,
@@ -129,14 +130,14 @@ main {
 }
 
 p {
-    font-size: 25px;
+    font-size: 17px;
     margin: 0;
     font-family: 'Quicksand', sans-serif;
 }
 
 img {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
 }
 
 .fill-form-frame,
@@ -166,8 +167,8 @@ img {
     cursor: pointer;
 }
 
-.fill-form-frame input,
-.fill-form-frame-2 input {
+.question-input,
+.answer-input{
     width: 450px;
     height: 65px;
     border: 1px solid;
@@ -180,8 +181,8 @@ img {
     background-color: transparent;
 }
 
-.fill-form-frame input::placeholder,
-.fill-form-frame-2 input::placeholder {
+.question-input::placeholder,
+.answer-input::placeholder {
     color: hsla(0, 0%, 0%, 0.25);
 }
 
@@ -288,7 +289,7 @@ img {
     display: flex;
     flex-direction: column;
     width: 322px;
-    height: 541px;
+    height: 100%;
     border: 2px solid black;
     border-radius: 10px;
     padding: 21px;
@@ -432,13 +433,13 @@ img {
 }
 #finish-editing{
     width: 280px;
-    height: 65px;
+    height: 50px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 15px;
-    padding: 10px 25px;
+    padding: 5px 25px;
     border-radius: 10px;
     background-color: rgb(0 0 0 / 70%);
     font-size: 20px;
@@ -446,4 +447,52 @@ img {
     color: #FFFFFF;
     outline: none;
     border: none;
+}
+.imageSelectorDiv{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    width: 240px;
+    height: 60px;
+    font-size: 20px;
+    font-weight: 700;
+    background-color: transparent;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 8px 10px;
+}
+.imageDeleter{
+    position: absolute;
+    top: 10px;
+    right: 260px;
+    width: 220px;
+    height: 60px;
+    font-size: 20px;
+    font-weight: 700;
+    background-color: transparent;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 8px 10px;
+}
+.imagePreview{
+    background-color: black;
+    width: 230px;
+    height: 230px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 12px;
 }
