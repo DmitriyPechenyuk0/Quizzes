@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}    
+Quizzes - Кімната тесту
+{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('quiz_app.static', filename='css/new/teacher_room.css') }}">
+{% endblock %}
+{% block main %}
+    <div class="main-containerq">
+        <div class="content-wrapperq">
+            
+            <header class="headerq">
+                <div class="header-topq">
+                    <div>
+                        <h1 class="titleq">Quizzes</h1>
+                        <p class="subtitleq">Система інтерактивного тестування</p>
+                    </div>
+                    
+                    <div class="role-badgeq role-studentq">
+                        <i class="bi bi-person-fill"></i>
+                        <span>Учень</span>
+                    </div>
+                </div>
+
+                <div class="quiz-info-gridq">
+                    <div>
+                        <p class="info-labelq">Предмет</p>
+                        <p class="info-valueq">Математика</p>
+                    </div>
+                    <div>
+                        <p class="info-labelq">Тест</p>
+                        <p class="info-valueq">Інтегральне числення</p>
+                    </div>
+                    <div>
+                        <p class="info-labelq">Викладач</p>
+                        <p class="info-valueq">Андрій Мельник</p>
+                    </div>
+                </div>
+            </header>
+
+            <div class="main-gridq main-grid-studentq">
+                
+                <div class="status-panelq status-panel-studentq">
+                    <div class="panel-cardq">
+                        
+                        <div class="count-sectionq">
+                            <div class="count-wrapperq">
+                                <span class="count-numberq" id="connectedCount">2</span>
+                                <span class="count-totalq">/ <span id="totalCount">2</span></span>
+                            </div>
+                            <p class="count-labelq">учасників у лобі</p>
+                        </div>
+
+                        <div class="waiting-sectionq">
+                            <div class="waiting-contentq" id="waitingConnected">
+                                <div class="status-dotq"></div>
+                                <div>
+                                    <p class="waiting-titleq">
+                                        Очікування початку тестування
+                                    </p>
+                                    <p class="waiting-textq">
+                                        Підготуйтеся до проходження тесту. Викладач незабаром розпочне сесію.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="waiting-contentq waiting-pendingq" id="waitingPending" style="display: none;">
+                                <div class="status-dot-pendingq"></div>
+                                <div>
+                                    <p class="waiting-titleq">
+                                        Очікування підтвердження від викладача
+                                    </p>
+                                    <p class="waiting-textq">
+                                        Ваш запит на підключення надіслано. Викладач незабаром підтвердить ваш вхід до лобі.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="participants-panelq">
+                    <div class="participants-headerq">
+                        <h2 class="participants-titleq">
+                            <i class="bi bi-people title-iconq"></i>
+                            Учасники
+                        </h2>
+                    </div>
+
+                    <div class="participants-listq" id="participantsList">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script defer src="{{ url_for('quiz_app.static', filename='js/new/student_room.js') }}"></script>
+
+{% endblock %}

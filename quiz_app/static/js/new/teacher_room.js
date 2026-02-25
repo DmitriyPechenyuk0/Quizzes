@@ -1,9 +1,12 @@
 // Initial data
 let students = [
-    { id: 1, name: 'Олена Коваленко', status: 'connected', joinedAt: Date.now() - 5000 },
-    { id: 2, name: 'Дмитро Шевченко', status: 'connected', joinedAt: Date.now() - 3000 },
-    { id: 3, name: 'Марія Петренко', status: 'connected', joinedAt: Date.now() - 2000 },
-    { id: 4, name: 'Іван Бойко', status: 'connecting', joinedAt: Date.now() - 1000 },
+    { id: 1, name: 'Олена Коваленко', status: 'connected', joinedAt: Date.now() - 8000 },
+    { id: 2, name: 'Дмитро Шевченко', status: 'connected', joinedAt: Date.now() - 7000 },
+    { id: 3, name: 'Марія Петренко', status: 'pending', joinedAt: Date.now() - 6000 },
+    { id: 4, name: 'Іван Бойко', status: 'pending', joinedAt: Date.now() - 5000 },
+    { id: 5, name: 'Анна Сидоренко', status: 'pending', joinedAt: Date.now() - 4000 },
+    { id: 6, name: 'Петро Ткаченко', status: 'pending', joinedAt: Date.now() - 3000 },
+    { id: 7, name: 'Софія Іваненко', status: 'pending', joinedAt: Date.now() - 2000 },
 ];
 
 let currentView = 'student';
@@ -16,11 +19,22 @@ const connectedCountEl = document.getElementById('connectedCount');
 const totalCountEl = document.getElementById('totalCount');
 const startBtn = document.getElementById('startBtn');
 const toggleButtons = document.querySelectorAll('.toggle-btnq');
+const pendingSection = document.getElementById('pendingSection');
+const pendingList = document.getElementById('pendingList');
+const pendingBadge = document.getElementById('pendingBadge');
+const waitingConnected = document.getElementById('waitingConnected');
+const waitingPending = document.getElementById('waitingPending');
+
+// Current user simulation (for demo purposes)
+// In real app, this would come from authentication
+let currentUserId = 3; // Simulating user Марія Петренко who is pending
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     renderStudents();
+    renderPendingStudents();
     updateCounts();
+    updateStudentView();
     setupEventListeners();
     startConnectionSimulation();
 });
@@ -60,20 +74,140 @@ function switchView(view) {
     if (view === 'student') {
         studentView.style.display = 'block';
         teacherView.style.display = 'none';
+        updateStudentView();
     } else {
         studentView.style.display = 'none';
         teacherView.style.display = 'block';
+        updatePendingSection();
     }
 
     // Re-render students to show/hide remove buttons
     renderStudents();
 }
 
+// Update student view based on current user status
+function updateStudentView() {
+    const currentUser = students.find(s => s.id === currentUserId);
+    
+    if (!currentUser) {
+        // User was rejected or removed
+        waitingConnected.style.display = 'none';
+        waitingPending.style.display = 'none';
+        return;
+    }
+    
+    if (currentUser.status === 'pending') {
+        waitingConnected.style.display = 'none';
+        waitingPending.style.display = 'flex';
+    } else {
+        waitingConnected.style.display = 'flex';
+        waitingPending.style.display = 'none';
+    }
+}
+
+// Update pending section visibility
+function updatePendingSection() {
+    const pendingStudents = students.filter(s => s.status === 'pending');
+    if (pendingStudents.length > 0) {
+        pendingSection.style.display = 'block';
+        pendingBadge.textContent = pendingStudents.length;
+    } else {
+        pendingSection.style.display = 'none';
+    }
+}
+
+// Render pending students (for teacher view)
+function renderPendingStudents() {
+    const pendingStudents = students.filter(s => s.status === 'pending');
+    pendingList.innerHTML = '';
+    
+    pendingStudents.forEach(student => {
+        const item = createPendingItem(student);
+        pendingList.appendChild(item);
+    });
+    
+    updatePendingSection();
+}
+
+// Create pending student item
+function createPendingItem(student) {
+    const item = document.createElement('div');
+    item.className = 'pending-itemq';
+    item.setAttribute('data-pending-id', student.id);
+    
+    const initials = student.name.split(' ').map(n => n[0]).join('');
+    
+    item.innerHTML = `
+        <div class="pending-avatarq">
+            <span class="pending-avatar-textq">${initials}</span>
+        </div>
+        <span class="pending-nameq">${student.name}</span>
+        <div class="pending-actionsq">
+            <button class="approve-btnq" onclick="approveStudent(${student.id})">
+                <i class="bi bi-check-lg pending-action-iconq"></i>
+                Прийняти
+            </button>
+            <button class="reject-btnq" onclick="rejectStudent(${student.id})">
+                <i class="bi bi-x-lg pending-action-iconq"></i>
+                Відхилити
+            </button>
+        </div>
+    `;
+    
+    return item;
+}
+
+// Approve student
+function approveStudent(id) {
+    students = students.map(s => 
+        s.id === id ? { ...s, status: 'connecting' } : s
+    );
+    
+    renderStudents();
+    renderPendingStudents();
+    updateCounts();
+    updateStartButton();
+    updateStudentView();
+    
+    // Simulate connection
+    setTimeout(() => {
+        students = students.map(s => 
+            s.id === id ? { ...s, status: 'connected' } : s
+        );
+        renderStudents();
+        updateCounts();
+        updateStartButton();
+        updateStudentView();
+    }, 1000);
+}
+
+// Reject student
+function rejectStudent(id) {
+    const item = document.querySelector(`[data-pending-id="${id}"]`);
+    
+    if (item) {
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(-20px) scale(0.95)';
+        
+        setTimeout(() => {
+            students = students.filter(s => s.id !== id);
+            renderStudents();
+            renderPendingStudents();
+            updateCounts();
+            updateStartButton();
+            updateStudentView();
+        }, 300);
+    }
+}
+
 // Render students list
 function renderStudents() {
     participantsList.innerHTML = '';
     
-    students.forEach((student, index) => {
+    // Only show connected and connecting students in the main list
+    const visibleStudents = students.filter(s => s.status !== 'pending');
+    
+    visibleStudents.forEach((student, index) => {
         const card = createStudentCard(student, index);
         participantsList.appendChild(card);
     });
@@ -129,6 +263,7 @@ function removeStudent(id) {
             renderStudents();
             updateCounts();
             updateStartButton();
+            updateStudentView();
         }, 300);
     }
 }
@@ -136,7 +271,7 @@ function removeStudent(id) {
 // Update counts
 function updateCounts() {
     const connectedCount = students.filter(s => s.status === 'connected').length;
-    const totalCount = students.length;
+    const totalCount = students.filter(s => s.status !== 'pending').length;
     
     connectedCountEl.textContent = connectedCount;
     totalCountEl.textContent = totalCount;
@@ -172,9 +307,12 @@ function startConnectionSimulation() {
             renderStudents();
             updateCounts();
             updateStartButton();
+            updateStudentView();
         }
     }, 1500);
 }
 
-// Make removeStudent available globally
+// Make functions available globally
 window.removeStudent = removeStudent;
+window.approveStudent = approveStudent;
+window.rejectStudent = rejectStudent;

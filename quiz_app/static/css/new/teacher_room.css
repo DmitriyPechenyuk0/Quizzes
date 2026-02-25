@@ -169,6 +169,22 @@ body {
     animation: pulse 2s infinite;
 }
 
+.status-dot-pendingq {
+    width: 0.6vw;
+    height: 0.6vw;
+    border-radius: 50%;
+    background: rgb(255, 165, 0);
+    margin-top: 0.8vh;
+    animation: pulse 2s infinite;
+}
+
+.waiting-pendingq {
+    background: rgba(255, 165, 0, 0.05);
+    border: 0.1vh solid rgba(255, 165, 0, 0.2);
+    border-radius: 1vw;
+    padding: 1.5vw;
+}
+
 .waiting-titleq {
     color: rgba(255, 255, 255, 0.9);
     margin-bottom: 1vh;
@@ -186,6 +202,160 @@ body {
 /* Controls Section */
 .controls-sectionq {
     margin-top: 2vh;
+}
+
+/* Pending Section */
+.pending-sectionq {
+    background: rgba(255, 255, 255, 0.03);
+    border: 0.1vh solid rgba(255, 165, 0, 0.3);
+    border-radius: 1.2vw;
+    padding: 2vw;
+    margin-top: 3vh;
+}
+
+.pending-headerq {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+    margin-bottom: 1.5vh;
+    padding-bottom: 1.5vh;
+    border-bottom: 0.1vh solid rgba(255, 165, 0, 0.2);
+}
+
+.pending-header-iconq {
+    font-size: 1.2vw;
+    color: rgba(255, 165, 0, 0.8);
+}
+
+.pending-header-textq {
+    font-size: 0.9vw;
+    font-weight: 500;
+    color: rgba(255, 165, 0, 0.9);
+    flex: 1;
+}
+
+.pending-badgeq {
+    background: rgba(255, 165, 0, 0.2);
+    color: rgba(255, 165, 0, 1);
+    font-size: 0.7vw;
+    font-weight: 600;
+    padding: 0.5vh 1vw;
+    border-radius: 2vw;
+    min-width: 2vw;
+    text-align: center;
+}
+
+.pending-listq {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    max-height: 32vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0.5vw;
+}
+
+.pending-listq::-webkit-scrollbar {
+    width: 0.4vw;
+}
+
+.pending-listq::-webkit-scrollbar-track {
+    background: rgba(255, 165, 0, 0.05);
+    border-radius: 1vw;
+}
+
+.pending-listq::-webkit-scrollbar-thumb {
+    background: rgba(255, 165, 0, 0.3);
+    border-radius: 1vw;
+}
+
+.pending-listq::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 165, 0, 0.5);
+}
+
+.pending-itemq {
+    background: rgba(255, 255, 255, 0.02);
+    border: 0.1vh solid rgba(255, 255, 255, 0.1);
+    border-radius: 1vw;
+    padding: 1.5vh 1.5vw;
+    display: flex;
+    align-items: center;
+    gap: 1.5vw;
+    transition: all 0.3s;
+}
+
+.pending-itemq:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.pending-avatarq {
+    width: 2.5vw;
+    height: 2.5vw;
+    min-width: 2.5vw;
+    border-radius: 50%;
+    background: rgba(255, 165, 0, 0.1);
+    border: 0.1vh solid rgba(255, 165, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pending-avatar-textq {
+    color: rgba(255, 165, 0, 0.9);
+    font-size: 0.8vw;
+    font-weight: 600;
+}
+
+.pending-nameq {
+    flex: 1;
+    color: white;
+    font-size: 0.9vw;
+    font-weight: 400;
+}
+
+.pending-actionsq {
+    display: flex;
+    gap: 0.8vw;
+}
+
+.approve-btnq,
+.reject-btnq {
+    padding: 0.8vh 1.2vw;
+    border-radius: 0.6vw;
+    border: none;
+    font-size: 0.7vw;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+.approve-btnq {
+    background: rgba(16, 185, 129, 0.2);
+    color: rgb(16, 185, 129);
+    border: 0.1vh solid rgba(16, 185, 129, 0.3);
+}
+
+.approve-btnq:hover {
+    background: rgba(16, 185, 129, 0.3);
+    border-color: rgba(16, 185, 129, 0.5);
+}
+
+.reject-btnq {
+    background: rgba(239, 68, 68, 0.2);
+    color: rgb(239, 68, 68);
+    border: 0.1vh solid rgba(239, 68, 68, 0.3);
+}
+
+.reject-btnq:hover {
+    background: rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.5);
+}
+
+.pending-action-iconq {
+    font-size: 0.8vw;
 }
 
 .start-btnq {
@@ -474,6 +644,17 @@ body {
         margin-top: 1vh;
     }
 
+    .status-dot-pendingq {
+        width: 2vw;
+        height: 2vw;
+        margin-top: 1vh;
+    }
+
+    .waiting-pendingq {
+        border-radius: 2.5vw;
+        padding: 3vw;
+    }
+
     .waiting-contentq {
         gap: 3vw;
     }
@@ -502,6 +683,91 @@ body {
     .controls-hintq {
         font-size: 2.5vw;
         margin-top: 2vh;
+    }
+
+    .pending-sectionq {
+        border-radius: 3vw;
+        padding: 4vw;
+        margin-top: 3vh;
+    }
+
+    .pending-headerq {
+        gap: 2vw;
+        margin-bottom: 2vh;
+        padding-bottom: 2vh;
+    }
+
+    .pending-header-iconq {
+        font-size: 3.5vw;
+    }
+
+    .pending-header-textq {
+        font-size: 3vw;
+    }
+
+    .pending-badgeq {
+        font-size: 2.5vw;
+        padding: 0.8vh 2.5vw;
+        border-radius: 4vw;
+        min-width: 6vw;
+    }
+
+    .pending-listq {
+        gap: 2vh;
+        max-height: 35vh;
+        padding-right: 2vw;
+    }
+
+    .pending-listq::-webkit-scrollbar {
+        width: 1.5vw;
+    }
+
+    .pending-listq::-webkit-scrollbar-track {
+        border-radius: 2vw;
+    }
+
+    .pending-listq::-webkit-scrollbar-thumb {
+        border-radius: 2vw;
+    }
+
+    .pending-itemq {
+        border-radius: 2.5vw;
+        padding: 2vh 3vw;
+        gap: 3vw;
+    }
+
+    .pending-avatarq {
+        width: 8vw;
+        height: 8vw;
+        min-width: 8vw;
+    }
+
+    .pending-avatar-textq {
+        font-size: 3vw;
+    }
+
+    .pending-nameq {
+        font-size: 3.5vw;
+    }
+
+    .pending-actionsq {
+        gap: 2vw;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .approve-btnq,
+    .reject-btnq {
+        padding: 1.5vh 3vw;
+        border-radius: 2vw;
+        font-size: 2.8vw;
+        gap: 1.5vw;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .pending-action-iconq {
+        font-size: 3vw;
     }
 
     .participants-titleq {
@@ -633,6 +899,56 @@ body {
 
     .btn-iconq {
         font-size: 2vw;
+    }
+
+    .pending-headerq {
+        gap: 1.5vw;
+    }
+
+    .pending-header-iconq {
+        font-size: 1.8vw;
+    }
+
+    .pending-header-textq {
+        font-size: 1.4vw;
+    }
+
+    .pending-badgeq {
+        font-size: 1.2vw;
+        padding: 0.8vh 1.5vw;
+    }
+
+    .pending-listq {
+        max-height: 30vh;
+        padding-right: 1vw;
+    }
+
+    .pending-listq::-webkit-scrollbar {
+        width: 0.8vw;
+    }
+
+    .pending-avatarq {
+        width: 3.5vw;
+        height: 3.5vw;
+        min-width: 3.5vw;
+    }
+
+    .pending-avatar-textq {
+        font-size: 1.3vw;
+    }
+
+    .pending-nameq {
+        font-size: 1.4vw;
+    }
+
+    .approve-btnq,
+    .reject-btnq {
+        padding: 1vh 1.8vw;
+        font-size: 1.2vw;
+    }
+
+    .pending-action-iconq {
+        font-size: 1.4vw;
     }
 
     .student-nameq {

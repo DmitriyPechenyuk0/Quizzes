@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}    
-Quizzes - Lobby
+Quizzes - Кімната тесту
 {% endblock %}
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('quiz_app.static', filename='css/new/teacher_room.css') }}">
@@ -9,12 +9,7 @@ Quizzes - Lobby
 {% block main %}
     <div class="main-containerq">
         <div class="content-wrapperq">
-            
-            <!-- Header -->
             <header class="headerq">
-                
-
-                <!-- Quiz Info -->
                 <div class="quiz-info-gridq">
                     <div>
                         <p class="info-labelq">Предмет</p>
@@ -30,40 +25,19 @@ Quizzes - Lobby
                     </div>
                 </div>
             </header>
-
-            <!-- Main Content -->
             <div class="main-gridq">
-                
-                <!-- Status Panel -->
                 <div class="status-panelq">
                     <div class="panel-cardq">
                         
-                        <!-- Participants Count -->
                         <div class="count-sectionq">
                             <div class="count-wrapperq">
-                                <span class="count-numberq" id="connectedCount">3</span>
-                                <span class="count-totalq">/ <span id="totalCount">4</span></span>
+                                <span class="count-numberq" id="connectedCount">2</span>
+                                <span class="count-totalq">/ <span id="totalCount">2</span></span>
                             </div>
                             <p class="count-labelq">підключених учасників</p>
                         </div>
 
-                        <!-- Student View: Waiting -->
-                        <div class="waiting-sectionq" id="studentView">
-                            <div class="waiting-contentq">
-                                <div class="status-dotq"></div>
-                                <div>
-                                    <p class="waiting-titleq">
-                                        Очікування початку тестування
-                                    </p>
-                                    <p class="waiting-textq">
-                                        Підготуйтеся до проходження тесту. Викладач незабаром розпочне сесію.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Teacher View: Controls -->
-                        <div class="controls-sectionq" id="teacherView" style="display: none;">
+                        <div class="controls-sectionq">
                             <button class="start-btnq" id="startBtn">
                                 <i class="bi bi-play-fill btn-iconq"></i>
                                 Розпочати тестування
@@ -72,11 +46,19 @@ Quizzes - Lobby
                             <p class="controls-hintq">
                                 Переконайтесь, що всі учасники підключені
                             </p>
+
+                            <div class="pending-sectionq" id="pendingSection" style="display: none;">
+                                <div class="pending-headerq">
+                                    <i class="bi bi-clock-history pending-header-iconq"></i>
+                                    <span class="pending-header-textq">Запити на підключення</span>
+                                    <span class="pending-badgeq" id="pendingBadge">0</span>
+                                </div>
+                                <div class="pending-listq" id="pendingList">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Participants List -->
                 <div class="participants-panelq">
                     <div class="participants-headerq">
                         <h2 class="participants-titleq">
@@ -86,17 +68,9 @@ Quizzes - Lobby
                     </div>
 
                     <div class="participants-listq" id="participantsList">
-                        <!-- Students will be rendered here by JS -->
                     </div>
                 </div>
             </div>
-
-            <!-- Footer -->
-            <footer class="footerq">
-                <p class="footer-textq">
-                    Наукова робота з впровадження сучасних технологій у навчальний процес
-                </p>
-            </footer>
         </div>
     </div>
 

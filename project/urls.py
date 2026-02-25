@@ -11,6 +11,8 @@ quiz.add_url_rule("/host/<code>", view_func=quiz_views.host_page, methods=["GET"
 quiz.add_url_rule("/start/<int:quiz_id>", view_func=quiz_views.start_session_redirect, methods=["GET"])
 quiz.add_url_rule("/new/teacher", view_func=quiz_views.newDesignTestingT, methods=["GET"])
 
+quiz.add_url_rule("/new/student", view_func=quiz_views.newDesignTestingS, methods=["GET"])
+
 profile_app.profille.add_url_rule('/quiz/delete/<int:quiz_id>', view_func=profile_app.delete_quiz, methods=['DELETE'])
 
 home_app.home.add_url_rule(rule= '/', view_func=home_app.show_home_page, methods = ['POST', 'GET'])

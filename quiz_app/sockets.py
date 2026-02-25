@@ -350,3 +350,5 @@ def on_remove_user(data):
     except Exception as e:
         db.session.rollback()
         return emit("error", {"message": f"Failed to remove user: {str(e)}"})
+    
+

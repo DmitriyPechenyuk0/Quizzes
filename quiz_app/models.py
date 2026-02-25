@@ -19,6 +19,10 @@ class QuizSession(db.Model):
     who_host = db.Column(db.Integer, db.ForeignKey("user.id"), index=True, nullable=False)
     group = db.Column(db.Integer, db.ForeignKey("classes.id"), index=True, nullable=False)
 
+class QuizSessionReception(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.Integer, db.ForeignKey("user.id"), index=True, nullable=False)
+    session = db.Column(db.Integer, db.ForeignKey("quiz_session.id"), index=True, nullable=False)
 class SessionParticipant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     session_id = db.Column(db.Integer, db.ForeignKey("quiz_session.id"), index=True, nullable=False)
