@@ -1,66 +1,63 @@
-{% extends "base.html" %}
-
-{% block title %}Join{% endblock %}
-
-{% block head %}
-    <link rel="stylesheet" href="{{ url_for('New_Quiz.static', filename='css/join_next.css') }}">
-{% endblock %}
-
-{% block main %}
+{% extends "base.html" %} {% block title %}Join{% endblock %} {% block head %}
+<link
+	rel="stylesheet"
+	href="{{ url_for('New_Quiz.static', filename='css/join_next.css') }}"
+/>
+{% endblock %} {% block main %}
 <div class="main-window display-flex">
-    <div class="main-window-main">
-        <p class="mwm-name">
-            {{ name }}
-        </p>
-        <p class="main-window-quiz-name">{Quiz name}</p>
-        <div class="mwm-participants-count" >
-            <p class="mwm-participants-count-title">Учасники</p>
-            <p class="mwm-participants-count-count"></p>
-        </div>
-    </div>
-    <div class="main-window-other-participants" >
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        <div class="mwop-user">
-            <p>Dmytro Pecheniuk</p>
-        </div>
-        
-    </div>
+	<div class="main-window-main">
+		<p class="mwm-name">{{ name }}</p>
+		<p class="main-window-quiz-name">{Quiz name}</p>
+		<div class="mwm-participants-count">
+			<p class="mwm-participants-count-title">Учасники</p>
+			<p class="mwm-participants-count-count"></p>
+		</div>
+	</div>
+	<div class="main-window-other-participants">
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+		<div class="mwop-user">
+			<p>Dmytro Pecheniuk</p>
+		</div>
+	</div>
 </div>
 
-<script defer src="{{ url_for('New_Quiz.static', filename='js/joinnext.js') }}"></script>
+<script
+	defer
+	src="{{ url_for('New_Quiz.static', filename='js/joinnext.js') }}"
+></script>
 {% endblock %}

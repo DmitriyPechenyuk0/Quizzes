@@ -73,9 +73,6 @@ def render_new_quiz_settigs():
 
             media_path = os.path.join('media', quiz_name)
             os.makedirs(media_path, exist_ok=True)
-            code = ''
-            for number in range(6):
-                code += secrets.choice(string.digits)
 
             images_folder_in_media = os.path.join(base_media_dir, 'Images')
             os.makedirs(images_folder_in_media, exist_ok=True)
@@ -83,10 +80,8 @@ def render_new_quiz_settigs():
             quiz = Quiz(
                 name=quiz_name,
                 count_questions=int(request.form['num-questions']),
-                topic=request.form['topic'],
-                image=f"{image_filename}" if image_filename else None,
+                subject=request.form['topic'],
                 description=request.form['description'],
-                enter_code=code,
                 owner = id_user
             )
             db.session.add(quiz)

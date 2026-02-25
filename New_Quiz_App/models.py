@@ -7,6 +7,6 @@ class Quiz(db.Model):
     count_questions = db.Column(db.Integer, nullable=False, default=1)
     subject = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.String(50), nullable=False, default=lambda: datetime.now().strftime("%d.%m.%Y"))
+    created_at = db.Column(db.String(50), nullable=False, default=lambda: datetime.datetime.now().strftime("%d.%m.%Y"))
     runs_count = db.Column(db.Integer) 
     owner = db.Column(db.Integer, nullable=False)

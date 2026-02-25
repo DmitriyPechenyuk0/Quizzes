@@ -187,7 +187,6 @@ def on_teacher_next(data):
 
 def finish_session(s: QuizSession, code):
     s.status = "FINISHED"
-    s.code = 0
     db.session.commit()
     final_results(s.id)
     emit('finish_session', {"session_id": s.id}, to=code)

@@ -1,183 +1,289 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block head %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link
+	rel="stylesheet"
+	href="{{ url_for('home_app.static', filename='css/home.css') }}"
+/>
+{% endblock %} {% block title %} Quizzes - Система інтерактивного тестування {%
+endblock %} {% block main %}
+<section class="hero" id="home">
+	<div class="hero-glow"></div>
+	<div class="hero-content">
+		<div class="hero-icon"><i class="bi bi-lightbulb-fill"></i></div>
+		<h1>Quizzes</h1>
+		<p class="hero-description">
+			Система інтерактивного тестування в реальному часі для освітніх
+			закладів. Наукова робота, спрямована на соціальний експеримент з
+			впровадження сучасних технологій у навчальний процес
+		</p>
+		<div class="hero-badges">
+			<div class="badge">
+				<i class="bi bi-wifi" style="color: #22c55e"></i>Real-time
+				зв'язок
+			</div>
+			<div class="badge">
+				<i class="bi bi-people-fill" style="color: #3b82f6"></i
+				>Синхронізація учнів
+			</div>
+			<div class="badge">
+				<i class="bi bi-bar-chart-fill" style="color: #8b5cf6"></i
+				>Миттєва аналітика
+			</div>
+		</div>
+		<a href="#about" class="btn-hero"
+			><i class="bi bi-play-fill"></i>Дізнатися більше</a
+		>
+	</div>
+</section>
 
-{% block head %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('home_app.static', filename='css/home.css') }}">
-{% endblock %}
+<section class="section" id="about">
+	<div class="section-header">
+		<h2>Про проєкт</h2>
+		<p>Наукове дослідження ефективності інтерактивних методів навчання</p>
+	</div>
+	<div class="about-content">
+		<p class="about-text">
+			<span class="about-highlight">Quizzes</span> — це наукова робота в
+			академії, спрямована на проведення соціального експерименту в
+			освітньому середовищі коледжу. Проєкт досліджує, як сучасні
+			веб-технології можуть покращити процес оцінювання знань та взаємодію
+			між викладачами та студентами.
+		</p>
+		<p class="about-text">
+			Система дозволяє
+			<span class="about-highlight"
+				>викладачам створювати та запускати тести в реальному часі</span
+			>, а студентам — проходити їх синхронно з усією групою. Це створює
+			унікальну атмосферу спільного навчання, де кожен учасник бачить свій
+			прогрес, а викладач отримує миттєву статистику по всіх студентах.
+		</p>
+		<p class="about-text">
+			У основі проєкту лежать
+			<span class="about-highlight">WebSocket-з'єднання</span> для
+			синхронізації в реальному часі,
+			<span class="about-highlight">Flask</span> для backend логіки, та
+			<span class="about-highlight">асинхронна обробка</span> для
+			забезпечення швидкості роботи навіть при великій кількості
+			одночасних користувачів. База даних (SQLite3/MySQL) зберігає всі
+			результати для подальшого аналізу.
+		</p>
+		<p class="about-text">
+			Цей експеримент має на меті продемонструвати, що
+			<span class="about-highlight">цифрові інструменти</span> можуть
+			зробити навчання більш захоплюючим, прозорим та ефективним, а також
+			надати викладачам потужні інструменти для моніторингу та аналізу
+			успішності студентів.
+		</p>
+	</div>
+</section>
 
-{% block title %} Quizzes - Система інтерактивного тестування {% endblock %}
-{% block main %}
-    <section class="hero" id="home">
-        <div class="hero-glow"></div>
-        <div class="hero-content">
-            <div class="hero-icon"><i class="bi bi-lightbulb-fill"></i></div>
-            <h1>Quizzes</h1>
-            <p class="hero-description">
-                Система інтерактивного тестування в реальному часі для освітніх закладів. 
-                Наукова робота, спрямована на соціальний експеримент з впровадження сучасних 
-                технологій у навчальний процес
-            </p>
-            <div class="hero-badges">
-                <div class="badge"><i class="bi bi-wifi" style="color: #22c55e;"></i>Real-time зв'язок</div>
-                <div class="badge"><i class="bi bi-people-fill" style="color: #3b82f6;"></i>Синхронізація учнів</div>
-                <div class="badge"><i class="bi bi-bar-chart-fill" style="color: #8b5cf6;"></i>Миттєва аналітика</div>
-            </div>
-            <a href="#about" class="btn-hero"><i class="bi bi-play-fill"></i>Дізнатися більше</a>
-        </div>
-    </section>
+<section class="section" id="how-it-works">
+	<div class="section-header">
+		<h2>Як працює система</h2>
+		<p>Процес проведення тестування від створення до результатів</p>
+	</div>
+	<div class="flow-container">
+		<div class="flow-card">
+			<div class="flow-number">1</div>
+			<div class="flow-icon"><i class="bi bi-plus-circle-fill"></i></div>
+			<h3>Викладач створює тест</h3>
+			<p>
+				Викладач заходить в систему, створює новий тест з питаннями та
+				варіантами відповідей. Система генерує унікальний код для
+				підключення студентів.
+			</p>
+		</div>
+		<div class="flow-card">
+			<div class="flow-number">2</div>
+			<div class="flow-icon"><i class="bi bi-key-fill"></i></div>
+			<h3>Студенти підключаються</h3>
+			<p>
+				Студенти вводять код тесту та приєднуються до сесії. Викладач
+				бачить список всіх підключених учасників у реальному часі через
+				WebSocket.
+			</p>
+		</div>
+		<div class="flow-card">
+			<div class="flow-number">3</div>
+			<div class="flow-icon"><i class="bi bi-play-fill"></i></div>
+			<h3>Запуск тестування</h3>
+			<p>
+				Коли всі готові, викладач запускає тест. Питання синхронно
+				з'являються на екранах всіх студентів одночасно.
+			</p>
+		</div>
+		<div class="flow-card">
+			<div class="flow-number">4</div>
+			<div class="flow-icon"><i class="bi bi-card-checklist"></i></div>
+			<h3>Студенти відповідають</h3>
+			<p>
+				Студенти обирають відповіді, натискаючи на інтерактивні картки.
+				Їхні відповіді миттєво зберігаються в базі даних через
+				асинхронні запити.
+			</p>
+		</div>
+		<div class="flow-card">
+			<div class="flow-number">5</div>
+			<div class="flow-icon">
+				<i class="bi bi-arrow-right-circle-fill"></i>
+			</div>
+			<h3>Контроль темпу</h3>
+			<p>
+				Викладач контролює перехід між питаннями, гортаючи їх у власному
+				темпі. Це дозволяє пояснювати складні моменти та утримувати
+				увагу групи.
+			</p>
+		</div>
+		<div class="flow-card">
+			<div class="flow-number">6</div>
+			<div class="flow-icon">
+				<i class="bi bi-bar-chart-line-fill"></i>
+			</div>
+			<h3>Результати та аналітика</h3>
+			<p>
+				По завершенню студенти бачать свої результати та правильні
+				відповіді, а викладач отримує детальну статистику по кожному
+				учаснику та питанню.
+			</p>
+		</div>
+	</div>
+</section>
 
+<section class="section" id="tech">
+	<div class="section-header">
+		<h2>Технічний стек</h2>
+		<p>Сучасні технології для надійної та швидкої роботи</p>
+	</div>
+	<div class="grid">
+		<div class="card">
+			<div class="card-icon"><i class="bi bi-code-slash"></i></div>
+			<h4>Python & Flask</h4>
+		</div>
+		<div class="card">
+			<div class="card-icon"><i class="bi bi-broadcast"></i></div>
+			<h4>WebSockets</h4>
+		</div>
+		<div class="card">
+			<div class="card-icon">
+				<i class="bi bi-lightning-charge-fill"></i>
+			</div>
+			<h4>Async/Await</h4>
+		</div>
+		<div class="card">
+			<div class="card-icon"><i class="bi bi-database-fill"></i></div>
+			<h4>SQLite3 / MySQL</h4>
+		</div>
+		<div class="card">
+			<div class="card-icon"><i class="bi bi-filetype-html"></i></div>
+			<h4>HTML5 & CSS3</h4>
+		</div>
+		<div class="card">
+			<div class="card-icon"><i class="bi bi-filetype-js"></i></div>
+			<h4>JavaScript ES6+</h4>
+		</div>
+	</div>
+	<div class="about-content" style="margin-top: 3rem">
+		<p class="about-text">
+			<i
+				class="bi bi-gear-fill"
+				style="
+					color: #22c55e;
+					font-size: 1.5rem;
+					vertical-align: middle;
+				"
+			></i>
+			<span class="about-highlight"> Архітектура:</span> Клієнт-серверна
+			модель з двонаправленим зв'язком через WebSocket забезпечує миттєву
+			синхронізацію між усіма учасниками тестування.
+		</p>
+		<p class="about-text">
+			<i
+				class="bi bi-shield-check"
+				style="
+					color: #22c55e;
+					font-size: 1.5rem;
+					vertical-align: middle;
+				"
+			></i>
+			<span class="about-highlight"> Надійність:</span> Асинхронна обробка
+			запитів дозволяє системі обслуговувати десятки одночасних
+			користувачів без затримок.
+		</p>
+		<p class="about-text">
+			<i
+				class="bi bi-graph-up-arrow"
+				style="
+					color: #22c55e;
+					font-size: 1.5rem;
+					vertical-align: middle;
+				"
+			></i>
+			<span class="about-highlight"> Масштабованість:</span> База даних
+			оптимізована для швидкого зберігання та витягування результатів, що
+			критично важливо для real-time аналітики.
+		</p>
+	</div>
+</section>
 
-    <section class="section" id="about">
-        <div class="section-header">
-            <h2>Про проєкт</h2>
-            <p>Наукове дослідження ефективності інтерактивних методів навчання</p>
-        </div>
-        <div class="about-content">
-            <p class="about-text">
-                <span class="about-highlight">Quizzes</span> — це наукова робота в академії, спрямована на проведення соціального експерименту в освітньому середовищі коледжу. Проєкт досліджує, як сучасні веб-технології можуть покращити процес оцінювання знань та взаємодію між викладачами та студентами.
-            </p>
-            <p class="about-text">
-                Система дозволяє <span class="about-highlight">викладачам створювати та запускати тести в реальному часі</span>, а студентам — проходити їх синхронно з усією групою. Це створює унікальну атмосферу спільного навчання, де кожен учасник бачить свій прогрес, а викладач отримує миттєву статистику по всіх студентах.
-            </p>
-            <p class="about-text">
-                У основі проєкту лежать <span class="about-highlight">WebSocket-з'єднання</span> для синхронізації в реальному часі, <span class="about-highlight">Flask</span> для backend логіки, та <span class="about-highlight">асинхронна обробка</span> для забезпечення швидкості роботи навіть при великій кількості одночасних користувачів. База даних (SQLite3/MySQL) зберігає всі результати для подальшого аналізу.
-            </p>
-            <p class="about-text">
-                Цей експеримент має на меті продемонструвати, що <span class="about-highlight">цифрові інструменти</span> можуть зробити навчання більш захоплюючим, прозорим та ефективним, а також надати викладачам потужні інструменти для моніторингу та аналізу успішності студентів.
-            </p>
-        </div>
-    </section>
+<section class="section">
+	<div class="section-header">
+		<h2>Можливості платформи</h2>
+		<p>Все необхідне для ефективного проведення тестів</p>
+	</div>
+	<div class="grid">
+		<div class="card">
+			<div class="card-icon"><i class="bi bi-wifi"></i></div>
+			<h3>Real-time синхронізація</h3>
+			<p>
+				WebSocket забезпечує миттєвий обмін даними між викладачем та
+				студентами без необхідності оновлювати сторінку
+			</p>
+		</div>
+		<div class="card">
+			<div class="card-icon"><i class="bi bi-people-fill"></i></div>
+			<h3>Масове тестування</h3>
+			<p>
+				Підтримка одночасного тестування великої кількості студентів
+				завдяки асинхронній архітектурі
+			</p>
+		</div>
+		<div class="card">
+			<div class="card-icon"><i class="bi bi-speedometer2"></i></div>
+			<h3>Контроль темпу</h3>
+			<p>
+				Викладач керує переходом між питаннями, забезпечуючи єдиний темп
+				для всієї групи
+			</p>
+		</div>
+		<div class="card">
+			<div class="card-icon"><i class="bi bi-pie-chart-fill"></i></div>
+			<h3>Миттєва аналітика</h3>
+			<p>
+				Викладач бачить статистику відповідей у реальному часі: хто
+				відповів, скільки правильних відповідей тощо
+			</p>
+		</div>
+	</div>
+</section>
 
-    <section class="section" id="how-it-works">
-        <div class="section-header">
-            <h2>Як працює система</h2>
-            <p>Процес проведення тестування від створення до результатів</p>
-        </div>
-        <div class="flow-container">
-            <div class="flow-card">
-                <div class="flow-number">1</div>
-                <div class="flow-icon"><i class="bi bi-plus-circle-fill"></i></div>
-                <h3>Викладач створює тест</h3>
-                <p>Викладач заходить в систему, створює новий тест з питаннями та варіантами відповідей. Система генерує унікальний код для підключення студентів.</p>
-            </div>
-            <div class="flow-card">
-                <div class="flow-number">2</div>
-                <div class="flow-icon"><i class="bi bi-key-fill"></i></div>
-                <h3>Студенти підключаються</h3>
-                <p>Студенти вводять код тесту та приєднуються до сесії. Викладач бачить список всіх підключених учасників у реальному часі через WebSocket.</p>
-            </div>
-            <div class="flow-card">
-                <div class="flow-number">3</div>
-                <div class="flow-icon"><i class="bi bi-play-fill"></i></div>
-                <h3>Запуск тестування</h3>
-                <p>Коли всі готові, викладач запускає тест. Питання синхронно з'являються на екранах всіх студентів одночасно.</p>
-            </div>
-            <div class="flow-card">
-                <div class="flow-number">4</div>
-                <div class="flow-icon"><i class="bi bi-card-checklist"></i></div>
-                <h3>Студенти відповідають</h3>
-                <p>Студенти обирають відповіді, натискаючи на інтерактивні картки. Їхні відповіді миттєво зберігаються в базі даних через асинхронні запити.</p>
-            </div>
-            <div class="flow-card">
-                <div class="flow-number">5</div>
-                <div class="flow-icon"><i class="bi bi-arrow-right-circle-fill"></i></div>
-                <h3>Контроль темпу</h3>
-                <p>Викладач контролює перехід між питаннями, гортаючи їх у власному темпі. Це дозволяє пояснювати складні моменти та утримувати увагу групи.</p>
-            </div>
-            <div class="flow-card">
-                <div class="flow-number">6</div>
-                <div class="flow-icon"><i class="bi bi-bar-chart-line-fill"></i></div>
-                <h3>Результати та аналітика</h3>
-                <p>По завершенню студенти бачать свої результати та правильні відповіді, а викладач отримує детальну статистику по кожному учаснику та питанню.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="section" id="tech">
-        <div class="section-header">
-            <h2>Технічний стек</h2>
-            <p>Сучасні технології для надійної та швидкої роботи</p>
-        </div>
-        <div class="grid">
-            <div class="card">
-                <div class="card-icon"><i class="bi bi-code-slash"></i></div>
-                <h4>Python & Flask</h4>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="bi bi-broadcast"></i></div>
-                <h4>WebSockets</h4>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="bi bi-lightning-charge-fill"></i></div>
-                <h4>Async/Await</h4>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="bi bi-database-fill"></i></div>
-                <h4>SQLite3 / MySQL</h4>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="bi bi-filetype-html"></i></div>
-                <h4>HTML5 & CSS3</h4>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="bi bi-filetype-js"></i></div>
-                <h4>JavaScript ES6+</h4>
-            </div>
-        </div>
-        <div class="about-content" style="margin-top: 3rem;">
-            <p class="about-text">
-                <i class="bi bi-gear-fill" style="color: #22c55e; font-size: 1.5rem; vertical-align: middle;"></i>
-                <span class="about-highlight"> Архітектура:</span> Клієнт-серверна модель з двонаправленим зв'язком через WebSocket забезпечує миттєву синхронізацію між усіма учасниками тестування.
-            </p>
-            <p class="about-text">
-                <i class="bi bi-shield-check" style="color: #22c55e; font-size: 1.5rem; vertical-align: middle;"></i>
-                <span class="about-highlight"> Надійність:</span> Асинхронна обробка запитів дозволяє системі обслуговувати десятки одночасних користувачів без затримок.
-            </p>
-            <p class="about-text">
-                <i class="bi bi-graph-up-arrow" style="color: #22c55e; font-size: 1.5rem; vertical-align: middle;"></i>
-                <span class="about-highlight"> Масштабованість:</span> База даних оптимізована для швидкого зберігання та витягування результатів, що критично важливо для real-time аналітики.
-            </p>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="section-header">
-            <h2>Можливості платформи</h2>
-            <p>Все необхідне для ефективного проведення тестів</p>
-        </div>
-        <div class="grid">
-            <div class="card">
-                <div class="card-icon"><i class="bi bi-wifi"></i></div>
-                <h3>Real-time синхронізація</h3>
-                <p>WebSocket забезпечує миттєвий обмін даними між викладачем та студентами без необхідності оновлювати сторінку</p>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="bi bi-people-fill"></i></div>
-                <h3>Масове тестування</h3>
-                <p>Підтримка одночасного тестування великої кількості студентів завдяки асинхронній архітектурі</p>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="bi bi-speedometer2"></i></div>
-                <h3>Контроль темпу</h3>
-                <p>Викладач керує переходом між питаннями, забезпечуючи єдиний темп для всієї групи</p>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="bi bi-pie-chart-fill"></i></div>
-                <h3>Миттєва аналітика</h3>
-                <p>Викладач бачить статистику відповідей у реальному часі: хто відповів, скільки правильних відповідей тощо</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="cta-box">
-            <h2>Частина наукового дослідження</h2>
-            <p>Цей проєкт — це експериментальна платформа для вивчення впливу цифрових технологій на навчальний процес у сучасних освітніх закладах</p>
-            {% if is_teacher == 'True' %}
-                <a href="/new-quiz" class="btn-hero">Створити тест<i class="bi bi-arrow-right"></i></a>
-            {% endif %}
-        </div>
-    </section>
-    <script defer src="{{ url_for('home_app.static', filename='js/home.js') }}" ></script>
+<section class="section">
+	<div class="cta-box">
+		<h2>Частина наукового дослідження</h2>
+		<p>
+			Цей проєкт — це експериментальна платформа для вивчення впливу
+			цифрових технологій на навчальний процес у сучасних освітніх
+			закладах
+		</p>
+		{% if is_teacher == 'True' %}
+		<a href="/new-quiz" class="btn-hero"
+			>Створити тест<i class="bi bi-arrow-right"></i
+		></a>
+		{% endif %}
+	</div>
+</section>
+<script
+	defer
+	src="{{ url_for('home_app.static', filename='js/home.js') }}"
+></script>
 {% endblock %}

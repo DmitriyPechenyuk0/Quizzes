@@ -1,97 +1,100 @@
-
-localStorage.setItem('qIndex', 1)
-indexedDB.open('images', 1)
+localStorage.setItem("qIndex", 1);
+indexedDB.open("images", 1);
 
 function loadQuestionData() {
-    const qIndex = localStorage.getItem('qIndex')
-    const questionKey = `question${qIndex}`
-    const answerKey = `answer${qIndex}`
+	const qIndex = localStorage.getItem("qIndex");
+	const questionKey = `question${qIndex}`;
+	const answerKey = `answer${qIndex}`;
 
-    const questionValue = localStorage.getItem(questionKey) || ''
-    const answerValue = localStorage.getItem(answerKey) || ''
+	const questionValue = localStorage.getItem(questionKey) || "";
+	const answerValue = localStorage.getItem(answerKey) || "";
 
-    const questionInput = document.getElementById('questionInpt')
-    const answerInput = document.getElementById('answerInpt')
+	const questionInput = document.getElementById("questionInpt");
+	const answerInput = document.getElementById("answerInpt");
 
-    if (questionInput) questionInput.value = questionValue
-    if (answerInput) answerInput.value = answerValue
+	if (questionInput) questionInput.value = questionValue;
+	if (answerInput) answerInput.value = answerValue;
 }
-loadQuestionData()
+loadQuestionData();
 
 function useInputImage() {
-    document.getElementById('imageInput').click()
+	document.getElementById("imageInput").click();
 }
 
-const totalQuestions = document.querySelectorAll('.question-bar-setter').length
+const totalQuestions = document.querySelectorAll(".question-bar-setter").length;
 const questionsData = [];
 
-
-document.addEventListener('input', function(event) {
-    if (event.target && event.target.id === 'answerInpt') {
-        let value = event.target.value
-        localStorage.setItem(`answer${localStorage.getItem("qIndex")}`, value)
-    }
+document.addEventListener("input", function (event) {
+	if (event.target && event.target.id === "answerInpt") {
+		let value = event.target.value;
+		localStorage.setItem(`answer${localStorage.getItem("qIndex")}`, value);
+	}
 });
-document.addEventListener('input', function(event) {
-    if (event.target && event.target.id === 'questionInpt') {
-        let vale = event.target.value
-        localStorage.setItem(`question${localStorage.getItem("qIndex")}`, vale)
-    }
+document.addEventListener("input", function (event) {
+	if (event.target && event.target.id === "questionInpt") {
+		let vale = event.target.value;
+		localStorage.setItem(`question${localStorage.getItem("qIndex")}`, vale);
+	}
 });
-document.addEventListener('click', function(event) {
-    if (event.target && event.target.classList.contains('question-bar-setter')) {
-        if(event.target.id != `qq${localStorage.getItem("qIndex")}`){
-            localStorage.setItem('qIndex', event.target.id.replace(/\D/g, ''))
-            
-            loadQuestionData()
-        } else{
-            return
-        }
-    }
-})
+document.addEventListener("click", function (event) {
+	if (
+		event.target &&
+		event.target.classList.contains("question-bar-setter")
+	) {
+		if (event.target.id != `qq${localStorage.getItem("qIndex")}`) {
+			localStorage.setItem("qIndex", event.target.id.replace(/\D/g, ""));
 
-document.addEventListener('click', function(event) {
-    if (event.target && event.target.id === 'finish-editing'){
-        
-        for (let counter = 1; counter <= totalQuestions; counter++) {
-            const question = localStorage.getItem(`question${counter}`)
-            const answer = localStorage.getItem(`answer${counter}`)
-            const qtype = localStorage.getItem(`qtype${counter}`)
+			loadQuestionData();
+		} else {
+			return;
+		}
+	}
+});
 
-            if (question || answer) {
-                questionsData.push({
-                    id: counter,
-                    type: qtype || '',
-                    question: question || '',
-                    answer: answer || ''
-                })
-            }
-        }
-        let otvet = JSON.stringify(questionsData)
-        fetch(`/new-quiz/questions/save/${window.location.href.split('/')[4]}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ questions: questionsData })
-        })
+document.addEventListener("click", function (event) {
+	if (event.target && event.target.id === "finish-editing") {
+		for (let counter = 1; counter <= totalQuestions; counter++) {
+			const question = localStorage.getItem(`question${counter}`);
+			const answer = localStorage.getItem(`answer${counter}`);
+			const qtype = localStorage.getItem(`qtype${counter}`);
 
-        localStorage.clear()
-        window.location.href = `http://127.0.0.1:5000/profile/`
-    }
-})
-document.querySelectorAll('.fill-form').forEach((btn) => {
-    btn.addEventListener('click', () => {
-        document.querySelector('.active').classList.remove('active')
-        btn.classList.add("active")
-        localStorage.setItem(`qtype${localStorage.getItem("qIndex")}`, btn.id)
-    })
-})
+			if (question || answer) {
+				questionsData.push({
+					id: counter,
+					type: qtype || "",
+					question: question || "",
+					answer: answer || "",
+				});
+			}
+		}
+		let otvet = JSON.stringify(questionsData);
+		fetch(
+			`/new-quiz/questions/save/${window.location.href.split("/")[4]}`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ questions: questionsData }),
+			},
+		);
 
-document.querySelectorAll('.question-bar-setter').forEach( (ques) => {
-    if (localStorage.getItem(`qtype${ques.id[2]}`) != null) return
-    localStorage.setItem(`qtype${ques.id[2]}`, 'fform')
-})
+		localStorage.clear();
+		window.location.href = `http://127.0.0.1:5000/profile/`;
+	}
+});
+document.querySelectorAll(".fill-form").forEach((btn) => {
+	btn.addEventListener("click", () => {
+		document.querySelector(".active").classList.remove("active");
+		btn.classList.add("active");
+		localStorage.setItem(`qtype${localStorage.getItem("qIndex")}`, btn.id);
+	});
+});
+
+document.querySelectorAll(".question-bar-setter").forEach((ques) => {
+	if (localStorage.getItem(`qtype${ques.id[2]}`) != null) return;
+	localStorage.setItem(`qtype${ques.id[2]}`, "fform");
+});
 
 const dbName = "ImageDB";
 const storeName = "images";
@@ -99,34 +102,35 @@ const storeName = "images";
 const request = indexedDB.open(dbName, 1);
 
 request.onupgradeneeded = (e) => {
-    const db = e.target.result;
-    const objectStore = db.createObjectStore(storeName, { keyPath: "index"});
-
+	const db = e.target.result;
+	const objectStore = db.createObjectStore(storeName, { keyPath: "index" });
 };
 
 request.onsuccess = (e) => {
-    const db = e.target.result;
-    const input = document.getElementById('imageInput');
+	const db = e.target.result;
+	const input = document.getElementById("imageInput");
 
-    input.onchange = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-        let current_index = localStorage.getItem('qIndex')
-        const transaction = db.transaction([storeName], "readwrite");
-        const store = transaction.objectStore(storeName);
-        const record = {
-            index: current_index,
-            data: file,
-            updatedAt: new Date()
-        };
+	input.onchange = (event) => {
+		const file = event.target.files[0];
+		if (!file) return;
+		let current_index = localStorage.getItem("qIndex");
+		const transaction = db.transaction([storeName], "readwrite");
+		const store = transaction.objectStore(storeName);
+		const record = {
+			index: current_index,
+			data: file,
+			updatedAt: new Date(),
+		};
 
-        const request = store.put(record);
-        request.onsuccess = () => {
-            console.log(`Image saved successfully with index: ${current_index}`);
-        };
+		const request = store.put(record);
+		request.onsuccess = () => {
+			console.log(
+				`Image saved successfully with index: ${current_index}`,
+			);
+		};
 
-        request.onerror = () => {
-            console.error("Error saving file:", addRequest.error);
-        }
-    }
-}
+		request.onerror = () => {
+			console.error("Error saving file:", addRequest.error);
+		};
+	};
+};

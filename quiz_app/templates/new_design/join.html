@@ -1,89 +1,105 @@
-{% extends 'base.html' %}
-{% block title %}
+{% extends 'base.html' %} {% block title %}
 
-  <title>Quizzes — Приєднатись</title>
-{% endblock %}
-{% block head %}
-    <link rel="stylesheet" href="{{ url_for('quiz_app.static', filename='css/new/join.css') }}"/>
-{% endblock %}
-{% block main %}
-  <div class="card" id="card">
+<title>Quizzes — Приєднатись</title>
+{% endblock %} {% block head %}
+<link
+	rel="stylesheet"
+	href="{{ url_for('quiz_app.static', filename='css/new/join.css') }}"
+/>
+{% endblock %} {% block main %}
+<div class="card" id="card">
+	<div class="waiting" id="waitingOverlay">
+		<div class="loader-wrap">
+			<svg class="orbit" viewBox="0 0 100 100" fill="none">
+				<circle
+					cx="50"
+					cy="50"
+					r="44"
+					stroke="#1ef56e"
+					stroke-width="1"
+					stroke-dasharray="8 6"
+					stroke-linecap="round"
+				/>
+			</svg>
+			<svg class="ring" viewBox="0 0 100 100" fill="none">
+				<circle
+					cx="50"
+					cy="50"
+					r="44"
+					stroke="#1ef56e"
+					stroke-width="3.5"
+					stroke-dasharray="80 200"
+					stroke-linecap="round"
+					opacity=".9"
+				/>
+			</svg>
+			<div class="loader-dot"></div>
+		</div>
 
-    <div class="waiting" id="waitingOverlay">
-      <div class="loader-wrap">
-        <svg class="orbit" viewBox="0 0 100 100" fill="none">
-          <circle cx="50" cy="50" r="44"
-            stroke="#1ef56e" stroke-width="1"
-            stroke-dasharray="8 6"
-            stroke-linecap="round"/>
-        </svg>
-        <svg class="ring" viewBox="0 0 100 100" fill="none">
-          <circle cx="50" cy="50" r="44"
-            stroke="#1ef56e" stroke-width="3.5"
-            stroke-dasharray="80 200"
-            stroke-linecap="round"
-            opacity=".9"/>
-        </svg>
-        <div class="loader-dot"></div>
-      </div>
+		<div class="waiting-text-group">
+			<div class="waiting-title">Зачекайте на під'єднання</div>
+			<div class="waiting-dots" aria-hidden="true">
+				<span></span><span></span><span></span>
+			</div>
+		</div>
 
-      <div class="waiting-text-group">
-        <div class="waiting-title">Зачекайте на під'єднання</div>
-        <div class="waiting-dots" aria-hidden="true">
-          <span></span><span></span><span></span>
-        </div>
-      </div>
+		<p class="waiting-sub">Очікуємо підтвердження від викладача…</p>
 
-      <p class="waiting-sub">Очікуємо підтвердження від викладача…</p>
+		<button class="waiting-cancel" id="cancelBtn" type="button">
+			<i class="bi bi-x-lg"></i>
+			Скасувати
+		</button>
+	</div>
 
-      <button class="waiting-cancel" id="cancelBtn" type="button">
-        <i class="bi bi-x-lg"></i>
-        Скасувати
-      </button>
-    </div>
+	<p class="eyebrow">
+		<i class="bi bi-broadcast-pin"></i>
+		Реальний час · Тестування
+	</p>
 
-    <p class="eyebrow">
-      <i class="bi bi-broadcast-pin"></i>
-      Реальний час · Тестування
-    </p>
+	<h1>Введіть код<br />сесії</h1>
+	<p class="sub">
+		Отримайте 6-значний код у викладача та введіть його нижче для
+		підключення.
+	</p>
 
-    <h1>Введіть код<br>сесії</h1>
-    <p class="sub">Отримайте 6-значний код у викладача та введіть його нижче для підключення.</p>
+	<div class="divider"></div>
 
-    <div class="divider"></div>
+	<label class="form-label" for="codeInput">
+		<i class="bi bi-key"></i>
+		Код доступу
+	</label>
 
-    <label class="form-label" for="codeInput">
-      <i class="bi bi-key"></i>
-      Код доступу
-    </label>
+	<div class="input-wrap">
+		<input
+			id="codeInput"
+			class="code-input"
+			type="text"
+			inputmode="numeric"
+			pattern="[0-9]{6}"
+			maxlength="6"
+			placeholder="000000"
+			autocomplete="off"
+			spellcheck="false"
+			aria-describedby="formHint"
+		/>
+		<i class="bi bi-shield-lock input-icon" id="inputIcon"></i>
+	</div>
 
-    <div class="input-wrap">
-      <input
-        id="codeInput"
-        class="code-input"
-        type="text"
-        inputmode="numeric"
-        pattern="[0-9]{6}"
-        maxlength="6"
-        placeholder="000000"
-        autocomplete="off"
-        spellcheck="false"
-        aria-describedby="formHint"
-      />
-      <i class="bi bi-shield-lock input-icon" id="inputIcon"></i>
-    </div>
+	<button class="btn" id="joinBtn" disabled type="button">
+		<i class="bi bi-box-arrow-in-right"></i>
+		Перейти до тесту
+	</button>
 
-    <button class="btn" id="joinBtn" disabled type="button">
-      <i class="bi bi-box-arrow-in-right"></i>
-      Перейти до тесту
-    </button>
+	<p class="form-hint" id="formHint">
+		<i class="bi bi-info-circle hint-icon"></i>
+		<span id="hintText">Лише цифри, 6 символів</span>
+	</p>
+</div>
 
-    <p class="form-hint" id="formHint">
-      <i class="bi bi-info-circle hint-icon"></i>
-      <span id="hintText">Лише цифри, 6 символів</span>
-    </p>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 
-  </div>
-
-  <script defer src="{{ url_for('quiz_app.static', filename='js/join/join.js') }}"></script>
+<script
+	defer
+	src="{{ url_for('quiz_app.static', filename='js/join/join.js') }}"
+></script>
 {% endblock %}

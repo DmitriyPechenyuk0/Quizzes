@@ -1,17 +1,17 @@
 // document.addEventListener('DOMContentLoaded', function() {
 //     const form = document.getElementById('registration-form');
 //     const modal = document.getElementById('successModal');
-    
+
 //     function showFlash(message, type = 'error') {
 //         const flashContainer = document.getElementById('flash-container');
 //         const flashMessage = document.createElement('div');
 //         flashMessage.className = `alert alert-${type}`;
 //         flashMessage.textContent = message;
-        
+
 //         flashContainer.innerHTML = '';
 //         flashContainer.appendChild(flashMessage);
 //         flashContainer.classList.add('show');
-        
+
 //         setTimeout(() => {
 //             flashContainer.classList.remove('show');
 //             setTimeout(() => flashContainer.innerHTML = '', 300);
@@ -62,18 +62,18 @@
 
 //         return true;
 //     }
-    
+
 //     if (form && modal) {
 //         const submitModalBtn = document.querySelector('.sub');
 //         let selectedGroup = null;
 
 //         form.addEventListener('submit', function(e) {
 //             e.preventDefault();
-            
+
 //             if (!validateForm()) {
 //                 return;
 //             }
-            
+
 //             modal.style.display = 'flex';
 //         });
 
@@ -91,7 +91,7 @@
 //                     showFlash('Будь ласка, виберіть свій клас!');
 //                     return;
 //                 }
-                
+
 //                 const oldInput = form.querySelector('input[name="group"]');
 //                 if (oldInput) oldInput.remove();
 
@@ -100,7 +100,7 @@
 //                 hiddenInput.name = 'group';
 //                 hiddenInput.value = selectedGroup;
 //                 form.appendChild(hiddenInput);
-                
+
 //                 form.submit();
 //             });
 //         }
@@ -118,25 +118,23 @@
 //     }
 // });
 
+const registrationForm = document.getElementById("registrationForm");
+const googleAuthBtn = document.getElementById("googleAuthBtn");
+const githubAuthBtn = document.getElementById("githubAuthBtn");
+const errorMessage = document.getElementById("errorMessage");
 
-const registrationForm = document.getElementById('registrationForm');
-const googleAuthBtn = document.getElementById('googleAuthBtn');
-const githubAuthBtn = document.getElementById('githubAuthBtn');
-const errorMessage = document.getElementById('errorMessage');
-
-
-googleAuthBtn.addEventListener('click', function() {
-    window.location.href = '/auth/google';
+googleAuthBtn.addEventListener("click", function () {
+	window.location.href = "/auth/google";
 });
 
-githubAuthBtn.addEventListener('click', function() {
-    window.location.href = '/auth/github';
+githubAuthBtn.addEventListener("click", function () {
+	window.location.href = "/auth/github";
 });
 
-registrationForm.addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-   let modal = document.querySelector('.modal-overlay')
-   modal.classList.remove('noned')
-   modal.classList.add('flexed')
-})
+registrationForm.addEventListener("submit", function (event) {
+	event.preventDefault();
+
+	let modal = document.querySelector(".modal-overlay");
+	modal.classList.remove("noned");
+	modal.classList.add("flexed");
+});

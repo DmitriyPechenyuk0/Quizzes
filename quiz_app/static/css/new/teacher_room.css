@@ -1,19 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-    background: black;
-    color: white;
-}
-
 .main-containerq {
     min-height: 100vh;
     background: black;
@@ -26,7 +10,6 @@ body {
     padding: 3vh 4vw;
 }
 
-/* Header */
 .headerq {
     margin-bottom: 8vh;
 }
@@ -85,7 +68,6 @@ body {
     color: white;
 }
 
-/* Quiz Info Grid */
 .quiz-info-gridq {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -149,7 +131,6 @@ body {
     font-size: 0.9vw;
 }
 
-/* Waiting Section */
 .waiting-sectionq {
     margin-top: 2vh;
 }
@@ -199,12 +180,10 @@ body {
     line-height: 1.6;
 }
 
-/* Controls Section */
 .controls-sectionq {
     margin-top: 2vh;
 }
 
-/* Pending Section */
 .pending-sectionq {
     background: rgba(255, 255, 255, 0.03);
     border: 0.1vh solid rgba(255, 165, 0, 0.3);
@@ -424,7 +403,6 @@ body {
     gap: 1.5vh;
 }
 
-/* Student Card */
 .student-cardq {
     background: rgba(255, 255, 255, 0.02);
     border: 0.1vh solid rgba(255, 255, 255, 0.1);
@@ -567,7 +545,6 @@ body {
     }
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
     .content-wrapperq {
         padding: 2vh 4vw;
@@ -841,7 +818,6 @@ body {
     }
 }
 
-/* Tablet Responsiveness */
 @media (min-width: 769px) and (max-width: 1024px) {
     .titleq {
         font-size: 6vw;

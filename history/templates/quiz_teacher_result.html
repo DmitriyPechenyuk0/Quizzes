@@ -1,50 +1,53 @@
-{% extends 'base.html' %}
-{% block title %}Quiz Teacher Result{% endblock %}
-
-{% block head %}
-<link rel="stylesheet" href="{{ url_for('history.static', filename='css/quiz_teacher_result.css') }}">
+{% extends 'base.html' %} {% block title %}Quiz Teacher Result{% endblock %} {%
+block head %}
+<link
+	rel="stylesheet"
+	href="{{ url_for('history.static', filename='css/quiz_teacher_result.css') }}"
+/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{% endblock %}
+{% endblock %} {% block main %}
+<div
+	class="section"
+	id="quizData"
+	data-question-labels='{{ stats|map(attribute="question")|list|tojson }}'
+	data-question-data='{{ stats|map(attribute="percent")|list|tojson }}'
+	data-avg-accuracy="{{ avg_accuracy }}"
+>
+	<p class="quiz-text">Тест: {{ quiz_name }}</p>
+	<div class="result-frame">
+		<div class="student-table">
+			<table>
+				<thead>
+					<tr>
+						<th>Ім’я</th>
+						<th>Точність</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for s in students %}
+					<tr>
+						<td>
+							<a
+								href="{{ url_for('history.show_qsr_page', session_id=session_id, user_id=s.id) }}"
+								class="student-link"
+							>
+								{{ s.name }}
+							</a>
+						</td>
+						<td>{{ s.accuracy }}%</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
 
-{% block main %}
-<div class="section"
-     id="quizData"
-     data-question-labels='{{ stats|map(attribute="question")|list|tojson }}'
-     data-question-data='{{ stats|map(attribute="percent")|list|tojson }}'
-     data-avg-accuracy='{{ avg_accuracy }}'>
-
-  <p class="quiz-text">Тест: {{ quiz_name }}</p>
-  <div class="result-frame">
-    <div class="student-table">
-      <table>
-        <thead>
-          <tr>
-            <th>Ім’я</th>
-            <th>Точність</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for s in students %}
-          <tr>
-            <td>
-              <a href="{{ url_for('history.show_qsr_page', session_id=session_id, user_id=s.id) }}" class="student-link">
-                {{ s.name }}
-              </a>
-            </td>
-            <td>{{ s.accuracy }}%</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-    <div class="chart-section">
-      <h3>Статистика відповідей на запитання</h3>
-      <canvas id="questionChart"></canvas>
-      <p class="avg">Середня точність групи: {{ avg_accuracy }}%</p>
-      <canvas id="summaryChart"></canvas>
-    </div>
-  </div>
+		<div class="chart-section">
+			<h3>Статистика відповідей на запитання</h3>
+			<canvas id="questionChart"></canvas>
+			<p class="avg">Середня точність групи: {{ avg_accuracy }}%</p>
+			<canvas id="summaryChart"></canvas>
+		</div>
+	</div>
 </div>
 
 <script src="{{ url_for('history.static', filename='js/quiz_teacher_result.js') }}"></script>

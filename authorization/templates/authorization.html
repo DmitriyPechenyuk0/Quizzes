@@ -1,76 +1,74 @@
-{% extends 'base.html' %}
-
-{% block title %}Вхід - Quizzes{% endblock %}
-
-{% block head %}
-<link rel="stylesheet" href="{{ url_for('authorization.static', filename='css/authorization.css') }}">
-<script src="{{ url_for('authorization.static', filename='js/authorization.js') }}" defer></script>
-{% endblock %}
-
-{% block main %}
+{% extends 'base.html' %} {% block title %}Вхід - Quizzes{% endblock %} {% block
+head %}
+<link
+	rel="stylesheet"
+	href="{{ url_for('authorization.static', filename='css/authorization.css') }}"
+/>
+<script
+	src="{{ url_for('authorization.static', filename='js/authorization.js') }}"
+	defer
+></script>
+{% endblock %} {% block main %}
 
 <div class="flash-messages" id="flash-container">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="flash-message flash-{{ category }}">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+	{% with messages = get_flashed_messages(with_categories=true) %} {% if
+	messages %} {% for category, message in messages %}
+	<div class="flash-message flash-{{ category }}">{{ message }}</div>
+	{% endfor %} {% endif %} {% endwith %}
 </div>
 
 <div class="container">
-    <div class="card">
-        <div class="logo">
-            <h1>QUIZZES</h1>
-        </div>
+	<div class="card">
+		<div class="logo">
+			<h1>QUIZZES</h1>
+		</div>
 
-        <div class="oauth-buttons">
-            <button class="oauth-btn" id="googleAuthBtn" type="button">
-                <i class="bi bi-google oauth-icon"></i>
-                <span>Увійти через Google</span>
-            </button>
+		<div class="oauth-buttons">
+			<button class="oauth-btn" id="googleAuthBtn" type="button">
+				<i class="bi bi-google oauth-icon"></i>
+				<span>Увійти через Google</span>
+			</button>
 
-            <button class="oauth-btn" id="githubAuthBtn" type="button">
-                <i class="bi bi-github oauth-icon"></i>
-                <span>Увійти через GitHub</span>
-            </button>
-        </div>
+			<button class="oauth-btn" id="githubAuthBtn" type="button">
+				<i class="bi bi-github oauth-icon"></i>
+				<span>Увійти через GitHub</span>
+			</button>
+		</div>
 
-        <div class="divider">АБО</div>
+		<div class="divider">АБО</div>
 
-        <form id="registrationForm" method="POST">
-            <div class="form-group">
-                <label for="username">Ім'я користувача</label>
-                <input 
-                    type="text" 
-                    id="username" 
-                    name="username" 
-                    placeholder="Name_Surname"
-                    required
-                >
-            </div>
+		<form id="registrationForm" method="POST">
+			<div class="form-group">
+				<label for="username">Ім'я користувача</label>
+				<input
+					type="text"
+					id="username"
+					name="username"
+					placeholder="Name_Surname"
+					required
+				/>
+			</div>
 
-            <div class="form-group">
-                <label for="password">Пароль</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    placeholder="••••••••"
-                    required
-                    minlength="8"
-                >
-            </div>
+			<div class="form-group">
+				<label for="password">Пароль</label>
+				<input
+					type="password"
+					id="password"
+					name="password"
+					placeholder="••••••••"
+					required
+					minlength="8"
+				/>
+			</div>
 
-            <div id="errorMessage" class="error-message"></div>
+			<div id="errorMessage" class="error-message"></div>
 
-            <button type="submit" class="submit-btn">
-                Увійти
-            </button>
-        </form>
+			<button type="submit" class="submit-btn">Увійти</button>
+		</form>
 
-        <p class="footer-text">Ще немає акаунту?<a href="/registration"> Хучіш реєструйся! </a></p>
-    </div>
+		<p class="footer-text">
+			Ще немає акаунту?<a href="/registration"> Хучіш реєструйся! </a>
+		</p>
+	</div>
 </div>
 {% endblock %}

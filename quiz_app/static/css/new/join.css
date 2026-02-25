@@ -11,7 +11,6 @@
   --muted:      #363636;
   --muted-hi:   #555555;
 
-  /* ── Типографіка у vw (десктоп) ── */
   --fs-eyebrow: 0.95vw;
   --fs-body:    1.1vw;
   --fs-label:   1.0vw;
@@ -66,9 +65,6 @@ main{
   background: linear-gradient(90deg, transparent, var(--green), transparent);
 }
 
-/* ═══════════════════════════════════════════════
-   EYEBROW
-═══════════════════════════════════════════════ */
 .eyebrow {
   font-family: 'Outfit', sans-serif;
   font-size: var(--fs-eyebrow);
@@ -82,9 +78,6 @@ main{
   margin-bottom: var(--gap-xs);
 }
 
-/* ═══════════════════════════════════════════════
-   HEADING & SUB
-═══════════════════════════════════════════════ */
 h1 {
   font-family: 'Outfit', sans-serif;
   font-size: var(--fs-h1);
@@ -102,18 +95,12 @@ h1 {
   max-width: 34ch;
 }
 
-/* ═══════════════════════════════════════════════
-   DIVIDER
-═══════════════════════════════════════════════ */
 .divider {
   height: 1px;
   background: var(--border);
   margin-bottom: var(--gap-md);
 }
 
-/* ═══════════════════════════════════════════════
-   FORM LABEL
-═══════════════════════════════════════════════ */
 .form-label {
   display: flex;
   align-items: center;
@@ -127,9 +114,6 @@ h1 {
   margin-bottom: var(--gap-xs);
 }
 
-/* ═══════════════════════════════════════════════
-   INPUT WRAPPER
-═══════════════════════════════════════════════ */
 .input-wrap {
   position: relative;
   margin-bottom: var(--gap-sm);
@@ -176,7 +160,6 @@ h1 {
   animation: shake .35s ease;
 }
 
-/* Icon inside input (right side) */
 .input-icon {
   position: absolute;
   right: 1.1vw;
@@ -193,9 +176,6 @@ h1 {
   color: var(--green);
 }
 
-/* ═══════════════════════════════════════════════
-   BUTTON
-═══════════════════════════════════════════════ */
 .btn {
   display: flex;
   align-items: center;
@@ -233,9 +213,6 @@ h1 {
   cursor: not-allowed;
 }
 
-/* ═══════════════════════════════════════════════
-   HINT
-═══════════════════════════════════════════════ */
 .form-hint {
   display: flex;
   align-items: center;
@@ -252,9 +229,6 @@ h1 {
 .form-hint.ready    { color: var(--green); }
 .form-hint.err      { color: #d63535; }
 
-/* ═══════════════════════════════════════════════
-   WAITING OVERLAY
-═══════════════════════════════════════════════ */
 .waiting {
   position: absolute;
   inset: 0;
@@ -278,7 +252,6 @@ h1 {
   pointer-events: all;
 }
 
-/* ── Loader SVG ── */
 .loader-wrap {
   position: relative;
   width: 6vw;
@@ -311,8 +284,6 @@ h1 {
   background: var(--green);
   animation: pulse-dot 1.5s ease-in-out infinite;
 }
-
-/* ── Waiting text ── */
 .waiting-text-group {
   display: flex;
   flex-direction: column;
@@ -345,7 +316,6 @@ h1 {
   max-width: 24ch;
 }
 
-/* ── Cancel button ── */
 .waiting-cancel {
   display: flex;
   align-items: center;
@@ -366,9 +336,6 @@ h1 {
   border-color: var(--muted-hi);
 }
 
-/* ═══════════════════════════════════════════════
-   KEYFRAMES
-═══════════════════════════════════════════════ */
 @keyframes spin   { to { transform: rotate(360deg);  } }
 @keyframes spin-r { to { transform: rotate(-360deg); } }
 
@@ -390,11 +357,6 @@ h1 {
   80%      { transform: translateX(3px); }
 }
 
-/* ═══════════════════════════════════════════════
-   MOBILE  ≤ 768px
-   Перемикаємось на rem щоб текст не ставав
-   мікроскопічним на телефонах
-═══════════════════════════════════════════════ */
 @media (max-width: 768px) {
   :root {
     --fs-eyebrow: 0.7rem;
