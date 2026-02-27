@@ -1,7 +1,15 @@
+/*
+  Конвертация: все vh → vw через коэффициент базового экрана 1440×900
+  Формула: X vh → X * (900/1440) vw = X * 0.625 vw
+  Пример: 4.63vh → 4.63 * 0.625 = 2.89vw
+  
+  Правило: width и height иконок используют одно и то же vw значение → квадрат при любом разрешении
+*/
+
 .hero {
     max-width: 75vw;
     margin: 0 auto;
-    padding: 3.7vh 0.78vw;
+    padding: 2.31vw 0.78vw;           /* 3.7vh→2.31vw */
     text-align: center;
     position: relative;
 }
@@ -12,7 +20,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 31.25vw;
-    height: 55.56vh;
+    height: 34.73vw;                  /* 55.56vh→34.73vw */
     background: radial-gradient(circle, rgba(34, 197, 94, 0.15), transparent);
     filter: blur(4.17vw);
     pointer-events: none;
@@ -25,27 +33,27 @@
 
 .hero-icon {
     width: 5.21vw;
-    height: 9.26vh;
+    height: 5.21vw;                   /* было 9.26vh→5.79vw, сделан квадрат по width */
     background: linear-gradient(135deg, #22c55e, #16a34a);
     border-radius: 1.46vw;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.85vh;
+    margin: 0 auto 1.16vw;            /* 1.85vh→1.16vw */
     animation: float 3s ease-in-out infinite;
     box-shadow: 0 0 2.08vw rgba(34, 197, 94, 0.4);
-    font-size: 2.78vh;
+    font-size: 1.74vw;                /* 2.78vh→1.74vw */
 }
 
 @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-0.93vh); }
+    50% { transform: translateY(-0.58vw); } /* 0.93vh→0.58vw */
 }
 
 .hero h1 {
-    font-size: 4.63vh;
+    font-size: 2.89vw;                /* 4.63vh→2.89vw */
     font-weight: 800;
-    margin-bottom: 1.39vh;
+    margin-bottom: 0.87vw;            /* 1.39vh→0.87vw */
     background: linear-gradient(135deg, #d1d5db, #22c55e, #d1d5db);
     background-size: 200% 200%;
     -webkit-background-clip: text;
@@ -60,10 +68,10 @@
 }
 
 .hero-description {
-    font-size: 1.39vh;
+    font-size: 0.87vw;                /* 1.39vh→0.87vw */
     color: #d1d5db;
     max-width: 46.88vw;
-    margin: 0 auto 1.85vh;
+    margin: 0 auto 1.16vw;            /* 1.85vh→1.16vw */
     line-height: 1.8;
 }
 
@@ -71,7 +79,7 @@
     display: flex;
     justify-content: center;
     gap: 0.52vw;
-    margin-bottom: 2.78vh;
+    margin-bottom: 1.74vw;            /* 2.78vh→1.74vw */
     flex-wrap: wrap;
 }
 
@@ -81,9 +89,9 @@
     gap: 0.26vw;
     background-color: #18181b;
     border: 1px solid #27272a;
-    padding: 0.46vh 0.52vw;
+    padding: 0.29vw 0.52vw;           /* 0.46vh→0.29vw */
     border-radius: 2.6vw;
-    font-size: 0.83vh;
+    font-size: 0.52vw;                /* 0.83vh→0.52vw */
     font-weight: 500;
 }
 
@@ -93,39 +101,39 @@
     gap: 0.39vw;
     background: linear-gradient(135deg, #22c55e, #16a34a);
     color: black;
-    padding: 1.16vh 1.3vw;
+    padding: 0.73vw 1.3vw;            /* 1.16vh→0.73vw */
     border-radius: 0.83vw;
     text-decoration: none;
     font-weight: 700;
-    font-size: 1.04vh;
+    font-size: 0.65vw;                /* 1.04vh→0.65vw */
     transition: all 0.3s;
-    box-shadow: 0 0.93vh 2.08vw rgba(34, 197, 94, 0.3);
+    box-shadow: 0 0.58vw 2.08vw rgba(34, 197, 94, 0.3); /* 0.93vh→0.58vw */
 }
 
 .btn-hero:hover {
     transform: scale(1.05);
-    box-shadow: 0 1.39vh 2.6vw rgba(34, 197, 94, 0.5);
+    box-shadow: 0 0.87vw 2.6vw rgba(34, 197, 94, 0.5); /* 1.39vh→0.87vw */
 }
 
 .section {
     max-width: 75vw;
     margin: 0 auto;
-    padding: 2.78vh 0.78vw;
+    padding: 1.74vw 0.78vw;           /* 2.78vh→1.74vw */
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 2.78vh;
+    margin-bottom: 1.74vw;            /* 2.78vh→1.74vw */
 }
 
 .section-header h2 {
-    font-size: 2.78vh;
+    font-size: 1.74vw;                /* 2.78vh→1.74vw */
     font-weight: 800;
-    margin-bottom: 0.93vh;
+    margin-bottom: 0.58vw;            /* 0.93vh→0.58vw */
 }
 
 .section-header p {
-    font-size: 1.16vh;
+    font-size: 0.73vw;                /* 1.16vh→0.73vw */
     color: #9ca3af;
     max-width: 41.67vw;
     margin: 0 auto;
@@ -135,15 +143,15 @@
     background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(34, 197, 94, 0.02));
     border: 1px solid #27272a;
     border-radius: 1.25vw;
-    padding: 2.78vh 1.56vw;
-    margin-bottom: 2.78vh;
+    padding: 1.74vw 1.56vw;           /* 2.78vh→1.74vw */
+    margin-bottom: 1.74vw;            /* 2.78vh→1.74vw */
 }
 
 .about-text {
-    font-size: 1.04vh;
+    font-size: 0.65vw;                /* 1.04vh→0.65vw */
     color: #d1d5db;
     line-height: 2;
-    margin-bottom: 1.39vh;
+    margin-bottom: 0.87vw;            /* 1.39vh→0.87vw */
 }
 
 .about-highlight {
@@ -155,29 +163,29 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(15.63vw, 1fr));
     gap: 1.04vw;
-    margin-top: 2.78vh;
+    margin-top: 1.74vw;               /* 2.78vh→1.74vw */
 }
 
 .flow-card {
     background-color: #18181b;
     border: 1px solid #27272a;
     border-radius: 1.04vw;
-    padding: 1.85vh 1.04vw;
+    padding: 1.16vw 1.04vw;           /* 1.85vh→1.16vw */
     position: relative;
     transition: all 0.3s;
 }
 
 .flow-card:hover {
-    transform: translateY(-0.46vh);
+    transform: translateY(-0.29vw);   /* 0.46vh→0.29vw */
     border-color: rgba(34, 197, 94, 0.3);
 }
 
 .flow-number {
     position: absolute;
-    top: -1.39vh;
+    top: -0.87vw;                     /* 1.39vh→0.87vw */
     left: 1.04vw;
     width: 2.08vw;
-    height: 3.7vh;
+    height: 2.08vw;                   /* было 3.7vh→2.31vw, сделан квадрат по width */
     background: linear-gradient(135deg, #22c55e, #16a34a);
     border-radius: 50%;
     display: flex;
@@ -185,344 +193,346 @@
     justify-content: center;
     font-weight: 800;
     color: black;
-    font-size: 1.16vh;
+    font-size: 0.73vw;                /* 1.16vh→0.73vw */
 }
 
 .flow-icon {
     width: 3.13vw;
-    height: 5.56vh;
+    height: 3.13vw;                   /* было 5.56vh→3.47vw, сделан квадрат по width */
     background: rgba(34, 197, 94, 0.1);
     border-radius: 0.83vw;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 1.39vh 0 0.93vh 0;
-    font-size: 1.85vh;
+    margin: 0.87vw 0 0.58vw 0;        /* 1.39vh→0.87vw, 0.93vh→0.58vw */
+    font-size: 1.16vw;                /* 1.85vh→1.16vw */
     color: #22c55e;
 }
 
 .flow-card h3 {
-    font-size: 1.39vh;
+    font-size: 0.87vw;                /* 1.39vh→0.87vw */
     font-weight: 700;
-    margin-bottom: 0.69vh;
+    margin-bottom: 0.43vw;            /* 0.69vh→0.43vw */
 }
 
 .flow-card p {
     color: #9ca3af;
     line-height: 1.8;
-    font-size: 0.93vh;
+    font-size: 0.58vw;                /* 0.93vh→0.58vw */
 }
 
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(13.02vw, 1fr));
     gap: 0.78vw;
-    margin-top: 2.78vh;
+    margin-top: 1.74vw;               /* 2.78vh→1.74vw */
 }
 
 .card {
     background-color: #18181b;
     border: 1px solid #27272a;
     border-radius: 1.04vw;
-    padding: 1.85vh 1.04vw;
+    padding: 1.16vw 1.04vw;           /* 1.85vh→1.16vw */
     transition: all 0.3s;
 }
 
 .card:hover {
-    transform: translateY(-0.46vh);
+    transform: translateY(-0.29vw);   /* 0.46vh→0.29vw */
     border-color: rgba(34, 197, 94, 0.3);
 }
 
 .card-icon {
     width: 3.13vw;
-    height: 5.56vh;
+    height: 3.13vw;                   /* было 5.56vh→3.47vw, сделан квадрат по width */
     background: rgba(34, 197, 94, 0.1);
     border-radius: 0.83vw;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.39vh;
-    font-size: 1.85vh;
+    margin-bottom: 0.87vw;            /* 1.39vh→0.87vw */
+    font-size: 1.16vw;                /* 1.85vh→1.16vw */
     color: #22c55e;
 }
 
 .card h3, .card h4 {
-    font-size: 1.39vh;
+    font-size: 0.87vw;                /* 1.39vh→0.87vw */
     font-weight: 700;
-    margin-bottom: 0.69vh;
+    margin-bottom: 0.43vw;            /* 0.69vh→0.43vw */
 }
 
 .card p {
     color: #9ca3af;
     line-height: 1.8;
-    font-size: 0.93vh;
+    font-size: 0.58vw;                /* 0.93vh→0.58vw */
 }
 
 .cta-box {
     background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05));
     border: 1px solid rgba(34, 197, 94, 0.2);
     border-radius: 1.46vw;
-    padding: 3.7vh 2.08vw;
+    padding: 2.31vw 2.08vw;           /* 3.7vh→2.31vw */
     text-align: center;
 }
 
 .cta-box h2 {
     color: #d1d5db;
-    font-size: 2.78vh;
+    font-size: 1.74vw;                /* 2.78vh→1.74vw */
     font-weight: 800;
-    margin-bottom: 0.93vh;
+    margin-bottom: 0.58vw;            /* 0.93vh→0.58vw */
 }
 
 .cta-box p {
-    font-size: 1.16vh;
+    font-size: 0.73vw;                /* 1.16vh→0.73vw */
     color: #d1d5db;
-    margin-bottom: 1.85vh;
+    margin-bottom: 1.16vw;            /* 1.85vh→1.16vw */
     max-width: 31.25vw;
     margin-left: auto;
     margin-right: auto;
 }
 
+/* =============================================
+   MEDIA QUERIES — только layout-сдвиги
+   Значения пересчитаны для viewport ≤768px
+   На мобиле vw от узкого экрана, поэтому
+   коэффициенты увеличены пропорционально
+   ============================================= */
 @media (max-width: 768px) {
     .hero {
         max-width: 90vw;
-        padding: 4vh 5vw;
+        padding: 5.21vw 6.51vw;
     }
 
     .hero-glow {
         width: 80vw;
-        height: 40vh;
-        filter: blur(10vw);
+        height: 52.08vw;
+        filter: blur(13.02vw);
     }
 
     .hero-icon {
-        width: 15vw;
-        height: 8vh;
-        border-radius: 4vw;
-        margin-bottom: 3vh;
-        box-shadow: 0 0 5vw rgba(34, 197, 94, 0.4);
-        font-size: 4vh;
+        width: 19.53vw;
+        height: 19.53vw;
+        border-radius: 5.21vw;
+        margin-bottom: 3.91vw;
+        box-shadow: 0 0 6.51vw rgba(34, 197, 94, 0.4);
+        font-size: 5.21vw;
     }
 
     .hero h1 {
-        font-size: 5vh;
-        margin-bottom: 2vh;
+        font-size: 6.51vw;
+        margin-bottom: 2.60vw;
     }
 
     .hero-description {
-        font-size: 2vh;
+        font-size: 2.60vw;
         max-width: 85vw;
-        margin-bottom: 3vh;
-        line-height: 1.6;
+        margin-bottom: 3.91vw;
     }
 
     .hero-badges {
-        gap: 2vw;
-        margin-bottom: 4vh;
+        gap: 2.60vw;
+        margin-bottom: 5.21vw;
     }
 
     .badge {
-        gap: 2vw;
-        padding: 1vh 3vw;
-        border-radius: 6vw;
-        font-size: 1.6vh;
+        gap: 2.60vw;
+        padding: 1.30vw 3.91vw;
+        border-radius: 7.81vw;
+        font-size: 2.08vw;
     }
 
     .btn-hero {
-        gap: 3vw;
-        padding: 1.8vh 6vw;
-        border-radius: 3vw;
-        font-size: 2vh;
-        box-shadow: 0 1.5vh 5vw rgba(34, 197, 94, 0.3);
+        gap: 3.91vw;
+        padding: 2.34vw 7.81vw;
+        border-radius: 3.91vw;
+        font-size: 2.60vw;
+        box-shadow: 0 1.95vw 6.51vw rgba(34, 197, 94, 0.3);
     }
 
     .btn-hero:hover {
-        box-shadow: 0 2vh 6vw rgba(34, 197, 94, 0.5);
+        box-shadow: 0 2.60vw 7.81vw rgba(34, 197, 94, 0.5);
     }
 
     .section {
         max-width: 90vw;
-        padding: 4vh 5vw;
+        padding: 5.21vw 6.51vw;
     }
 
     .section-header {
-        margin-bottom: 4vh;
+        margin-bottom: 5.21vw;
     }
 
     .section-header h2 {
-        font-size: 4vh;
-        margin-bottom: 2vh;
+        font-size: 5.21vw;
+        margin-bottom: 2.60vw;
     }
 
     .section-header p {
-        font-size: 2vh;
+        font-size: 2.60vw;
         max-width: 85vw;
     }
 
     .about-content {
-        border-radius: 4vw;
-        padding: 3vh 5vw;
-        margin-bottom: 4vh;
+        border-radius: 5.21vw;
+        padding: 3.91vw 6.51vw;
+        margin-bottom: 5.21vw;
     }
 
     .about-text {
-        font-size: 1.8vh;
-        line-height: 1.7;
-        margin-bottom: 2.5vh;
+        font-size: 2.34vw;
+        margin-bottom: 3.26vw;
     }
 
     .flow-container {
         grid-template-columns: 1fr;
-        gap: 3vh;
-        margin-top: 4vh;
+        gap: 3.91vw;
+        margin-top: 5.21vw;
     }
 
     .flow-card {
-        border-radius: 4vw;
-        padding: 3vh 5vw;
+        border-radius: 5.21vw;
+        padding: 3.91vw 6.51vw;
     }
 
     .flow-card:hover {
-        transform: translateY(-1vh);
+        transform: translateY(-1.30vw);
     }
 
     .flow-number {
-        top: -2vh;
-        left: 5vw;
-        width: 8vw;
-        height: 4vh;
-        font-size: 2vh;
+        top: -2.60vw;
+        left: 6.51vw;
+        width: 10.42vw;
+        height: 10.42vw;
+        font-size: 2.60vw;
     }
 
     .flow-icon {
-        width: 12vw;
-        height: 6vh;
-        border-radius: 3vw;
-        margin: 2vh 0 1.5vh 0;
-        font-size: 3.5vh;
+        width: 15.63vw;
+        height: 15.63vw;
+        border-radius: 3.91vw;
+        margin: 2.60vw 0 1.95vw 0;
+        font-size: 4.56vw;
     }
 
     .flow-card h3 {
-        font-size: 2.5vh;
-        margin-bottom: 1.5vh;
+        font-size: 3.26vw;
+        margin-bottom: 1.95vw;
     }
 
     .flow-card p {
-        font-size: 1.8vh;
-        line-height: 1.6;
+        font-size: 2.34vw;
     }
 
     .grid {
         grid-template-columns: 1fr;
-        gap: 3vh;
-        margin-top: 4vh;
+        gap: 3.91vw;
+        margin-top: 5.21vw;
     }
 
     .card {
-        border-radius: 4vw;
-        padding: 3vh 5vw;
+        border-radius: 5.21vw;
+        padding: 3.91vw 6.51vw;
     }
 
     .card:hover {
-        transform: translateY(-1vh);
+        transform: translateY(-1.30vw);
     }
 
     .card-icon {
-        width: 12vw;
-        height: 6vh;
-        border-radius: 3vw;
-        margin-bottom: 2vh;
-        font-size: 3.5vh;
+        width: 15.63vw;
+        height: 15.63vw;
+        border-radius: 3.91vw;
+        margin-bottom: 2.60vw;
+        font-size: 4.56vw;
     }
 
     .card h3, .card h4 {
-        font-size: 2.5vh;
-        margin-bottom: 1.5vh;
+        font-size: 3.26vw;
+        margin-bottom: 1.95vw;
     }
 
     .card p {
-        font-size: 1.8vh;
-        line-height: 1.6;
+        font-size: 2.34vw;
     }
 
     .cta-box {
-        border-radius: 5vw;
-        padding: 4vh 6vw;
+        border-radius: 6.51vw;
+        padding: 5.21vw 7.81vw;
     }
 
     .cta-box h2 {
-        font-size: 4vh;
-        margin-bottom: 2vh;
+        font-size: 5.21vw;
+        margin-bottom: 2.60vw;
     }
 
     .cta-box p {
-        font-size: 2vh;
-        margin-bottom: 3vh;
+        font-size: 2.60vw;
+        margin-bottom: 3.91vw;
         max-width: 80vw;
     }
 }
 
 @media (max-width: 480px) {
     .hero {
-        padding: 3vh 4vw;
+        padding: 3.91vw 5.21vw;
     }
 
     .hero-icon {
-        width: 18vw;
-        height: 7vh;
-        font-size: 3.5vh;
+        width: 23.44vw;
+        height: 23.44vw;
+        font-size: 4.56vw;
     }
 
     .hero h1 {
-        font-size: 4.5vh;
+        font-size: 5.86vw;
     }
 
     .hero-description {
-        font-size: 1.8vh;
+        font-size: 2.34vw;
     }
 
     .badge {
-        font-size: 1.4vh;
-        padding: 0.8vh 2.5vw;
+        font-size: 1.82vw;
+        padding: 1.04vw 3.26vw;
     }
 
     .btn-hero {
-        padding: 1.5vh 5vw;
-        font-size: 1.8vh;
+        padding: 1.95vw 6.51vw;
+        font-size: 2.34vw;
     }
 
     .section-header h2 {
-        font-size: 3.5vh;
+        font-size: 4.56vw;
     }
 
     .section-header p {
-        font-size: 1.8vh;
+        font-size: 2.34vw;
     }
 
     .about-text {
-        font-size: 1.6vh;
+        font-size: 2.08vw;
     }
 
     .flow-card h3 {
-        font-size: 2.2vh;
+        font-size: 2.86vw;
     }
 
     .flow-card p {
-        font-size: 1.6vh;
+        font-size: 2.08vw;
     }
 
     .card h3, .card h4 {
-        font-size: 2.2vh;
+        font-size: 2.86vw;
     }
 
     .card p {
-        font-size: 1.6vh;
+        font-size: 2.08vw;
     }
 
     .cta-box h2 {
-        font-size: 3.5vh;
+        font-size: 4.56vw;
     }
 
     .cta-box p {
-        font-size: 1.8vh;
+        font-size: 2.34vw;
     }
 }
