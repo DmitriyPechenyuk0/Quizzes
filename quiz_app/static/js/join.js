@@ -1,280 +1,486 @@
 (function () {
-	let socket = null;
-	let state = { code: "" };
-	let users = [];
+  /* ═══════════════════════════════════════════════════════════════
+     STATE
+  ═══════════════════════════════════════════════════════════════ */
+  const STATE = {
+    currentSection  : 'join',    // 'join' | 'lobby' | 'quiz'
+    sessionCode     : null,
+    questionType    : 'select',  // 'select' | 'fform' | 'letters'
+    selectedAnswers : new Set(),
+    textAnswerVal   : '',
+    questionIndex   : 0,
+    totalQuestions  : 0,
+    timerSecs       : 0,
+    timerMax        : 0,
+    timerInterval   : null,
+    answerSubmitted : false,
+    currentQuestion : null,
+  };
 
-	function $(id) {
-		return document.getElementById(id);
-	}
+  /* ═══════════════════════════════════════════════════════════════
+     HELPERS
+  ═══════════════════════════════════════════════════════════════ */
+  function currentUserId() {
+    return +document.getElementById('current_user_id').textContent.trim();
+  }
 
-	function getCodeFromQuery() {
-		code = localStorage.getItem("codde");
-	}
+  /* ═══════════════════════════════════════════════════════════════
+     SECTION SWITCHING
+  ═══════════════════════════════════════════════════════════════ */
+  function showSection(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-' + name).classList.add('active');
+    STATE.currentSection = name;
+    if (name !== 'join') {
+      document.getElementById('headerSessionCode').style.display = '';
+    }
+  }
 
-	function renderQuestion(q) {
-		if (
-			document
-				.querySelector(".waiting-overlay")
-				.classList.contains("display-flex")
-		) {
-			inactiveWaitingOverlay();
-		}
-		if (q.q_type === "fform") {
-			document.querySelector("#questionBlockPFF").innerText = q.text;
-		}
-		if (q.q_type === "select") {
-			let variants = q.q_variants;
-			document.querySelector("#questionBlockPS").innerText = q.text;
-			let answers = document
-				.querySelectorAll(".answer-text-qz")
-				.forEach((answr, indexx) => {
-					answr.textContent = variants[indexx];
-				});
-			resetSelections();
-		}
-		if (q.q_type === "letters") {
-		}
-	}
-	function updateCounter() {
-		let usersCount = document.querySelectorAll(".mwop-user").length;
-		let usersCBtn = document.querySelector(".mwm-participants-count-count");
-		usersCBtn.textContent = usersCount + 1;
-	}
+  /* ═══════════════════════════════════════════════════════════════
+     JOIN SECTION
+  ═══════════════════════════════════════════════════════════════ */
+  const codeInput      = document.getElementById('codeInput');
+  const joinBtn        = document.getElementById('joinBtn');
+  const hintText       = document.getElementById('joinHintText');
+  const hintEl         = document.getElementById('joinFormHint');
+  const joinWaitingOvr = document.getElementById('joinWaitingOverlay');
 
-	const answerCards = document.querySelectorAll(".answer-card-qz");
-	let selectedAnswers = new Set();
+  codeInput.addEventListener('input', () => {
+    const v = codeInput.value.replace(/\D/g, '');
+    if (codeInput.value !== v) codeInput.value = v;
 
-	answerCards.forEach((card) => {
-		card.addEventListener("click", () => {
-			const answerId = card.dataset.id;
+    joinBtn.disabled = v.length !== 6;
+    hintEl.classList.remove('error');
 
-			if (selectedAnswers.has(answerId)) {
-				selectedAnswers.delete(answerId);
-				card.classList.remove("selected-qz");
-			} else {
-				selectedAnswers.add(answerId);
-				card.classList.add("selected-qz");
-			}
-		});
-	});
+    if (v.length === 0)    hintText.textContent = 'Лише цифри, 6 символів';
+    else if (v.length < 6) hintText.textContent = `Ще ${6 - v.length} символів…`;
+    else                   hintText.textContent = 'Готово! Натисніть кнопку нижче';
+  });
 
-	function getAnswersString() {
-		const cards = document.querySelectorAll(".answer-card-qz");
-		const results = [];
-		console.log("26783415678123467856782345678");
+  codeInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !joinBtn.disabled) attemptJoin();
+  });
 
-		cards.forEach((card) => {
-			const answerText =
-				card.querySelector(".answer-text-qz").textContent;
-			const isSelected = selectedAnswers.has(card.dataset.id);
-			results.push(`${answerText}:${isSelected}`);
-		});
-		return results.join("|");
-	}
-	function resetSelections() {
-		selectedAnswers.clear();
+  joinBtn.addEventListener('click', attemptJoin);
 
-		answerCards.forEach((card) => {
-			card.classList.remove("selected-qz");
-		});
-	}
-	function switchInterfaceToRoom(qname) {
-		document.querySelector("#particles-js").classList.add("display-none");
-		document
-			.querySelector(".join-code-div")
-			.classList.remove("display-flex");
-		document.querySelector(".join-code-div").classList.add("display-none");
-		document.querySelector(".main-window").classList.remove("display-none");
-		document.querySelector(".main-window").classList.add("display-flex");
-		updateCounter();
-	}
-	function switchInterfaceToSelectionAnswerRoom() {
-		document.querySelector(".main-window").classList.remove("display-flex");
-		document.querySelector(".main-window").classList.add("display-none");
-		document
-			.querySelector("#divSelectionAnswer")
-			.classList.remove("display-none");
-		document
-			.querySelector("#divSelectionAnswer")
-			.classList.add("display-flex");
-		document.querySelector("#divfformAnswer").classList.add("display-none");
-		document
-			.querySelector("#divfformAnswer")
-			.classList.remove("display-flex");
-	}
-	function switchInterfaceToFFormAnswerRoom() {
-		document.querySelector(".main-window").classList.remove("display-flex");
-		document.querySelector(".main-window").classList.add("display-none");
-		document
-			.querySelector("#divfformAnswer")
-			.classList.remove("display-none");
-		document.querySelector("#divfformAnswer").classList.add("display-flex");
-		document
-			.querySelector("#divSelectionAnswer")
-			.classList.add("display-none");
-		document
-			.querySelector("#divSelectionAnswer")
-			.classList.remove("display-flex");
-	}
-	function switchInterfaceToLettersAnswerRoom() {
-		document.querySelector(".main-window").classList.remove("display-flex");
-		document.querySelector(".main-window").classList.add("display-none");
-		document
-			.querySelector("#divLettersAnswer")
-			.classList.remove("display-none");
-		document
-			.querySelector("#divLettersAnswer")
-			.classList.add("display-flex");
-	}
-	function activeWaitingOverlay(answer) {
-		console.log("active waiting_overlay", answer);
-		document.querySelector("#answerInputI").value = "";
-		document
-			.querySelector(".waiting-overlay")
-			.classList.remove("display-none");
-		document
-			.querySelector(".waiting-overlay")
-			.classList.add("display-flex");
-		if (answer) {
-			console.log(document.querySelector(".waiting-div-answer"));
-			document.querySelector(".waiting-div-answer").textContent =
-				"Ваша відповідь правильна";
-		} else {
-			document.querySelector(".waiting-div-answer").textContent =
-				"Ваша відповідь неправильна";
-		}
-	}
-	function inactiveWaitingOverlay() {
-		document
-			.querySelector(".waiting-overlay")
-			.classList.add("display-none");
-		document
-			.querySelector(".waiting-overlay")
-			.classList.remove("display-flex");
-	}
-	function renderParticipant(participant) {
-		console.log(
-			"Айдишники renderpart:\n\n",
-			+document.getElementById("current_user_id").textContent,
-			participant.user_id,
-		);
-		console.log(participant, "renderParticipant");
-		if (
-			participant.user_id !==
-			+document.getElementById("current_user_id").textContent
-		) {
-			let area = document.querySelector(
-				".main-window-other-participants",
-			);
-			let div = document.createElement("div");
-			div.classList.add("mwop-user");
-			let p = document.createElement("p");
-			p.textContent = `${participant.nickname}`;
-			div.appendChild(p);
-			area.appendChild(div);
-		}
-	}
-	function renderParticipantsList(data) {
-		console.log("Renderpart List:\n\n", data);
+  document.getElementById('cancelJoinBtn').addEventListener('click', () => {
+    joinWaitingOvr.classList.remove('show');
+    STATE.sessionCode = null;
+  });
 
-		data.participants.forEach((participant) => {
-			users.push(participant);
+  function attemptJoin() {
+    const code = codeInput.value.trim();
+    if (code.length !== 6) return;
 
-			renderParticipant(participant);
-		});
-		document.querySelector(".mwm-participants-count-count").textContent =
-			data.counter;
-	}
-	function attachEvents() {
-		$("joinBtn").onclick = () => {
-			let codde = document.querySelector("#code").value;
-			socket.emit("join", { code: codde });
-			state.code = codde;
-		};
+    STATE.sessionCode = code;
+    document.getElementById('headerCode').textContent = code;
+    joinWaitingOvr.classList.add('show');
 
-		$("code").addEventListener("keydown", (e) => {
-			if (e.key === "Enter") $("joinBtn").click();
-		});
+    socket.emit('join', { code });
+  }
 
-		$("enterQuestionFF").onclick = () => {
-			let answer = document.querySelector("#answerInputI").value;
-			socket.emit("participant:answer", {
-				code: state.code,
-				answer: answer,
-			});
-		};
-		$("enterQuestionS").onclick = () => {
-			let answer = getAnswersString();
-			console.log(answer, "12341234324");
-			socket.emit("participant:answer", {
-				code: state.code,
-				answer: answer,
-			});
-		};
-		socket.on("error", (e) => {
-			console.log(e);
-		});
-		socket.on("finish_session", () => {});
+  function setJoinError(msg) {
+    joinWaitingOvr.classList.remove('show');
+    codeInput.classList.add('input-error');
+    hintEl.classList.add('error');
+    hintText.textContent = msg;
+    setTimeout(() => codeInput.classList.remove('input-error'), 400);
+  }
 
-		socket.on("room:state", (s) => {
-			console.log(s);
-			if (s.status === "WAITING") {
-				switchInterfaceToRoom();
-				if (s.participants) {
-					document.querySelectorAll(".mwop-user").forEach((usr) => {
-						usr.remove();
-					});
-					renderParticipantsList({
-						participants: s.participants,
-						counter: s.participants.length,
-					});
-				}
-				window.history.replaceState(
-					{},
-					"",
-					`/quiz/join/${s.quiz_code}`,
-				);
-				document.querySelector(".main-window-quiz-name").innerText =
-					s.quiz_name;
-			}
-			if (s.status === "IN_PROGRESS") {
-				if (s.question.q_type === "select")
-					switchInterfaceToSelectionAnswerRoom();
-				if (s.question.q_type === "fform")
-					switchInterfaceToFFormAnswerRoom();
-				if (s.question.q_type === "letters")
-					switchInterfaceToLettersAnswerRoom();
-			}
+  /* ═══════════════════════════════════════════════════════════════
+     LOBBY SECTION
+  ═══════════════════════════════════════════════════════════════ */
+  function enterLobby(s) {
+    if (s.quiz_name) document.getElementById('lobbyQuizName').textContent = s.quiz_name;
+    if (s.quiz_code) document.getElementById('headerCode').textContent    = s.quiz_code;
+    if (s.subject)   document.getElementById('lobbySubject').textContent  = s.subject;
+    if (s.teacher)   document.getElementById('lobbyTeacher').textContent  = s.teacher;
 
-			if (s.question) renderQuestion(s.question);
-		});
+    if (s.participants) {
+      document.getElementById('lobbyParticipantsList').innerHTML = '';
+      s.participants.forEach(p => addParticipantChip(p));
+      updateLobbyCount(s.participants.length, s.participants.length);
+    }
 
-		socket.on("room:question", (q) => {
-			console.log(q);
-			renderQuestion(q);
-		});
+    if (s.quiz_code) {
+      window.history.replaceState({}, '', `/quiz/join/${s.quiz_code}`);
+    }
 
-		socket.on("room:question_closed", (d) => {});
+    setLobbyPending(false);
+    joinWaitingOvr.classList.remove('show');
+    showSection('lobby');
+  }
 
-		socket.on("finish_session", (datas) => {
-			window.location.href = `/history/${datas.session_id}/${document.getElementById("current_user_id").textContent}`;
-		});
-		socket.on("kickedd", (data) => {
-			window.location.href = "/";
-		});
-		socket.on("waiting_overlay", (data) => {
-			console.log(data);
-			if (data.overlay) {
-				console.log("overlayed");
-				activeWaitingOverlay(data.answer);
-			}
-		});
-	}
+  function updateLobbyCount(connected, total) {
+    document.getElementById('lobbyConnectedCount').textContent = connected;
+    document.getElementById('lobbyTotalCount').textContent     = total;
+  }
 
-	document.addEventListener("DOMContentLoaded", () => {
-		socket = io();
-		attachEvents();
-		const codeFromQuery = getCodeFromQuery();
-		if (codeFromQuery && $("code")) $("code").value = codeFromQuery;
-	});
+  function addParticipantChip(participant) {
+    const container = document.getElementById('lobbyParticipantsList');
+
+    const existing = container.querySelector(`[data-uid="${participant.user_id}"]`);
+    if (existing) existing.remove();
+
+    const chip   = document.createElement('div');
+    chip.className   = 'participant-chip';
+    chip.dataset.uid = participant.user_id;
+
+    // Old protocol uses participant.nickname
+    const name     = participant.nickname || participant.name || '?';
+    const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    const isSelf   = participant.user_id === currentUserId();
+
+    chip.innerHTML = `
+      <div class="participant-avatar" style="${isSelf ? 'color:var(--green);border-color:var(--green);' : ''}">${initials}</div>
+      <span class="participant-name" style="${isSelf ? 'color:var(--text);' : ''}">${name}${isSelf ? ' (ви)' : ''}</span>
+    `;
+    container.appendChild(chip);
+
+    const chips = container.querySelectorAll('.participant-chip').length;
+    updateLobbyCount(chips, chips);
+  }
+
+  function setLobbyPending(isPending) {
+    document.getElementById('lobbyStatusConnected').style.display = isPending ? 'none' : '';
+    document.getElementById('lobbyStatusPending').style.display   = isPending ? ''    : 'none';
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     QUIZ SECTION — load question
+  ═══════════════════════════════════════════════════════════════ */
+  const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+  function loadQuestion(q) {
+    STATE.currentQuestion  = q;
+    STATE.questionType     = q.q_type; // 'select' | 'fform' | 'letters'
+    STATE.selectedAnswers  = new Set();
+    STATE.textAnswerVal    = '';
+    STATE.answerSubmitted  = false;
+
+    document.getElementById('resultOverlay').classList.remove('show');
+    document.getElementById('quizWaitingOverlay').classList.remove('show');
+
+    document.getElementById('qText').textContent = q.text || '';
+
+    // Image
+    const imgWrap = document.getElementById('qImageWrap');
+    if (q.image_url) {
+      document.getElementById('qImage').src = q.image_url;
+      imgWrap.style.display = 'block';
+    } else {
+      imgWrap.style.display = 'none';
+    }
+
+    // Progress
+    if (q.index !== undefined && q.total !== undefined) {
+      STATE.questionIndex  = q.index;
+      STATE.totalQuestions = q.total;
+      setProgress(q.index, q.total);
+      document.getElementById('qProgressLabel').textContent   = `Питання ${q.index} з ${q.total}`;
+      document.getElementById('resultWaitingSub').textContent = `Питання ${q.index} з ${q.total}`;
+    }
+
+    // Answer UI
+    if (q.q_type === 'select') {
+      renderSelectAnswers(q.q_variants || []);
+      document.getElementById('choiceWrap').style.display = 'block';
+      document.getElementById('textWrap').style.display   = 'none';
+    } else {
+      // fform / letters — text input
+      document.getElementById('choiceWrap').style.display = 'none';
+      document.getElementById('textWrap').style.display   = 'flex';
+      document.getElementById('textAnswer').value         = '';
+      document.getElementById('charCount').textContent    = '0 / 300';
+    }
+
+    updateSubmitBtn();
+    startTimer(q.time_limit || 30);
+    showSection('quiz');
+  }
+
+  function renderSelectAnswers(variants) {
+    const grid = document.getElementById('answersGrid');
+    grid.innerHTML = '';
+
+    variants.forEach((text, i) => {
+      const letter = LETTERS[i] || String(i + 1);
+      const card   = document.createElement('div');
+      card.className    = 'ans-card';
+      card.dataset.id   = String(i + 1); // matches old data-id="1,2,3,4"
+      card.dataset.text = text;
+
+      card.innerHTML = `
+        <div class="ans-idx">${letter}</div>
+        <div class="ans-text">${text}</div>
+      `;
+      card.addEventListener('click', () => toggleSelectAnswer(card));
+      grid.appendChild(card);
+    });
+  }
+
+  function toggleSelectAnswer(card) {
+    if (STATE.answerSubmitted) return;
+    const id = card.dataset.id;
+
+    if (STATE.selectedAnswers.has(id)) {
+      STATE.selectedAnswers.delete(id);
+      card.classList.remove('selected');
+    } else {
+      STATE.selectedAnswers.add(id);
+      card.classList.add('selected');
+    }
+    updateSubmitBtn();
+  }
+
+  // Exposed globally so inline oninput= works
+  window.onTextInput = function (el) {
+    STATE.textAnswerVal = el.value;
+    const count = document.getElementById('charCount');
+    count.textContent  = `${el.value.length} / 300`;
+    count.style.color  = el.value.length > 270 ? 'var(--warn)' : '';
+    updateSubmitBtn();
+  };
+
+  function updateSubmitBtn() {
+    const btn = document.getElementById('submitBtn');
+    let valid = false;
+    if (!STATE.answerSubmitted) {
+      valid = STATE.questionType === 'select'
+        ? STATE.selectedAnswers.size > 0
+        : STATE.textAnswerVal.trim().length > 0;
+    }
+    btn.disabled = !valid;
+  }
+
+  /* ── Build answer string — same format as old getAnswersString() ──
+     select: "text1:true|text2:false|..."
+     fform:  plain text
+  */
+  function buildAnswerPayload() {
+    if (STATE.questionType === 'fform') {
+      return document.getElementById('textAnswer').value;
+    }
+    const cards   = document.querySelectorAll('#answersGrid .ans-card');
+    const results = [];
+    cards.forEach(card => {
+      const text       = card.dataset.text || card.querySelector('.ans-text').textContent;
+      const isSelected = STATE.selectedAnswers.has(card.dataset.id);
+      results.push(`${text}:${isSelected}`);
+    });
+    return results.join('|');
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SUBMIT ANSWER
+  ═══════════════════════════════════════════════════════════════ */
+  // Exposed globally so inline onclick= works
+  window.submitAnswer = function (auto = false) {
+    if (STATE.answerSubmitted) return;
+    STATE.answerSubmitted = true;
+    clearInterval(STATE.timerInterval);
+
+    const answer = buildAnswerPayload();
+    updateSubmitBtn();
+
+    // ── Matches old: socket.emit('participant:answer', { code, answer }) ──
+    socket.emit('participant:answer', {
+      code  : STATE.sessionCode,
+      answer: answer,
+    });
+  };
+
+  /* ═══════════════════════════════════════════════════════════════
+     RESULT MODAL
+     Triggered by: socket.on('waiting_overlay', { overlay, answer })
+  ═══════════════════════════════════════════════════════════════ */
+  function showResultModal(isCorrect) {
+    clearInterval(STATE.timerInterval);
+
+    const top     = document.getElementById('resultTop');
+    const icon    = document.getElementById('resultIcon');
+    const iconSvg = document.getElementById('resultIconSvg');
+    const verdict = document.getElementById('resultVerdict');
+    const sub     = document.getElementById('resultSub');
+    const reveal  = document.getElementById('correctReveal');
+
+    top.className     = 'result-top '     + (isCorrect ? 'correct' : 'wrong');
+    icon.className    = 'result-icon '    + (isCorrect ? 'correct' : 'wrong');
+    verdict.className = 'result-verdict ' + (isCorrect ? 'correct' : 'wrong');
+
+    if (isCorrect) {
+      iconSvg.innerHTML   = '<polyline points="4,12 9,17 20,6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+      verdict.textContent = 'Правильно!';
+      sub.textContent     = 'Чудова робота — ваша відповідь вірна.';
+      reveal.style.display = 'none';
+    } else {
+      iconSvg.innerHTML   = '<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>';
+      verdict.textContent = 'Невірно';
+      sub.textContent     = 'Ваша відповідь не збігається з правильною.';
+      reveal.style.display = 'none';
+    }
+
+    document.getElementById('statTime').textContent     = '—';
+    document.getElementById('statAvgTime').textContent  = '—';
+    document.getElementById('statAnswered').textContent = '—';
+
+    document.getElementById('resultOverlay').classList.add('show');
+  }
+
+  function hideResultModal() {
+    document.getElementById('resultOverlay').classList.remove('show');
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     TIMER
+  ═══════════════════════════════════════════════════════════════ */
+  function formatTime(s) {
+    return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  function startTimer(seconds) {
+    STATE.timerSecs = seconds;
+    STATE.timerMax  = seconds;
+    clearInterval(STATE.timerInterval);
+
+    const valEl   = document.getElementById('qTimerVal');
+    const timerEl = document.getElementById('qTimer');
+
+    valEl.textContent = formatTime(seconds);
+    timerEl.className = 'q-timer';
+
+    STATE.timerInterval = setInterval(() => {
+      STATE.timerSecs--;
+      valEl.textContent = formatTime(STATE.timerSecs);
+      timerEl.className = 'q-timer' +
+        (STATE.timerSecs <= 10 ? ' crit' : STATE.timerSecs <= 20 ? ' warn' : '');
+
+      if (STATE.timerSecs <= 0) {
+        clearInterval(STATE.timerInterval);
+        if (!STATE.answerSubmitted) window.submitAnswer(true);
+      }
+    }, 1000);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     PROGRESS BAR
+  ═══════════════════════════════════════════════════════════════ */
+  function setProgress(q, total) {
+    document.getElementById('progressBar').style.width =
+      total > 0 ? ((q / total) * 100) + '%' : '0%';
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     LIGHTBOX
+  ═══════════════════════════════════════════════════════════════ */
+  window.openLightbox = function (wrap) {
+    const img = wrap.querySelector('img');
+    document.getElementById('lightboxImg').src             = img.src;
+    document.getElementById('lightboxImg').alt             = img.alt;
+    document.getElementById('lightboxCaption').textContent = img.alt;
+    document.getElementById('lightboxOverlay').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeLightbox = function (e) {
+    if (!e ||
+        e.target === document.getElementById('lightboxOverlay') ||
+        e.currentTarget.classList.contains('lightbox-close')) {
+      document.getElementById('lightboxOverlay').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  };
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById('lightboxOverlay').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  });
+
+  /* ═══════════════════════════════════════════════════════════════
+     WEBSOCKET  —  events mirror old join.js exactly
+  ═══════════════════════════════════════════════════════════════ */
+  let socket;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    socket = io();
+
+    /* ── room:state ───────────────────────────────────────────────
+       Old: socket.on('room:state', s => { ... })
+       WAITING  → enter lobby
+       IN_PROGRESS → load question (reconnect case)
+    ────────────────────────────────────────────────────────────── */
+    socket.on('room:state', s => {
+      console.log('[room:state]', s);
+
+      if (s.status === 'WAITING') {
+        enterLobby(s);
+      }
+
+      if (s.status === 'IN_PROGRESS') {
+        if (s.question) loadQuestion(s.question);
+      }
+    });
+
+    /* ── room:question ────────────────────────────────────────────
+       Old: socket.on('room:question', q => renderQuestion(q))
+    ────────────────────────────────────────────────────────────── */
+    socket.on('room:question', q => {
+      console.log('[room:question]', q);
+      loadQuestion(q);
+    });
+
+    /* ── room:question_closed ─────────────────────────────────────
+       Old: empty handler → we show waiting overlay
+    ────────────────────────────────────────────────────────────── */
+    socket.on('room:question_closed', () => {
+      clearInterval(STATE.timerInterval);
+      if (!STATE.answerSubmitted) window.submitAnswer(true);
+      hideResultModal();
+      document.getElementById('quizWaitingOverlay').classList.add('show');
+    });
+
+    /* ── waiting_overlay ──────────────────────────────────────────
+       Old: socket.on('waiting_overlay', data => { ... })
+       data.overlay — show/hide
+       data.answer  — true = correct, false = wrong
+    ────────────────────────────────────────────────────────────── */
+    socket.on('waiting_overlay', data => {
+      console.log('[waiting_overlay]', data);
+      if (data.overlay) {
+        document.getElementById('quizWaitingOverlay').classList.remove('show');
+        showResultModal(data.answer);
+      } else {
+        hideResultModal();
+      }
+    });
+
+    /* ── finish_session ───────────────────────────────────────────
+       Old: window.location.href = `/history/${datas.session_id}/${userId}`
+    ────────────────────────────────────────────────────────────── */
+    socket.on('finish_session', datas => {
+      clearInterval(STATE.timerInterval);
+      hideResultModal();
+      document.getElementById('quizWaitingOverlay').classList.remove('show');
+      window.location.href = `/history/${datas.session_id}/${currentUserId()}`;
+    });
+
+    /* ── kickedd ──────────────────────────────────────────────────
+       Old: socket.on('kickedd', () => { window.location.href = '/'; })
+    ────────────────────────────────────────────────────────────── */
+    socket.on('kickedd', () => {
+      window.location.href = '/';
+    });
+
+    /* ── error ────────────────────────────────────────────────────
+       Old: socket.on('error', e => console.log(e))
+    ────────────────────────────────────────────────────────────── */
+    socket.on('error', e => {
+      console.error('[error]', e);
+      if (STATE.currentSection === 'join') {
+        setJoinError(e.message || 'Помилка підключення. Перевірте код.');
+      }
+    });
+  });
 })();

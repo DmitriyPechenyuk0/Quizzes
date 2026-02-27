@@ -58,7 +58,7 @@ function handleJoin() {
 	const code = input.value;
 	setWaiting(true);
 
-	fetch("/api/join", {
+	fetch("/quiz/join", {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({ code }),

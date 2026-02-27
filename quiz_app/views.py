@@ -63,7 +63,7 @@ def join_page():
                'name': current_user.name,
                'quizzes': quizzes}
     
-    return render_template("new_design/join.html", code=code, **context)
+    return render_template("join.html", code=code, **context)
 
 def host_page(code):
     context = {'page': 'host',

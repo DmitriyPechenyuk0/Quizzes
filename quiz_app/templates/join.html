@@ -1,100 +1,328 @@
-{% extends "base.html" %} {% block title %}Join{% endblock %} {% block head %}
-<link
-	rel="stylesheet"
-	href="{{ url_for('quiz_app.static', filename='css/join.css') }}"
-/>
-<script src="{{ url_for('New_Quiz.static', filename='js/jquery-3.7.1.min.js') }}"></script>
-{% endblock %} {% block main %}
-<div id="current_user_id" style="display: none">{{ current_user.id }}</div>
-<div id="particles-js"></div>
+{% extends 'base.html' %}
 
-<div class="join-code-div display-flex">
-	<input
-		id="code"
-		type="text"
-		maxlength="6"
-		placeholder="Код для приєднання"
-	/>
-	<button id="joinBtn">Приєднатися</button>
+{% block title %}
+
+Quizzes — Тестування
+
+{% endblock %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{{ url_for('quiz_app.static', filename='css/join.css') }}"/>
+
+{% endblock %}
+
+{% block main %}
+
+<div id="current_user_id" style="display:none">{{ current_user.id }}</div>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    Quizzes
+  </div>
+  <div class="header-right">
+    <div class="student-pill">
+      <div class="student-pill-dot"></div>
+      <span id="headerStudentName">{{ current_user.name }}</span>
+    </div>
+    <span class="session-pill" id="headerSessionCode" style="display:none">
+      Сесія #<span id="headerCode">—</span>
+    </span>
+  </div>
+</header>
+
+{# ─── PROGRESS BAR ─── #}
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="progressBar"></div>
 </div>
 
-<div class="main-window display-flex">
-	<div class="main-window-main">
-		<p class="mwm-name">{{ name }}</p>
-		<p class="main-window-quiz-name"></p>
-		<div class="mwm-participants-count">
-			<p class="mwm-participants-count-title">Учасники</p>
-			<p class="mwm-participants-count-count"></p>
-		</div>
-	</div>
-	<div class="main-window-other-participants"></div>
+{# ════════════════════════════════════════════════════
+   SECTION 1 — JOIN
+════════════════════════════════════════════════════ #}
+<div class="section active" id="section-join">
+  <div class="join-card" id="joinCard">
+
+    {# — Waiting overlay inside card — #}
+    <div class="join-waiting-overlay" id="joinWaitingOverlay">
+      <div class="orbit-wrap">
+        <svg class="orbit" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="44"
+            stroke="#00e676" stroke-width="1"
+            stroke-dasharray="8 6" stroke-linecap="round"/>
+        </svg>
+        <svg class="ring" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="44"
+            stroke="#00e676" stroke-width="3.5"
+            stroke-dasharray="80 200" stroke-linecap="round" opacity=".9"/>
+        </svg>
+        <div class="orbit-dot"></div>
+      </div>
+
+      <div class="join-waiting-title">Зачекайте на під'єднання</div>
+      <div class="join-waiting-dots"><span></span><span></span><span></span></div>
+      <p class="join-waiting-sub">Очікуємо підтвердження від викладача…</p>
+
+      <button class="join-cancel-btn" id="cancelJoinBtn" type="button">
+        <i class="bi bi-x-lg"></i>
+        Скасувати
+      </button>
+    </div>
+
+    {# — Card content — #}
+    <p class="join-eyebrow">
+      <i class="bi bi-broadcast-pin"></i>
+      Реальний час · Тестування
+    </p>
+
+    <h1 class="join-title">Введіть код<br/>сесії</h1>
+    <p class="join-sub">
+      Отримайте 6-значний код у викладача та введіть його нижче для підключення.
+    </p>
+
+    <div class="join-divider"></div>
+
+    <label class="join-form-label" for="codeInput">
+      <i class="bi bi-key"></i>
+      Код доступу
+    </label>
+
+    <div class="join-input-wrap">
+      <input
+        id="codeInput"
+        class="join-code-input"
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]{6}"
+        maxlength="6"
+        placeholder="000000"
+        autocomplete="off"
+        spellcheck="false"
+        aria-describedby="joinFormHint"
+      />
+      <i class="bi bi-shield-lock join-input-icon" id="joinInputIcon"></i>
+    </div>
+
+    <button class="join-btn" id="joinBtn" disabled type="button">
+      <i class="bi bi-box-arrow-in-right"></i>
+      Перейти до тесту
+    </button>
+
+    <p class="join-hint" id="joinFormHint">
+      <i class="bi bi-info-circle"></i>
+      <span id="joinHintText">Лише цифри, 6 символів</span>
+    </p>
+
+  </div>
 </div>
 
-<div class="waiting-overlay display-none">
-	<div class="waiting-div">
-		<div class="waiting-div-answer"></div>
-		<p>Очікуйте поки вчитель завершить питання</p>
-		<img
-			src="{{ url_for('quiz_app.static', filename='images/loading.svg') }}"
-		/>
-	</div>
+{# ════════════════════════════════════════════════════
+   SECTION 2 — LOBBY
+════════════════════════════════════════════════════ #}
+<div class="section" id="section-lobby">
+  <div class="lobby-inner">
+
+    {# Quiz info bar #}
+    <div class="lobby-quiz-info">
+      <div class="lobby-info-cell">
+        <p class="lobby-info-label">Предмет</p>
+        <p class="lobby-info-value" id="lobbySubject">—</p>
+      </div>
+      <div class="lobby-info-cell">
+        <p class="lobby-info-label">Тест</p>
+        <p class="lobby-info-value" id="lobbyQuizName">—</p>
+      </div>
+      <div class="lobby-info-cell">
+        <p class="lobby-info-label">Викладач</p>
+        <p class="lobby-info-value" id="lobbyTeacher">—</p>
+      </div>
+    </div>
+
+    {# Grid: status panel + participants panel #}
+    <div class="lobby-grid">
+
+      {# Status panel #}
+      <div class="lobby-status-panel">
+        <div>
+          <div class="lobby-count-wrap">
+            <span class="lobby-count-number" id="lobbyConnectedCount">0</span>
+            <span class="lobby-count-total">/ <span id="lobbyTotalCount">0</span></span>
+          </div>
+          <p class="lobby-count-label">учасників у лобі</p>
+        </div>
+
+        <div class="lobby-divider"></div>
+
+        {# Connected state #}
+        <div class="lobby-status-block" id="lobbyStatusConnected">
+          <div class="lobby-status-dot connected"></div>
+          <div>
+            <p class="lobby-status-title">Очікування початку тестування</p>
+            <p class="lobby-status-text">
+              Підготуйтеся до проходження тесту. Викладач незабаром розпочне сесію.
+            </p>
+          </div>
+        </div>
+
+        {# Pending state (hidden by default) #}
+        <div class="lobby-status-block" id="lobbyStatusPending" style="display:none">
+          <div class="lobby-status-dot pending"></div>
+          <div>
+            <p class="lobby-status-title">Очікування підтвердження від викладача</p>
+            <p class="lobby-status-text">
+              Ваш запит на підключення надіслано. Викладач незабаром підтвердить ваш вхід до лобі.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {# Participants panel #}
+      <div class="lobby-participants-panel">
+        <div class="lobby-participants-header">
+          <i class="bi bi-people"></i>
+          <h2 class="lobby-participants-title">Учасники</h2>
+        </div>
+        <div class="lobby-participants-list" id="lobbyParticipantsList"></div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
-<div id="divfformAnswer" class="div-section-answer display-none">
-	<div class="div-section-answer-title">
-		<p id="QuizNameArea"></p>
-	</div>
-	<div class="div-section-answer-content-main">
-		<div class="div-section-answer-content">
-			<div class="div-section-answer-content-question">
-				<p id="questionBlockPFF"></p>
-			</div>
-			<div class="div-section-answer-content-answer">
-				<input
-					placeholder="Напишіть відповідь"
-					id="answerInputI"
-					type="text"
-				/>
-				<button id="enterQuestionFF">Enter</button>
-			</div>
-		</div>
-	</div>
+{# ════════════════════════════════════════════════════
+   SECTION 3 — QUIZ
+════════════════════════════════════════════════════ #}
+<div class="section" id="section-quiz">
+
+  {# Question meta row #}
+  <div class="q-meta">
+    <div class="q-progress-label" id="qProgressLabel">Питання 1 з —</div>
+    <div class="q-timer" id="qTimer">
+      <svg viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="5.5"/>
+        <polyline points="8,5 8,8 10,10"/>
+      </svg>
+      <span id="qTimerVal">00:00</span>
+    </div>
+  </div>
+
+  {# Question text #}
+  <div class="q-card">
+    <div class="q-label">Питання</div>
+    <div class="q-text" id="qText"></div>
+  </div>
+
+  {# Question image (hidden until server sends image_url) #}
+  <div class="q-image-wrap" id="qImageWrap" style="display:none" onclick="openLightbox(this)">
+    <img id="qImage" src="" alt="Ілюстрація до питання"/>
+    <div class="q-image-zoom-hint">
+      <svg viewBox="0 0 16 16">
+        <circle cx="6.5" cy="6.5" r="4"/>
+        <line x1="10" y1="10" x2="14" y2="14"/>
+        <line x1="6.5" y1="4.5" x2="6.5" y2="8.5"/>
+        <line x1="4.5" y1="6.5" x2="8.5" y2="6.5"/>
+      </svg>
+      Збільшити
+    </div>
+  </div>
+
+  {# Choice answers (q_type === 'select') — cards injected by JS #}
+  <div class="answers-wrap" id="choiceWrap">
+    <div class="answers-grid" id="answersGrid"></div>
+  </div>
+
+  {# Text answer (q_type === 'fform' / 'letters') #}
+  <div class="quiz-input-wrap" id="textWrap">
+    <div class="quiz-input-label">Ваша відповідь</div>
+    <textarea
+      class="quiz-text-input"
+      id="textAnswer"
+      placeholder="Введіть вашу відповідь тут..."
+      maxlength="300"
+      oninput="onTextInput(this)"
+    ></textarea>
+    <div class="char-count" id="charCount">0 / 300</div>
+  </div>
+
+  {# Submit button #}
+  <div class="submit-row">
+    <button class="submit-btn" id="submitBtn" disabled type="button" onclick="submitAnswer()">
+      Відправити відповідь
+      <svg viewBox="0 0 16 16">
+        <line x1="3" y1="8" x2="13" y2="8"/>
+        <polyline points="9,4 13,8 9,12"/>
+      </svg>
+    </button>
+  </div>
+
 </div>
 
-<div id="divSelectionAnswer" class="div-section-answer display-none">
-	<div class="div-section-answer-title">
-		<p id="QuizNameArea">Python</p>
-	</div>
-	<div class="div-section-answer-content-main">
-		<div class="div-section-answer-content">
-			<div class="div-section-answer-content-question">
-				<p id="questionBlockPS"></p>
-				<button id="enterQuestionS">Enter</button>
-			</div>
-			<div class="div-section-answer-content-answer">
-				<div class="answers-section-qz" id="answersSection">
-					<div class="answer-card-qz" data-id="1">
-						<div class="checkbox-qz"></div>
-						<div class="answer-text-qz"></div>
-					</div>
-					<div class="answer-card-qz" data-id="2">
-						<div class="checkbox-qz"></div>
-						<div class="answer-text-qz"></div>
-					</div>
-					<div class="answer-card-qz" data-id="3">
-						<div class="checkbox-qz"></div>
-						<div class="answer-text-qz"></div>
-					</div>
-					<div class="answer-card-qz" data-id="4">
-						<div class="checkbox-qz"></div>
-						<div class="answer-text-qz"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+{# ── Quiz waiting overlay (between questions) ── #}
+<div class="quiz-waiting-overlay" id="quizWaitingOverlay">
+  <div class="quiz-waiting-spinner"></div>
+  <div class="quiz-waiting-text">Очікуйте поки вчитель завершить питання</div>
 </div>
 
+{# ════════════════════════════════════════════════════
+   RESULT MODAL
+════════════════════════════════════════════════════ #}
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-modal">
+
+    <div class="result-top" id="resultTop">
+      <div class="result-icon" id="resultIcon">
+        <svg id="resultIconSvg" viewBox="0 0 24 24"></svg>
+      </div>
+      <div class="result-verdict" id="resultVerdict"></div>
+      <div class="result-sub" id="resultSub"></div>
+      <div class="correct-reveal" id="correctReveal" style="display:none">
+        <span class="correct-reveal-label">Правильна відповідь</span>
+        <span class="correct-reveal-answer" id="correctRevealAnswer"></span>
+      </div>
+    </div>
+
+    <div class="result-stats">
+      <div class="result-stat">
+        <div class="result-stat-val" id="statTime">—</div>
+        <div class="result-stat-label">Ваш час</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-val" id="statAvgTime">—</div>
+        <div class="result-stat-label">Серед. час</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-val" id="statAnswered">—</div>
+        <div class="result-stat-label">Відповіли</div>
+      </div>
+    </div>
+
+    <div class="result-waiting">
+      <div class="result-wait-spinner"></div>
+      <div class="waiting-text">
+        Очікуйте поки вчитель розпочне наступне питання<span class="waiting-dots"></span>
+      </div>
+      <div class="waiting-sub-text" id="resultWaitingSub">Питання 1 з —</div>
+    </div>
+
+  </div>
+</div>
+
+{# ── LIGHTBOX ── #}
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox(event)">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox(event)">
+      <svg viewBox="0 0 12 12">
+        <line x1="2" y1="2" x2="10" y2="10"/>
+        <line x1="10" y1="2" x2="2" y2="10"/>
+      </svg>
+    </button>
+    <img id="lightboxImg" src="" alt=""/>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+</div>
+
+{# ── Scripts ── #}
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-<script src="{{ url_for('quiz_app.static', filename='js/join.js') }}?v=6"></script>
+<script src="{{ url_for('quiz_app.static', filename='js/join.js') }}"></script>
+
 {% endblock %}
