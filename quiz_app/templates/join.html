@@ -16,34 +16,12 @@ Quizzes — Тестування
 
 <div id="current_user_id" style="display:none">{{ current_user.id }}</div>
 
-<header>
-  <div class="logo">
-    <div class="logo-dot"></div>
-    Quizzes
-  </div>
-  <div class="header-right">
-    <div class="student-pill">
-      <div class="student-pill-dot"></div>
-      <span id="headerStudentName">{{ current_user.name }}</span>
-    </div>
-    <span class="session-pill" id="headerSessionCode" style="display:none">
-      Сесія #<span id="headerCode">—</span>
-    </span>
-  </div>
-</header>
-
-{# ─── PROGRESS BAR ─── #}
 <div class="progress-bar-wrap">
   <div class="progress-bar-fill" id="progressBar"></div>
 </div>
 
-{# ════════════════════════════════════════════════════
-   SECTION 1 — JOIN
-════════════════════════════════════════════════════ #}
 <div class="section active" id="section-join">
   <div class="join-card" id="joinCard">
-
-    {# — Waiting overlay inside card — #}
     <div class="join-waiting-overlay" id="joinWaitingOverlay">
       <div class="orbit-wrap">
         <svg class="orbit" viewBox="0 0 100 100" fill="none">
@@ -116,13 +94,9 @@ Quizzes — Тестування
   </div>
 </div>
 
-{# ════════════════════════════════════════════════════
-   SECTION 2 — LOBBY
-════════════════════════════════════════════════════ #}
 <div class="section" id="section-lobby">
   <div class="lobby-inner">
 
-    {# Quiz info bar #}
     <div class="lobby-quiz-info">
       <div class="lobby-info-cell">
         <p class="lobby-info-label">Предмет</p>
@@ -138,10 +112,8 @@ Quizzes — Тестування
       </div>
     </div>
 
-    {# Grid: status panel + participants panel #}
     <div class="lobby-grid">
 
-      {# Status panel #}
       <div class="lobby-status-panel">
         <div>
           <div class="lobby-count-wrap">
@@ -153,7 +125,6 @@ Quizzes — Тестування
 
         <div class="lobby-divider"></div>
 
-        {# Connected state #}
         <div class="lobby-status-block" id="lobbyStatusConnected">
           <div class="lobby-status-dot connected"></div>
           <div>
@@ -164,7 +135,6 @@ Quizzes — Тестування
           </div>
         </div>
 
-        {# Pending state (hidden by default) #}
         <div class="lobby-status-block" id="lobbyStatusPending" style="display:none">
           <div class="lobby-status-dot pending"></div>
           <div>
@@ -176,7 +146,6 @@ Quizzes — Тестування
         </div>
       </div>
 
-      {# Participants panel #}
       <div class="lobby-participants-panel">
         <div class="lobby-participants-header">
           <i class="bi bi-people"></i>
@@ -189,12 +158,7 @@ Quizzes — Тестування
   </div>
 </div>
 
-{# ════════════════════════════════════════════════════
-   SECTION 3 — QUIZ
-════════════════════════════════════════════════════ #}
 <div class="section" id="section-quiz">
-
-  {# Question meta row #}
   <div class="q-meta">
     <div class="q-progress-label" id="qProgressLabel">Питання 1 з —</div>
     <div class="q-timer" id="qTimer">
@@ -206,13 +170,11 @@ Quizzes — Тестування
     </div>
   </div>
 
-  {# Question text #}
   <div class="q-card">
     <div class="q-label">Питання</div>
     <div class="q-text" id="qText"></div>
   </div>
 
-  {# Question image (hidden until server sends image_url) #}
   <div class="q-image-wrap" id="qImageWrap" style="display:none" onclick="openLightbox(this)">
     <img id="qImage" src="" alt="Ілюстрація до питання"/>
     <div class="q-image-zoom-hint">
@@ -226,12 +188,10 @@ Quizzes — Тестування
     </div>
   </div>
 
-  {# Choice answers (q_type === 'select') — cards injected by JS #}
   <div class="answers-wrap" id="choiceWrap">
     <div class="answers-grid" id="answersGrid"></div>
   </div>
 
-  {# Text answer (q_type === 'fform' / 'letters') #}
   <div class="quiz-input-wrap" id="textWrap">
     <div class="quiz-input-label">Ваша відповідь</div>
     <textarea
@@ -244,7 +204,6 @@ Quizzes — Тестування
     <div class="char-count" id="charCount">0 / 300</div>
   </div>
 
-  {# Submit button #}
   <div class="submit-row">
     <button class="submit-btn" id="submitBtn" disabled type="button" onclick="submitAnswer()">
       Відправити відповідь
@@ -257,15 +216,11 @@ Quizzes — Тестування
 
 </div>
 
-{# ── Quiz waiting overlay (between questions) ── #}
 <div class="quiz-waiting-overlay" id="quizWaitingOverlay">
   <div class="quiz-waiting-spinner"></div>
   <div class="quiz-waiting-text">Очікуйте поки вчитель завершить питання</div>
 </div>
 
-{# ════════════════════════════════════════════════════
-   RESULT MODAL
-════════════════════════════════════════════════════ #}
 <div class="result-overlay" id="resultOverlay">
   <div class="result-modal">
 
@@ -307,7 +262,6 @@ Quizzes — Тестування
   </div>
 </div>
 
-{# ── LIGHTBOX ── #}
 <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox(event)">
   <div class="lightbox-inner">
     <button class="lightbox-close" onclick="closeLightbox(event)">
@@ -321,7 +275,10 @@ Quizzes — Тестування
   </div>
 </div>
 
-{# ── Scripts ── #}
+
+{% endblock %}
+
+{% block scripts %}
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script src="{{ url_for('quiz_app.static', filename='js/join.js') }}"></script>
 

@@ -87,9 +87,6 @@
     setTimeout(() => codeInput.classList.remove('input-error'), 400);
   }
 
-  /* ═══════════════════════════════════════════════════════════════
-     LOBBY SECTION
-  ═══════════════════════════════════════════════════════════════ */
   function enterLobby(s) {
     if (s.quiz_name) document.getElementById('lobbyQuizName').textContent = s.quiz_name;
     if (s.quiz_code) document.getElementById('headerCode').textContent    = s.quiz_code;
@@ -126,7 +123,6 @@
     chip.className   = 'participant-chip';
     chip.dataset.uid = participant.user_id;
 
-    // Old protocol uses participant.nickname
     const name     = participant.nickname || participant.name || '?';
     const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
     const isSelf   = participant.user_id === currentUserId();
@@ -146,14 +142,11 @@
     document.getElementById('lobbyStatusPending').style.display   = isPending ? ''    : 'none';
   }
 
-  /* ═══════════════════════════════════════════════════════════════
-     QUIZ SECTION — load question
-  ═══════════════════════════════════════════════════════════════ */
   const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
 
   function loadQuestion(q) {
     STATE.currentQuestion  = q;
-    STATE.questionType     = q.q_type; // 'select' | 'fform' | 'letters'
+    STATE.questionType     = q.q_type;
     STATE.selectedAnswers  = new Set();
     STATE.textAnswerVal    = '';
     STATE.answerSubmitted  = false;
@@ -163,7 +156,6 @@
 
     document.getElementById('qText').textContent = q.text || '';
 
-    // Image
     const imgWrap = document.getElementById('qImageWrap');
     if (q.image_url) {
       document.getElementById('qImage').src = q.image_url;
@@ -172,7 +164,6 @@
       imgWrap.style.display = 'none';
     }
 
-    // Progress
     if (q.index !== undefined && q.total !== undefined) {
       STATE.questionIndex  = q.index;
       STATE.totalQuestions = q.total;
@@ -181,13 +172,11 @@
       document.getElementById('resultWaitingSub').textContent = `Питання ${q.index} з ${q.total}`;
     }
 
-    // Answer UI
     if (q.q_type === 'select') {
       renderSelectAnswers(q.q_variants || []);
       document.getElementById('choiceWrap').style.display = 'block';
       document.getElementById('textWrap').style.display   = 'none';
     } else {
-      // fform / letters — text input
       document.getElementById('choiceWrap').style.display = 'none';
       document.getElementById('textWrap').style.display   = 'flex';
       document.getElementById('textAnswer').value         = '';
@@ -207,7 +196,7 @@
       const letter = LETTERS[i] || String(i + 1);
       const card   = document.createElement('div');
       card.className    = 'ans-card';
-      card.dataset.id   = String(i + 1); // matches old data-id="1,2,3,4"
+      card.dataset.id   = String(i + 1);
       card.dataset.text = text;
 
       card.innerHTML = `
@@ -232,8 +221,6 @@
     }
     updateSubmitBtn();
   }
-
-  // Exposed globally so inline oninput= works
   window.onTextInput = function (el) {
     STATE.textAnswerVal = el.value;
     const count = document.getElementById('charCount');
@@ -253,10 +240,6 @@
     btn.disabled = !valid;
   }
 
-  /* ── Build answer string — same format as old getAnswersString() ──
-     select: "text1:true|text2:false|..."
-     fform:  plain text
-  */
   function buildAnswerPayload() {
     if (STATE.questionType === 'fform') {
       return document.getElementById('textAnswer').value;
@@ -271,10 +254,6 @@
     return results.join('|');
   }
 
-  /* ═══════════════════════════════════════════════════════════════
-     SUBMIT ANSWER
-  ═══════════════════════════════════════════════════════════════ */
-  // Exposed globally so inline onclick= works
   window.submitAnswer = function (auto = false) {
     if (STATE.answerSubmitted) return;
     STATE.answerSubmitted = true;
@@ -283,17 +262,12 @@
     const answer = buildAnswerPayload();
     updateSubmitBtn();
 
-    // ── Matches old: socket.emit('participant:answer', { code, answer }) ──
     socket.emit('participant:answer', {
       code  : STATE.sessionCode,
       answer: answer,
     });
   };
 
-  /* ═══════════════════════════════════════════════════════════════
-     RESULT MODAL
-     Triggered by: socket.on('waiting_overlay', { overlay, answer })
-  ═══════════════════════════════════════════════════════════════ */
   function showResultModal(isCorrect) {
     clearInterval(STATE.timerInterval);
 
@@ -331,9 +305,6 @@
     document.getElementById('resultOverlay').classList.remove('show');
   }
 
-  /* ═══════════════════════════════════════════════════════════════
-     TIMER
-  ═══════════════════════════════════════════════════════════════ */
   function formatTime(s) {
     return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
   }
@@ -362,17 +333,11 @@
     }, 1000);
   }
 
-  /* ═══════════════════════════════════════════════════════════════
-     PROGRESS BAR
-  ═══════════════════════════════════════════════════════════════ */
   function setProgress(q, total) {
     document.getElementById('progressBar').style.width =
       total > 0 ? ((q / total) * 100) + '%' : '0%';
   }
 
-  /* ═══════════════════════════════════════════════════════════════
-     LIGHTBOX
-  ═══════════════════════════════════════════════════════════════ */
   window.openLightbox = function (wrap) {
     const img = wrap.querySelector('img');
     document.getElementById('lightboxImg').src             = img.src;
@@ -398,19 +363,11 @@
     }
   });
 
-  /* ═══════════════════════════════════════════════════════════════
-     WEBSOCKET  —  events mirror old join.js exactly
-  ═══════════════════════════════════════════════════════════════ */
   let socket;
 
   document.addEventListener('DOMContentLoaded', () => {
     socket = io();
 
-    /* ── room:state ───────────────────────────────────────────────
-       Old: socket.on('room:state', s => { ... })
-       WAITING  → enter lobby
-       IN_PROGRESS → load question (reconnect case)
-    ────────────────────────────────────────────────────────────── */
     socket.on('room:state', s => {
       console.log('[room:state]', s);
 
@@ -423,17 +380,11 @@
       }
     });
 
-    /* ── room:question ────────────────────────────────────────────
-       Old: socket.on('room:question', q => renderQuestion(q))
-    ────────────────────────────────────────────────────────────── */
     socket.on('room:question', q => {
       console.log('[room:question]', q);
       loadQuestion(q);
     });
 
-    /* ── room:question_closed ─────────────────────────────────────
-       Old: empty handler → we show waiting overlay
-    ────────────────────────────────────────────────────────────── */
     socket.on('room:question_closed', () => {
       clearInterval(STATE.timerInterval);
       if (!STATE.answerSubmitted) window.submitAnswer(true);
@@ -441,11 +392,6 @@
       document.getElementById('quizWaitingOverlay').classList.add('show');
     });
 
-    /* ── waiting_overlay ──────────────────────────────────────────
-       Old: socket.on('waiting_overlay', data => { ... })
-       data.overlay — show/hide
-       data.answer  — true = correct, false = wrong
-    ────────────────────────────────────────────────────────────── */
     socket.on('waiting_overlay', data => {
       console.log('[waiting_overlay]', data);
       if (data.overlay) {
@@ -456,9 +402,6 @@
       }
     });
 
-    /* ── finish_session ───────────────────────────────────────────
-       Old: window.location.href = `/history/${datas.session_id}/${userId}`
-    ────────────────────────────────────────────────────────────── */
     socket.on('finish_session', datas => {
       clearInterval(STATE.timerInterval);
       hideResultModal();
@@ -466,16 +409,10 @@
       window.location.href = `/history/${datas.session_id}/${currentUserId()}`;
     });
 
-    /* ── kickedd ──────────────────────────────────────────────────
-       Old: socket.on('kickedd', () => { window.location.href = '/'; })
-    ────────────────────────────────────────────────────────────── */
     socket.on('kickedd', () => {
       window.location.href = '/';
     });
 
-    /* ── error ────────────────────────────────────────────────────
-       Old: socket.on('error', e => console.log(e))
-    ────────────────────────────────────────────────────────────── */
     socket.on('error', e => {
       console.error('[error]', e);
       if (STATE.currentSection === 'join') {

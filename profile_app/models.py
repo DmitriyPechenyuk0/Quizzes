@@ -7,7 +7,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(30), nullable=False)
-        
+    group = db.Column(db.Integer, nullable=True) 
     is_teacher = db.Column(db.Boolean, default=False)
     is_email_confirmed = db.Column(db.Boolean, default=False, nullable=False)
     is_approved = db.Column(db.Boolean, default=False)
