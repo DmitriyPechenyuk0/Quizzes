@@ -96,9 +96,16 @@
 			<p>Scientific work • Quizzes © 2025 • Dmytro Pecheniuk</p>
 		</footer>
 		{% block scripts %}
+		
 		<script
 			src="{{ url_for('static', filename='js/base.js') }}"
 			defer
+		></script>
+
+		<script
+			defer
+			src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+			crossorigin="anonymous"
 		></script>
 		{% endblock %}
 	</body>

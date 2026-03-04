@@ -8,5 +8,5 @@ class Quiz(db.Model):
     subject = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.String(50), nullable=False, default=lambda: datetime.datetime.now().strftime("%d.%m.%Y"))
-    runs_count = db.Column(db.Integer) 
+    runs_count = db.Column(db.Integer)
     owner = db.Column(db.Integer, nullable=False)

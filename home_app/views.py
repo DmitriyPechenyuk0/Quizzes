@@ -2,11 +2,12 @@ import flask, flask_login
 from New_Quiz_App.models import Quiz
 from project.settings import project
 def show_home_page():
+
     quizzes = Quiz.query.all()
 
     if flask_login.current_user.is_authenticated:
         if flask_login.current_user.is_teacher:
-            context = {'page': 'home', 'is_auth': flask_login.current_user.is_authenticated, 'name': flask_login.current_user.name, 'is_teacher': flask_login.current_user.is_teacher, 'quizzes': quizzes, 'nav_act': True}
+            context = {'page': 'home', 'is_auth': flask_login.current_user.is_authenticated, 'name': flask_login.current_user.name, 'is_teacher': bool(flask_login.current_user.is_teacher), 'quizzes': quizzes, 'nav_act': True}
         else:
             context = {'page': 'home', 'is_auth': flask_login.current_user.is_authenticated, 'name': flask_login.current_user.name, 'is_teacher': bool(flask_login.current_user.is_teacher), 'quizzes': quizzes, 'nav_act': True}
     else:

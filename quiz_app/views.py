@@ -66,11 +66,19 @@ def join_page():
     return render_template("join.html", code=code, **context)
 
 def host_page(code):
-    context = {'page': 'host',
-               'is_auth': current_user.is_authenticated,
-               "is_teacher": current_user.is_teacher,
-               'name': current_user.name}
-    return render_template("teacher_room.html", code=code, **context)
+    session = QuizSession.query.filter_by(code=code).first()
+    if session:
+        quiz = Quiz.query.filter_by(id=session.quiz_id).first()
+        print(session, quiz)
+        context = {'page': 'host',
+                'is_auth': current_user.is_authenticated,
+                "is_teacher": current_user.is_teacher,
+                'name': current_user.name,
+                'teacher_name': current_user.name,
+                "test": quiz 
+                }
+        return render_template("new_design/teacher_room.html", code=code, **context)
+    else: return abort(404)
 
 def passing_page(code):
 

@@ -1,25 +1,31 @@
-{% extends 'base.html' %} {% block title %} Quizzes - Кімната тесту {% endblock
-%} {% block head %}
+{% extends 'base.html' %} 
+
+{% block title %} Quizzes - Кімната тесту {% endblock%}
+
+{% block head %}
 <link
 	rel="stylesheet"
 	href="{{ url_for('quiz_app.static', filename='css/new/teacher_room.css') }}"
 />
-{% endblock %} {% block main %}
+{% endblock %} 
+
+{% block main %}
+<div id="hostcode" style="display: none; opacity: 0;">{{ code }}</div>
 <div class="main-containerq">
 	<div class="content-wrapperq">
 		<header class="headerq">
 			<div class="quiz-info-gridq">
 				<div>
 					<p class="info-labelq">Предмет</p>
-					<p class="info-valueq">Математика</p>
+					<p class="info-valueq">{{ test.subject }}</p>
 				</div>
 				<div>
 					<p class="info-labelq">Тест</p>
-					<p class="info-valueq">Інтегральне числення</p>
+					<p class="info-valueq">{{ test.name }}</p>
 				</div>
 				<div>
 					<p class="info-labelq">Викладач</p>
-					<p class="info-valueq">Андрій Мельник</p>
+					<p class="info-valueq">{{ teacher_name }}</p>
 				</div>
 			</div>
 		</header>
@@ -29,10 +35,7 @@
 					<div class="count-sectionq">
 						<div class="count-wrapperq">
 							<span class="count-numberq" id="connectedCount"
-								>2</span
-							>
-							<span class="count-totalq"
-								>/ <span id="totalCount">2</span></span
+								>0</span
 							>
 						</div>
 						<p class="count-labelq">підключених учасників</p>
@@ -47,25 +50,6 @@
 						<p class="controls-hintq">
 							Переконайтесь, що всі учасники підключені
 						</p>
-
-						<!-- <div
-							class="pending-sectionq"
-							id="pendingSection"
-							style="display: none"
-						>
-							<div class="pending-headerq">
-								<i
-									class="bi bi-clock-history pending-header-iconq"
-								></i>
-								<span class="pending-header-textq"
-									>Запити на підключення</span
-								>
-								<span class="pending-badgeq" id="pendingBadge"
-									>0</span
-								>
-							</div>
-							<div class="pending-listq" id="pendingList"></div>
-						</div> -->
 					</div>
 				</div>
 			</div>
@@ -83,9 +67,12 @@
 	</div>
 </div>
 
+{% endblock %}
+{% block scripts %}
 <script
 	defer
-	src="{{ url_for('quiz_app.static', filename='js/new/teacher_room.js') }}"
+	src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+	crossorigin="anonymous"
 ></script>
-
+<script defer src="{{ url_for('quiz_app.static', filename='js/new/teacher_room.js') }}"></script>
 {% endblock %}
