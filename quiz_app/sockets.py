@@ -71,7 +71,7 @@ def broadcast_state(code: str):
             "is_correct": answered_user_ids.get(partici.user_id, None)
         })
 
-    data = {"status": sessio.status, "participants": participants, "current_order": sessio.current_order, "quiz_name": quiz.name, "quiz_code": code}
+    data = {"status": sessio.status, "participants": participants, "current_order": sessio.current_order, "quiz_name": quiz.name, "quiz_code": code, "quiz_subject": quiz.subject, 'quiz_owner': User.query.filter_by(id=quiz.owner).first()}
 
     if sessio.status == "IN_PROGRESS":
 
@@ -327,6 +327,7 @@ def on_remove_user(data):
         try:
             del user_sessions[user_id]
             db.session.delete(participant)
+            db.session.commit()
             print("successfully deleted")
         except Exception as e:
             print(e)
