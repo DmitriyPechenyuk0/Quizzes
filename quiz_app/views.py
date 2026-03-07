@@ -75,7 +75,8 @@ def host_page(code):
                 "is_teacher": current_user.is_teacher,
                 'name': current_user.name,
                 'teacher_name': current_user.name,
-                "test": quiz 
+                "test": quiz,
+                'ent_code': code
                 }
         return render_template("new_design/teacher_room.html", code=code, **context)
     else: return abort(404)

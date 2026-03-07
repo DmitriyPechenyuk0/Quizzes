@@ -4,6 +4,11 @@ socket.emit("join", { code, as_host: true });
 
 socket.on("room:state", (info) => {
 	console.log(`room:state \n\n`, info);
+	if (info.participants){
+		info.participants.forEach(participant => {
+			createStudentCard(participant)
+		});
+	}
 });
 
 // const studentView = document.getElementById("studentView");
@@ -43,72 +48,57 @@ socket.on("room:state", (info) => {
 // // 	});
 // // }
 
-// function createStudentCard(student, index) {
-// 	const card = document.createElement("div");
-// 	card.className = "student-cardq";
-// 	card.setAttribute("data-student-id", student.id);
+function createStudentCard(student, index) {
+	const card = document.createElement("div");
+	card.className = "student-cardq";
+	card.setAttribute("data-student-id", student.id);
 
-// 	const initials = student.name
-// 		.split(" ")
-// 		.map((n) => n[0])
-// 		.join("");
-// 	const statusClass =
-// 		student.status === "connected" ? "connectedq" : "connectingq";
-// 	const statusText =
-// 		student.status === "connected" ? "Підключено" : "Підключається";
-// 	const statusTextClass =
-// 		student.status === "connected" ? "connected-textq" : "connecting-textq";
+	const initials = student.name
+		.split(" ")
+		.map((n) => n[0])
+		.join("");
 
-// 	card.innerHTML = `
-//         <div class="student-contentq">
-//             <div class="student-infoq">
-//                 <div class="avatarq">
-//                     <span class="avatar-textq">${initials}</span>
-//                 </div>
-//                 <div class="student-detailsq">
-//                     <p class="student-nameq">${student.name}</p>
-//                     <div class="student-statusq">
-//                         <i class="bi bi-circle-fill status-iconq ${statusClass}"></i>
-//                         <span class="status-textq ${statusTextClass}">${statusText}</span>
-//                     </div>
-//                 </div>
-//             </div>
-//             ${
-// 				currentView === "teacher"
-// 					? `
-//                 <button class="remove-btnq" onclick="removeStudent(${student.id})">
-//                     <i class="bi bi-x-lg remove-iconq"></i>
-//                 </button>
-//             `
-// 					: ""
-// 			}
-//         </div>
-//     `;
+	card.innerHTML = `
+        <div class="student-contentq">
+            <div class="student-infoq">
+                <div class="avatarq">
+                    <span class="avatar-textq">${initials}</span>
+                </div>
+                <div class="student-detailsq">
+                    <p class="student-nameq">${student.name}</p>
+                    <div class="student-statusq">
+                        <i class="bi bi-circle-fill status-iconq ${statusClass}"></i>
+                        <span class="status-textq ${statusTextClass}">${statusText}</span>
+                    </div>
+                </div>
+            </div>
+            ${
+				currentView === "teacher"
+					? `
+                <button class="remove-btnq" onclick="removeStudent(${student.id})">
+                    <i class="bi bi-x-lg remove-iconq"></i>
+                </button>
+            `
+					: ""
+			}
+        </div>
+    `;
 
-// 	return card;
-// }
-// function removeStudent(id) {
-// 	const card = document.querySelector(`[data-student-id="${id}"]`);
+	return card;
+}
+function removeStudent(id) {
+	const card = document.querySelector(`[data-student-id="${id}"]`);
 
-// 	if (card) {
-// 		card.style.opacity = "0";
-// 		card.style.transform = "translateX(20px) scale(0.95)";
+	if (card) {
+		card.style.opacity = "0";
+		card.style.transform = "translateX(20px) scale(0.95)";
 
-// 		setTimeout(() => {
-// 			students = students.filter((s) => s.id !== id);
-// 			renderStudents();
-// 			updateCounts();
-// 			updateStartButton();
-// 			updateStudentView();
-// 		}, 300);
-// 	}
-// }
-// // function updateCounts() {
-// // 	const connectedCount = students.filter(
-// // 		(s) => s.status === "connected",
-// // 	).length;
-// // 	const totalCount = students.filter((s) => s.status !== "pending").length;
-
-// // 	connectedCountEl.textContent = connectedCount;
-// // 	totalCountEl.textContent = totalCount;
-// // }
+		setTimeout(() => {
+			students = students.filter((s) => s.id !== id);
+			renderStudents();
+			updateCounts();
+			updateStartButton();
+			updateStudentView();
+		}, 300);
+	}
+}

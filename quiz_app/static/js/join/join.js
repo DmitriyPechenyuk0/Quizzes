@@ -1,3 +1,6 @@
+let socket = io()
+
+
 const input = document.getElementById("codeInput");
 const btn = document.getElementById("joinBtn");
 const hintWrap = document.getElementById("formHint");
@@ -6,95 +9,97 @@ const hintIcon = hintWrap.querySelector(".hint-icon");
 const overlay = document.getElementById("waitingOverlay");
 const cancelBtn = document.getElementById("cancelBtn");
 
-function setWaiting(state) {
-	const next =
-		state === undefined
-			? !overlay.classList.contains("active")
-			: Boolean(state);
 
-	overlay.classList.toggle("active", next);
-	input.disabled = next;
+socket.on()
 
-	if (!next) {
-		btn.disabled = input.value.length !== 6;
-	} else {
-		btn.disabled = true;
-	}
-}
 
-window.setWaiting = setWaiting;
 
-input.addEventListener("input", () => {
-	const clean = input.value.replace(/\D/g, "").slice(0, 6);
-	input.value = clean;
+// function setWaiting(state) {
+// 	const next =
+// 		state === undefined
+// 			? !overlay.classList.contains("active")
+// 			: Boolean(state);
 
-	input.classList.remove("is-error");
-	input.classList.toggle("has-value", clean.length > 0);
-	btn.disabled = clean.length !== 6;
+// 	overlay.classList.toggle("active", next);
+// 	input.disabled = next;
 
-	if (clean.length === 0) {
-		setHint("Лише цифри, 6 символів", "", "bi-info-circle");
-	} else if (clean.length < 6) {
-		setHint(`Введено ${clean.length} із 6`, "progress", "bi-pencil");
-	} else {
-		setHint(
-			"Готово — натисніть «Перейти до тесту»",
-			"ready",
-			"bi-check-circle",
-		);
-	}
-});
+// 	if (!next) {
+// 		btn.disabled = input.value.length !== 6;
+// 	} else {
+// 		btn.disabled = true;
+// 	}
+// }
 
-input.addEventListener("keydown", (e) => {
-	if (e.key === "Enter" && !btn.disabled) handleJoin();
-});
+// window.setWaiting = setWaiting;
 
-btn.addEventListener("click", handleJoin);
-cancelBtn.addEventListener("click", () => setWaiting(false));
+// input.addEventListener("input", () => {
+// 	const clean = input.value.replace(/\D/g, "").slice(0, 6);
+// 	input.value = clean;
 
-function handleJoin() {
-	if (btn.disabled) return;
+// 	input.classList.remove("is-error");
+// 	input.classList.toggle("has-value", clean.length > 0);
+// 	btn.disabled = clean.length !== 6;
 
-	const code = input.value;
-	setWaiting(true);
+// 	if (clean.length === 0) {
+// 		setHint("Лише цифри, 6 символів", "", "bi-info-circle");
+// 	} else if (clean.length < 6) {
+// 		setHint(`Введено ${clean.length} із 6`, "progress", "bi-pencil");
+// 	} else {
+// 		setHint(
+// 			"Готово — натисніть «Перейти до тесту»",
+// 			"ready",
+// 			"bi-check-circle",
+// 		);
+// 	}
+// });
 
-	fetch("/quiz/join", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ code }),
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (data.success) {
-			} else {
-				onError();
-			}
-		})
-		.catch(() => {
-			onError();
-		});
+// input.addEventListener("keydown", (e) => {
+// 	if (e.key === "Enter" && !btn.disabled) handleJoin();
+// });
 
-	/* ── Видаліть цей блок коли підключите реальний API ── */
-	// Симуляція для демо (прибрати у продакшн):
-	const VALID = new Set(['123456', '654321', '202525']);
-	setTimeout(() => {
-	  if (VALID.has(code)) setWaiting(true)
-	  else { onError(); }
-	}, 2200);
-}
-function onError() {
-	setWaiting(false);
-	input.classList.add("is-error");
-	setHint(
-		"Код не знайдено. Перевірте та спробуйте ще раз.",
-		"err",
-		"bi-exclamation-circle",
-	);
-	input.value = "";
-	input.classList.remove("has-value");
-	btn.disabled = true;
-	input.focus();
-}
+// btn.addEventListener("click", handleJoin);
+// cancelBtn.addEventListener("click", () => setWaiting(false));
+
+// function handleJoin() {
+// 	if (btn.disabled) return;
+
+// 	const code = input.value;
+// 	setWaiting(true);
+
+// 	fetch("/quiz/join", {
+// 		method: "POST",
+// 		headers: { "Content-Type": "application/json" },
+// 		body: JSON.stringify({ code }),
+// 	})
+// 		.then((res) => res.json())
+// 		.then((data) => {
+// 			if (data.success) {
+// 			} else {
+// 				onError();
+// 			}
+// 		})
+// 		.catch(() => {
+// 			onError();
+// 		});
+// 	const VALID = new Set(['123456', '654321', '202525']);
+// 	setTimeout(() => {
+// 	  if (VALID.has(code)) setWaiting(true)
+// 	  else { onError(); }
+// 	}, 2200);
+// }
+// function onError() {
+// 	setWaiting(false);
+// 	input.classList.add("is-error");
+// 	setHint(
+// 		"Код не знайдено. Перевірте та спробуйте ще раз.",
+// 		"err",
+// 		"bi-exclamation-circle",
+// 	);
+// 	input.value = "";
+// 	input.classList.remove("has-value");
+// 	btn.disabled = true;
+// 	input.focus();
+// }
 
 function setHint(text, cls, icon) {
 	hintText.textContent = text;
