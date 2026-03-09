@@ -53,7 +53,6 @@ def broadcast_state(code: str):
     
     answered_users = []
 
-
     if cur_quest:
         answered_users = SessionAnswer.query.filter_by(
             session_id=sessio.id,
