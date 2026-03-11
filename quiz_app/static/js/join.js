@@ -119,65 +119,43 @@
 // }
 
 /* ═══════════════════════════════════════════════════════════════
-   student_room.js  —  Student Quiz View
-   Написано строго під events/data із events.py
+   student_room.js  —  Student Quiz View  [FIXED]
 ═══════════════════════════════════════════════════════════════ */
 
 "use strict";
 
 // ════════════════════════════════════════════════════════
-// 1. ДАНІ З JINJA2 (через data-атрибути в DOM)
+// 1. ДАНІ З DOM
+// BUG FIX: "student-data" не існує в HTML-шаблоні.
+//          Читаємо user_id із <div id="current_user_id">
 // ════════════════════════════════════════════════════════
 
-const _sd              = document.getElementById("student-data");
-const STUDENT_NICKNAME = _sd?.dataset.nickname || "";
-const STUDENT_USER_ID  = parseInt(_sd?.dataset.userId) || null;
+const STUDENT_USER_ID = parseInt(
+    document.getElementById("current_user_id")?.textContent?.trim()
+) || null;
+const STUDENT_NICKNAME = "";   // не передається в шаблоні — залишаємо порожнім
 
 // ════════════════════════════════════════════════════════
 // 2. СТАН ДОДАТКУ
 // ════════════════════════════════════════════════════════
 
-let socket = null;
-
-/** Код сесії, введений студентом. @type {string|null} */
-let sessionCode = null;
-
-/**
- * Поточне питання (з room:question / room:state.question).
- * Формат з бек-енду serialize_question():
- * { id, text, order_index, q_quantity, q_type, q_variants[] }
- * @type {object|null}
- */
+let socket          = null;
+let sessionCode     = null;
 let currentQuestion = null;
-
-/**
- * Обрана відповідь — рядок тексту.
- * Для select/letters: текст варіанту.
- * Для fform: текст з textarea.
- * @type {string|null}
- */
-let selectedAnswer = null;
-
-/** Чи відповів студент на поточне питання. @type {boolean} */
-let hasAnswered = false;
-
-/** Секундомір (бек-енд не передає time_limit). @type {number|null} */
-let _timerInterval = null;
-let _timerSeconds  = 0;
+let selectedAnswer  = null;
+let hasAnswered     = false;
+let _timerInterval  = null;
+let _timerSeconds   = 0;
 
 // ════════════════════════════════════════════════════════
-// 3. СЕКЦІЇ — перемикання контенту
+// 3. СЕКЦІЇ
 // ════════════════════════════════════════════════════════
 
-/**
- * Показати секцію, решту приховати.
- * @param {'join' | 'lobby' | 'quiz'} name
- */
 function showSection(name) {
     ["join", "lobby", "quiz"].forEach((s) => {
-        document.getElementById("section-" + s)?.classList.toggle("active", s === name);
+        document.getElementById("section-" + s)
+            ?.classList.toggle("active", s === name);
     });
-
     if (name !== "quiz") {
         _overlayHide("quizWaitingOverlay");
         _overlayHide("resultOverlay");
@@ -185,36 +163,34 @@ function showSection(name) {
 }
 
 // ════════════════════════════════════════════════════════
-// 4. JOIN — стани форми
+// 4. JOIN
+// BUG FIX: "joinHint" → "joinFormHint" (реальний id в HTML)
 // ════════════════════════════════════════════════════════
 
-/**
- * Встановити UI-стан форми входу.
- * @param {'idle' | 'waiting' | 'error' | 'kicked'} state
- */
 function setJoinState(state) {
     const input   = document.getElementById("codeInput");
     const btn     = document.getElementById("joinBtn");
-    const hint    = document.getElementById("joinHint");
+    const hint    = document.getElementById("joinFormHint");   // FIX: було "joinHint"
     const hintTxt = document.getElementById("joinHintText");
     const overlay = document.getElementById("joinWaitingOverlay");
 
     input.classList.remove("sr-input-error");
-    hint.classList.remove("error");
+    hint?.classList.remove("error");
     overlay.classList.remove("show");
 
     const map = {
-        idle:    { btnDisabled: true,  txt: "Лише цифри, 6 символів",          err: false, ov: false },
-        waiting: { btnDisabled: true,  txt: "",                                  err: false, ov: true  },
-        error:   { btnDisabled: false, txt: "Сесія не знайдена або недоступна", err: true,  ov: false },
-        kicked:  { btnDisabled: true,  txt: "Вас видалили з сесії",             err: true,  ov: false },
+        idle:    { btnDisabled: true,  txt: "Лише цифри, 6 символів",           err: false, ov: false },
+        waiting: { btnDisabled: true,  txt: "",                                   err: false, ov: true  },
+        error:   { btnDisabled: false, txt: "Сесія не знайдена або недоступна",  err: true,  ov: false },
+        kicked:  { btnDisabled: true,  txt: "Вас видалили з сесії",              err: true,  ov: false },
     };
     const cfg = map[state] ?? map.idle;
 
     btn.disabled = cfg.btnDisabled;
     hintTxt.textContent = cfg.txt;
+
     if (cfg.err) {
-        hint.classList.add("error");
+        hint?.classList.add("error");
         input.classList.add("sr-input-error");
         setTimeout(() => input.classList.remove("sr-input-error"), 400);
     }
@@ -223,34 +199,25 @@ function setJoinState(state) {
 
 // ════════════════════════════════════════════════════════
 // 5. ЛОБІ
+// BUG FIX: видалено звернення до "lobbyCode" — елемент відсутній у HTML
 // ════════════════════════════════════════════════════════
 
-/**
- * Заповнити мета-рядок у лобі.
- * room:state передає: { quiz_subject, quiz_name, quiz_owner (User ORM), quiz_code }
- * @param {object} data
- */
 function updateLobbyMeta(data) {
     document.getElementById("lobbySubject").textContent  = data.quiz_subject || "—";
     document.getElementById("lobbyQuizName").textContent = data.quiz_name    || "—";
     document.getElementById("lobbyTeacher").textContent  =
-        (data.quiz_owner?.name ?? data.quiz_owner?.username ?? "—");
-    document.getElementById("lobbyCode").textContent     =
-        data.quiz_code || sessionCode || "—";
+        data.quiz_owner?.name ?? data.quiz_owner?.username ?? "—";
+    // "lobbyCode" не існує в HTML — прибрано
 }
 
-/**
- * Відрендерити чіпси учасників.
- * room:state.participants: [{ user_id, nickname, answered, is_correct }]
- * @param {Array<{ user_id: number, nickname: string }>} list
- */
 function updateParticipants(list) {
     const container = document.getElementById("lobbyParticipantsList");
+    if (!container) return;
     container.innerHTML = "";
 
     list.forEach((p, i) => {
-        const isSelf   = p.user_id === STUDENT_USER_ID;
-        const initials = p.nickname
+        const isSelf = p.user_id === STUDENT_USER_ID;
+        const initials = (p.nickname || "?")
             .split(" ")
             .map((w) => w[0] ?? "")
             .join("")
@@ -272,20 +239,15 @@ function updateParticipants(list) {
         container.appendChild(chip);
     });
 
-    const count = list.length;
-    document.getElementById("lobbyConnectedCount").textContent = count;
-    document.getElementById("lobbyTotalCount").textContent     = count;
+    document.getElementById("lobbyConnectedCount").textContent = list.length;
+    document.getElementById("lobbyTotalCount").textContent     = list.length;
 }
 
-/**
- * Показати потрібний статус-блок у лобі.
- * @param {'connected' | 'pending'} status
- */
 function setLobbyStatus(status) {
     document.getElementById("lobbyStatusConnected").style.display =
         status === "connected" ? "" : "none";
-    document.getElementById("lobbyStatusPending").style.display   =
-        status === "pending"   ? "" : "none";
+    document.getElementById("lobbyStatusPending").style.display =
+        status === "pending" ? "" : "none";
 }
 
 // ════════════════════════════════════════════════════════
@@ -294,48 +256,14 @@ function setLobbyStatus(status) {
 
 const LABELS = ["A", "B", "C", "D", "E", "F"];
 
-/**
- * Парсить q_variants з serialize_question().
- *
- * serialize_question() робить:
- *   for var in q.correct_answer.split('|'):
- *       variants.append(var.split(':')[0])
- *
- * Тобто q_variants — вже масив чистих текстів варіантів ['Текст А', 'Текст Б', ...].
- * Якщо з якоїсь причини прийшов рядок замість масиву — парсимо вручну.
- *
- * @param {string[] | string} raw
- * @returns {string[]}
- */
 function _parseVariants(raw) {
     if (Array.isArray(raw)) return raw;
     if (typeof raw === "string" && raw.length) {
-        // Fallback: прийшов сирий рядок "текст1:мітка1|текст2:мітка2|..."
         return raw.split("|").map((v) => v.split(":")[0].trim()).filter(Boolean);
     }
     return [];
 }
 
-/**
- * Рендерить питання.
- *
- * Дані з room:question або room:state.question (serialize_question):
- * {
- *   id:           number,
- *   text:         string,
- *   order_index:  number,   — порядковий номер (1-based)
- *   q_quantity:   number,   — всього питань у тесті
- *   q_type:       'select' | 'fform' | 'letters',
- *   q_variants:   string[]  — масив текстів варіантів (тільки select)
- * }
- *
- * Логіка відображення по типу:
- *   select  — сітка карток з варіантами (q_variants), відправляємо текст вибраного варіанту
- *   fform   — вільна textarea, відправляємо введений текст
- *   letters — однорядковий input (коротка відповідь), відправляємо введений текст
- *
- * @param {object} q
- */
 function renderQuestion(q) {
     currentQuestion = q;
     selectedAnswer  = null;
@@ -351,62 +279,40 @@ function renderQuestion(q) {
     const imgWrap    = document.getElementById("qImageWrap");
     const submitBtn  = document.getElementById("submitBtn");
 
-    // Приховуємо всі блоки відповідей, потім показуємо потрібний
     choiceWrap.style.display = "none";
     textWrap.style.display   = "none";
     imgWrap.style.display    = "none";
     submitBtn.disabled       = true;
 
     if (q.q_type === "select") {
-        // ── Вибір з варіантів ───────────────────────────────
-        const variants = _parseVariants(q.q_variants);
-        _renderSelectVariants(variants);
+        _renderSelectVariants(_parseVariants(q.q_variants));
         choiceWrap.style.display = "block";
 
-    } else if (q.q_type === "fform") {
-        // ── Вільна текстова відповідь (textarea) ────────────
+    } else if (q.q_type === "fform" || q.q_type === "letters") {
         const ta = document.getElementById("textAnswer");
-        ta.value          = "";
-        ta.placeholder    = "Введіть вашу відповідь тут...";
-        ta.rows           = 5;
-        document.getElementById("charCount").textContent = "0 / 300";
-        textWrap.style.display = "flex";
-
-    } else if (q.q_type === "letters") {
-        // ── Коротка відповідь (однорядковий input) ──────────
-        // Показуємо той самий textWrap, але міняємо textarea на однорядковий режим
-        const ta = document.getElementById("textAnswer");
-        ta.value          = "";
-        ta.placeholder    = "Введіть відповідь (слово або число)...";
-        ta.rows           = 2;
+        ta.value       = "";
+        ta.placeholder = q.q_type === "fform"
+            ? "Введіть вашу відповідь тут..."
+            : "Введіть відповідь (слово або число)...";
+        ta.rows = q.q_type === "fform" ? 5 : 2;
         document.getElementById("charCount").textContent = "0 / 300";
         textWrap.style.display = "flex";
     }
 }
 
-/**
- * Відрендерити картки варіантів для типу select.
- *
- * Студент клікає варіант → selectedAnswer = текст варіанту.
- * Саме цей текст відправляється на бек через participant:answer.
- * Бек: is_correctt(answer_text, cur_quest.correct_answer, 'select')
- *      → answer_text == correct_answer (порівнюється з полем в БД).
- *
- * @param {string[]} variants
- */
 function _renderSelectVariants(variants) {
     const grid = document.getElementById("answersGrid");
     grid.innerHTML = "";
 
     if (!variants.length) {
-        grid.innerHTML = `<p style="color:var(--sr-text-3);font-size:var(--sr-f-sm)">Варіанти відповіді відсутні</p>`;
+        grid.innerHTML = `<p style="color:var(--sr-text-3)">Варіанти відповіді відсутні</p>`;
         return;
     }
 
     variants.forEach((text, i) => {
         const card = document.createElement("div");
-        card.className       = "sr-ans-card";
-        card.dataset.value   = text;
+        card.className     = "sr-ans-card";
+        card.dataset.value = text;
         card.innerHTML = `
             <div class="sr-ans-idx">${LABELS[i] ?? i + 1}</div>
             <div class="sr-ans-text">${text}</div>`;
@@ -414,7 +320,8 @@ function _renderSelectVariants(variants) {
         card.addEventListener("click", () => {
             if (hasAnswered) return;
             selectedAnswer = text;
-            document.querySelectorAll(".sr-ans-card").forEach((c) => c.classList.remove("selected"));
+            document.querySelectorAll(".sr-ans-card")
+                .forEach((c) => c.classList.remove("selected"));
             card.classList.add("selected");
             document.getElementById("submitBtn").disabled = false;
         });
@@ -424,7 +331,8 @@ function _renderSelectVariants(variants) {
 }
 
 // ════════════════════════════════════════════════════════
-// 7. ТАЙМЕР — секундомір (бек-енд не передає time_limit)
+// 7. ТАЙМЕР
+// BUG FIX: "sr-q-timer" → "q-timer" (реальний клас в HTML)
 // ════════════════════════════════════════════════════════
 
 function startTimer() {
@@ -435,17 +343,19 @@ function startTimer() {
 }
 
 function stopTimer() {
-    if (_timerInterval !== null) { clearInterval(_timerInterval); _timerInterval = null; }
+    if (_timerInterval !== null) {
+        clearInterval(_timerInterval);
+        _timerInterval = null;
+    }
 }
 
 function _renderTimer() {
-    const m   = Math.floor(_timerSeconds / 60).toString().padStart(2, "0");
-    const s   = (_timerSeconds % 60).toString().padStart(2, "0");
+    const m = Math.floor(_timerSeconds / 60).toString().padStart(2, "0");
+    const s = (_timerSeconds % 60).toString().padStart(2, "0");
     document.getElementById("qTimerVal").textContent = `${m}:${s}`;
-    document.getElementById("qTimer").className = "sr-q-timer"; // без warn/crit — нема ліміту
+    document.getElementById("qTimer").className = "q-timer";  // FIX: було "sr-q-timer"
 }
 
-/** Зафіксувати поточний час відповіді (форматований рядок). @returns {string} */
 function _getElapsedTime() {
     const m = Math.floor(_timerSeconds / 60).toString().padStart(2, "0");
     const s = (_timerSeconds % 60).toString().padStart(2, "0");
@@ -453,15 +363,17 @@ function _getElapsedTime() {
 }
 
 // ════════════════════════════════════════════════════════
-// 8. ПРОГРЕС
+// 8. ПРОГРЕС-БАР
+// BUG FIX: "srProgressBar" → "progressBar"
+// BUG FIX: "resultWaitingProgress" → "resultWaitingSub"
 // ════════════════════════════════════════════════════════
 
 function _setProgress(current, total) {
     const label = `Питання ${current} з ${total}`;
-    document.getElementById("qProgressLabel").textContent        = label;
-    document.getElementById("resultWaitingProgress").textContent = label;
+    document.getElementById("qProgressLabel").textContent  = label;
+    document.getElementById("resultWaitingSub").textContent = label;  // FIX: було "resultWaitingProgress"
     const pct = total > 0 ? Math.round((current / total) * 100) : 0;
-    document.getElementById("srProgressBar").style.width = pct + "%";
+    document.getElementById("progressBar").style.width = pct + "%";   // FIX: було "srProgressBar"
 }
 
 // ════════════════════════════════════════════════════════
@@ -471,92 +383,143 @@ function _setProgress(current, total) {
 function _overlayShow(id) { document.getElementById(id)?.classList.add("show"); }
 function _overlayHide(id) { document.getElementById(id)?.classList.remove("show"); }
 
-/**
- * Показати result-modal з вердиктом correct / wrong.
- * Викликається після waiting_overlay: { overlay: true, answer: bool }
- * @param {boolean} isCorrect
- */
+// ════════════════════════════════════════════════════════
+// 10. РЕЗУЛЬТАТ ВІДПОВІДІ
+// BUG FIX: ".sr-result-modal" → ".result-modal"
+// BUG FIX: "sr-result-top/icon/verdict" → "result-top/icon/verdict"
+// ════════════════════════════════════════════════════════
+
 function showAnswerResult(isCorrect) {
     const elapsedTime = _getElapsedTime();
     stopTimer();
     hasAnswered = true;
     document.getElementById("submitBtn").disabled = true;
 
-    const overlay  = document.getElementById("resultOverlay");
-    const top      = document.getElementById("resultTop");
-    const icon     = document.getElementById("resultIcon");
-    const iconSvg  = document.getElementById("resultIconSvg");
-    const verdict  = document.getElementById("resultVerdict");
-    const sub      = document.getElementById("resultSub");
-    const reveal   = document.getElementById("correctReveal");
+    const overlay = document.getElementById("resultOverlay");
+    const top     = document.getElementById("resultTop");
+    const icon    = document.getElementById("resultIcon");
+    const iconSvg = document.getElementById("resultIconSvg");
+    const verdict = document.getElementById("resultVerdict");
+    const sub     = document.getElementById("resultSub");
+    const reveal  = document.getElementById("correctReveal");
 
-    // Ре-тригер CSS-анімації (клонування trick)
-    const modal = overlay.querySelector(".sr-result-modal");
-    modal.style.animation = "none";
-    modal.offsetHeight;
-    modal.style.animation = "";
+    // Ре-тригер анімації
+    const modal = overlay.querySelector(".result-modal");  // FIX: було ".sr-result-modal"
+    if (modal) {
+        modal.style.animation = "none";
+        void modal.offsetHeight;
+        modal.style.animation = "";
+    }
 
     if (isCorrect) {
-        top.className       = "sr-result-top correct";
-        icon.className      = "sr-result-icon correct";
-        verdict.className   = "sr-result-verdict correct";
-        iconSvg.innerHTML   = '<polyline points="4,12 9,17 20,6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+        top.className     = "result-top correct";      // FIX: було "sr-result-top correct"
+        icon.className    = "result-icon correct";     // FIX: було "sr-result-icon correct"
+        verdict.className = "result-verdict correct";  // FIX: було "sr-result-verdict correct"
+        iconSvg.innerHTML = '<polyline points="4,12 9,17 20,6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
         verdict.textContent = "Правильно!";
         sub.textContent     = "Чудова робота — ваша відповідь вірна.";
     } else {
-        top.className       = "sr-result-top wrong";
-        icon.className      = "sr-result-icon wrong";
-        verdict.className   = "sr-result-verdict wrong";
-        iconSvg.innerHTML   = '<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>';
+        top.className     = "result-top wrong";        // FIX
+        icon.className    = "result-icon wrong";       // FIX
+        verdict.className = "result-verdict wrong";    // FIX
+        iconSvg.innerHTML = '<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>';
         verdict.textContent = "Невірно";
         sub.textContent     = "Ваша відповідь не збігається з правильною.";
     }
-    // Бек-енд не шле правильну відповідь студенту — reveal ховаємо
+
     reveal.style.display = "none";
 
-    // Час відповіді — зі свого секундоміра
     document.getElementById("statTime").textContent     = elapsedTime;
-    document.getElementById("statAvgTime").textContent  = "—"; // оновиться з room:answers_progress
-    document.getElementById("statAnswered").textContent = "—"; // оновиться з room:answers_progress
+    document.getElementById("statAvgTime").textContent  = "—";
+    document.getElementById("statAnswered").textContent = "—";
 
     _overlayShow("resultOverlay");
 }
 
-/**
- * Оновити лічильник "відповіли" у відкритій result-modal.
- * Дані з room:answers_progress: { answered: number, total: number }
- * @param {{ answered: number, total: number }} data
- */
 function updateResultStats(data) {
-    document.getElementById("statAnswered").textContent = `${data.answered}/${data.total}`;
+    document.getElementById("statAnswered").textContent =
+        `${data.answered ?? "—"}/${data.total ?? "—"}`;
 }
 
 // ════════════════════════════════════════════════════════
-// 10. EVENT LISTENERS
+// 11. ФУНКЦІЇ ДЛЯ HTML-АТРИБУТІВ (onclick / oninput)
+// BUG FIX: ці функції викликались з HTML але не були визначені в JS
+// ════════════════════════════════════════════════════════
+
+/** Викликається через onclick="submitAnswer()" на кнопці */
+function submitAnswer() {
+    if (!currentQuestion || hasAnswered) return;
+
+    let answer = null;
+    if (currentQuestion.q_type === "select") {
+        answer = selectedAnswer;
+    } else {
+        answer = document.getElementById("textAnswer").value.trim();
+    }
+
+    if (!answer) return;
+
+    document.getElementById("submitBtn").disabled = true;
+    socket.emit("participant:answer", { code: sessionCode, answer });
+}
+
+/** Викликається через oninput="onTextInput(this)" на textarea */
+function onTextInput(el) {
+    const len = el.value.length;
+    document.getElementById("charCount").textContent = `${len} / 300`;
+    if (currentQuestion?.q_type === "fform" || currentQuestion?.q_type === "letters") {
+        document.getElementById("submitBtn").disabled = len === 0;
+    }
+}
+
+/** Викликається через onclick="openLightbox(this)" на обгортці зображення */
+function openLightbox(el) {
+    const img = el.querySelector("img");
+    if (img?.src) {
+        document.getElementById("lightboxImg").src = img.src;
+        const caption = document.getElementById("lightboxCaption");
+        if (caption) caption.textContent = img.alt || "";
+        _overlayShow("lightboxOverlay");
+    }
+}
+
+/** Викликається через onclick="closeLightbox(event)" */
+function closeLightbox(event) {
+    const overlay = document.getElementById("lightboxOverlay");
+    if (
+        event.target === overlay ||
+        event.target.closest(".lightbox-close")
+    ) {
+        _overlayHide("lightboxOverlay");
+    }
+}
+
+// ════════════════════════════════════════════════════════
+// 12. EVENT LISTENERS
 // ════════════════════════════════════════════════════════
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // ── Введення коду ─────────────────────────────────────
     const codeInput = document.getElementById("codeInput");
     const joinBtn   = document.getElementById("joinBtn");
     const hintTxt   = document.getElementById("joinHintText");
-    const joinHint  = document.getElementById("joinHint");
+    const joinHint  = document.getElementById("joinFormHint");  // FIX: було "joinHint"
 
+    // ── Введення коду ──────────────────────────────────
     codeInput.addEventListener("input", () => {
         codeInput.value = codeInput.value.replace(/\D/g, "").slice(0, 6);
         const len = codeInput.value.length;
         if (len === 6) {
             joinBtn.disabled = false;
             hintTxt.textContent = "Готово! Натисніть кнопку нижче";
-            joinHint.classList.remove("error");
+            joinHint?.classList.remove("error");
         } else {
             joinBtn.disabled = true;
             hintTxt.textContent = `Лише цифри, 6 символів (${len}/6)`;
         }
     });
 
-    // ── Приєднатись ───────────────────────────────────────
+    // ── Приєднатись ────────────────────────────────────
     joinBtn.addEventListener("click", () => {
         const code = codeInput.value.trim();
         if (code.length !== 6) return;
@@ -565,64 +528,21 @@ document.addEventListener("DOMContentLoaded", () => {
         socket.emit("join", { code, as_host: false });
     });
 
-    // ── Скасувати очікування ──────────────────────────────
-    // document.getElementById("joinCancelBtn").addEventListener("click", () => {
-    //     sessionCode = null;
-    //     codeInput.value = "";
-    //     setJoinState("idle");
-    // });
-
-    // ── Відправити відповідь ──────────────────────────────
-    document.getElementById("submitBtn").addEventListener("click", () => {
-        if (!currentQuestion || hasAnswered) return;
-
-        let answer = null;
-
-        if (currentQuestion.q_type === "select") {
-            // Текст вибраного варіанту — бек порівнює через is_correctt з correct_answer
-            answer = selectedAnswer;
-        } else if (currentQuestion.q_type === "fform" || currentQuestion.q_type === "letters") {
-            // Введений текст — бек normalize() + порівнює
-            answer = document.getElementById("textAnswer").value.trim();
-        }
-
-        if (!answer) return;
-
-        document.getElementById("submitBtn").disabled = true;
-
-        // participant:answer → { code, answer: string }
-        socket.emit("participant:answer", { code: sessionCode, answer });
-    });
-
-    // ── Лічильник символів (fform / letters) ─────────────
-    document.getElementById("textAnswer").addEventListener("input", function () {
-        const len = this.value.length;
-        document.getElementById("charCount").textContent = `${len} / 300`;
-        // Для fform і letters — кнопка активна як тільки є хоч один символ
-        if (currentQuestion?.q_type === "fform" || currentQuestion?.q_type === "letters") {
-            document.getElementById("submitBtn").disabled = len === 0;
-        }
-    });
-
-    // ── Lightbox ──────────────────────────────────────────
-    document.getElementById("qImageWrap").addEventListener("click", () => {
-        const src = document.getElementById("qImage").src;
-        if (src) {
-            document.getElementById("lightboxImg").src = src;
-            _overlayShow("lightboxOverlay");
-        }
-    });
-    document.getElementById("lightboxOverlay").addEventListener("click", (e) => {
-        if (e.target === e.currentTarget || e.target.closest("#lightboxClose")) {
-            _overlayHide("lightboxOverlay");
-        }
-    });
+    // ── Lightbox через кнопку закриття ─────────────────
+    // (додатково до onclick="closeLightbox(event)" в HTML)
+    document.getElementById("lightboxOverlay")
+        ?.addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) _overlayHide("lightboxOverlay");
+        });
 
     initSocket();
 });
 
 // ════════════════════════════════════════════════════════
-// 11. WEBSOCKET — обробники подій
+// 13. WEBSOCKET
+// BUG FIX: "srProgressBar" → "progressBar"
+// BUG FIX: "joinHint" → "joinFormHint"
+// BUG FIX: ".sr-status-title/.sr-status-text" → ".lobby-status-title/.lobby-status-text"
 // ════════════════════════════════════════════════════════
 
 function initSocket() {
@@ -632,34 +552,24 @@ function initSocket() {
     socket.on("disconnect", () => console.warn("[socket] disconnected"));
     socket.on("error",      (d) => console.error("[socket] error:", d?.message));
 
-    // ── room:state ────────────────────────────────────────
-    // Приходить після join та після будь-яких змін.
-    // {
-    //   status:        'WAITING' | 'IN_PROGRESS' | 'FINISHED',
-    //   participants:  [{ user_id, nickname, answered, is_correct }],
-    //   current_order: number,
-    //   quiz_name:     string,
-    //   quiz_code:     string,
-    //   quiz_subject:  string,
-    //   quiz_owner:    User ORM (є .name),
-    //   question?:     { id, text, order_index, q_quantity, q_type, q_variants[] }
-    // }
+    // ── room:state ──────────────────────────────────────
     socket.on("room:state", (data) => {
         console.log("[socket] room:state", data);
+
+        // FIX: Завжди ховаємо join-overlay при будь-якому room:state.
+        // Це головний "сигнал" що сервер нас прийняв — незалежно від статусу.
+        document.getElementById("joinWaitingOverlay").classList.remove("show");
 
         updateLobbyMeta(data);
         if (data.participants) updateParticipants(data.participants);
 
         if (data.status === "WAITING") {
             setLobbyStatus("connected");
-            // Скидаємо join-overlay якщо він ще відкритий
-            document.getElementById("joinWaitingOverlay").classList.remove("show");
-            document.getElementById("srProgressBar").style.width = "0%";
+            document.getElementById("progressBar").style.width = "0%";
             showSection("lobby");
 
         } else if (data.status === "IN_PROGRESS") {
             if (data.question) {
-                // Студент підключився під час тесту — рендеримо питання
                 renderQuestion(data.question);
                 showSection("quiz");
             } else {
@@ -673,17 +583,13 @@ function initSocket() {
         }
     });
 
-    // ── room:participants_update ──────────────────────────
-    // { nickname, id, sess_status }
-    // Сигнал що хтось новий підключився.
-    // Повний перерендер зробить наступний room:state, тут нічого не треба.
+    // ── room:participants_update ────────────────────────
     socket.on("room:participants_update", (data) => {
         console.log("[socket] room:participants_update", data);
+        // Повний перерендер зробить наступний room:state
     });
 
-    // ── room:question ─────────────────────────────────────
-    // Нове питання (teacher:start або teacher:next).
-    // { id, text, order_index, q_quantity, q_type, q_variants[] }
+    // ── room:question ───────────────────────────────────
     socket.on("room:question", (data) => {
         console.log("[socket] room:question", data);
         _overlayHide("resultOverlay");
@@ -692,63 +598,55 @@ function initSocket() {
         showSection("quiz");
     });
 
-    // ── waiting_overlay ───────────────────────────────────
-    // Надсилається тільки студенту що щойно відповів.
+    // ── waiting_overlay ─────────────────────────────────
     // { overlay: true, answer: bool }
-    // answer: true → правильно, false → неправильно
     socket.on("waiting_overlay", (data) => {
         console.log("[socket] waiting_overlay", data);
         showAnswerResult(data.answer);
     });
 
-    // ── room:answers_progress ─────────────────────────────
-    // Надсилається всім після кожної відповіді.
+    // ── room:answers_progress ───────────────────────────
     // { question_id, answered, total, participants[] }
     socket.on("room:answers_progress", (data) => {
         console.log("[socket] room:answers_progress", data);
-        // Якщо result-modal відкритий — оновлюємо лічильник відповідей
         if (document.getElementById("resultOverlay").classList.contains("show")) {
             updateResultStats(data);
         }
     });
 
-    // ── student:switch_content ────────────────────────────
-    // Тригер від switch_content (вчительська кімната).
-    // Ховаємо waiting щоб студент побачив питання.
+    // ── student:switch_content ──────────────────────────
     socket.on("student:switch_content", () => {
         console.log("[socket] student:switch_content");
         _overlayHide("quizWaitingOverlay");
     });
 
-    // ── update_answers ────────────────────────────────────
-    // Відповідь на check_answers: { total, answered }
+    // ── update_answers ──────────────────────────────────
     socket.on("update_answers", (data) => {
         console.log("[socket] update_answers", data);
         updateResultStats(data);
     });
 
-    // ── finish_session ────────────────────────────────────
-    // { session_id }
+    // ── finish_session ──────────────────────────────────
     socket.on("finish_session", (data) => {
         console.log("[socket] finish_session", data);
         stopTimer();
         _overlayHide("resultOverlay");
         _overlayHide("quizWaitingOverlay");
-        document.getElementById("srProgressBar").style.width = "100%";
+        document.getElementById("progressBar").style.width = "100%";  // FIX
 
-        // Показуємо лобі з повідомленням про кінець
-        // TODO: замінити на окремий фінальний екран коли він буде готовий
         setLobbyStatus("connected");
-        document.getElementById("lobbyStatusConnected").querySelector(".sr-status-title").textContent =
-            "Тест завершено";
-        document.getElementById("lobbyStatusConnected").querySelector(".sr-status-text").textContent =
-            "Дякуємо за участь! Результати буде підведено викладачем.";
+
+        // FIX: було ".sr-status-title" / ".sr-status-text" — не існує в HTML
+        const statusBlock = document.getElementById("lobbyStatusConnected");
+        const titleEl = statusBlock?.querySelector(".lobby-status-title");
+        const textEl  = statusBlock?.querySelector(".lobby-status-text");
+        if (titleEl) titleEl.textContent = "Тест завершено";
+        if (textEl)  textEl.textContent  = "Дякуємо за участь! Результати буде підведено викладачем.";
 
         showSection("lobby");
     });
 
-    // ── kickedd ───────────────────────────────────────────
-    // { message: string }
+    // ── kickedd ─────────────────────────────────────────
     socket.on("kickedd", (data) => {
         console.log("[socket] kickedd", data);
         stopTimer();
@@ -757,9 +655,9 @@ function initSocket() {
         _overlayHide("quizWaitingOverlay");
 
         const hintTxt  = document.getElementById("joinHintText");
-        const joinHint = document.getElementById("joinHint");
-        hintTxt.textContent = data?.message || "Вас видалили з сесії";
-        joinHint.classList.add("error");
+        const joinHint = document.getElementById("joinFormHint");  // FIX: було "joinHint"
+        if (hintTxt)  hintTxt.textContent = data?.message || "Вас видалили з сесії";
+        joinHint?.classList.add("error");
 
         document.getElementById("codeInput").value = "";
         document.getElementById("joinBtn").disabled = true;
@@ -768,9 +666,9 @@ function initSocket() {
         showSection("join");
     });
 
-    // ── delete_user ───────────────────────────────────────
-    // { id } — після цього room:state перемалює список, тут нічого не треба
+    // ── delete_user ─────────────────────────────────────
     socket.on("delete_user", (data) => {
         console.log("[socket] delete_user", data);
+        // Повний перерендер зробить наступний room:state
     });
 }
