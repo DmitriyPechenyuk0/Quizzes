@@ -1,54 +1,152 @@
-{% extends 'base.html' %} {% block title %}Quiz Teacher Result{% endblock %} {%
-block head %}
-<link
-	rel="stylesheet"
-	href="{{ url_for('history.static', filename='css/quiz_teacher_result.css') }}"
-/>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{% endblock %} {% block main %}
-<div
-	class="section"
-	id="quizData"
-	data-question-labels='{{ stats|map(attribute="question")|list|tojson }}'
-	data-question-data='{{ stats|map(attribute="percent")|list|tojson }}'
-	data-avg-accuracy="{{ avg_accuracy }}"
->
-	<p class="quiz-text">Тест: {{ quiz_name }}</p>
-	<div class="result-frame">
-		<div class="student-table">
-			<table>
-				<thead>
-					<tr>
-						<th>Ім’я</th>
-						<th>Точність</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for s in students %}
-					<tr>
-						<td>
-							<a
-								href="{{ url_for('history.show_qsr_page', session_id=session_id, user_id=s.id) }}"
-								class="student-link"
-							>
-								{{ s.name }}
-							</a>
-						</td>
-						<td>{{ s.accuracy }}%</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
+{% extends 'base.html' %}
 
-		<div class="chart-section">
-			<h3>Статистика відповідей на запитання</h3>
-			<canvas id="questionChart"></canvas>
-			<p class="avg">Середня точність групи: {{ avg_accuracy }}%</p>
-			<canvas id="summaryChart"></canvas>
-		</div>
-	</div>
+{% block title %}Quizzes — Результати{% endblock %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{{ url_for('history.static', filename='css/quiz_teacher_result.css') }}"/>
+{% endblock %} 
+
+
+{% block main %}
+<div class="page">
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-label">Правильних</div>
+      <div class="stat-val stat-accent">67<span class="u">%</span></div>
+      <div class="stat-foot">середнє по класу</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Неправильних</div>
+      <div class="stat-val stat-err">24<span class="u">%</span></div>
+      <div class="stat-foot">середнє по класу</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Без відповіді</div>
+      <div class="stat-val" style="color:var(--c6)">9<span class="u">%</span></div>
+      <div class="stat-foot">пропущені питання</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Середній час / пит.</div>
+      <div class="stat-val stat-warn">38<span class="u">с</span></div>
+      <div class="stat-foot">по всьому тесту</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Оцінка / 100</div>
+      <div class="stat-val">67<span class="u">б</span></div>
+      <div class="stat-foot">середня по класу</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Оцінка / 12</div>
+      <div class="stat-val">8<span class="u">/12</span></div>
+      <div class="stat-foot">середня по класу</div>
+    </div>
+  </div>
+
+  <!-- CHART + SCORE PANEL -->
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title">Успішність по питаннях</div>
+      <div class="chart-wrap"><canvas id="chartQ"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Розподіл балів класу</div>
+
+      <div class="score-pair">
+        <div class="score-box">
+          <div class="score-box-label">Середній / 100</div>
+          <div class="score-box-val">67<span class="u">б</span></div>
+        </div>
+        <div class="score-box">
+          <div class="score-box-label">Середній / 12</div>
+          <div class="score-box-val">8<span class="u">/12</span></div>
+        </div>
+      </div>
+
+      <div class="dist-label-row">Розподіл результатів</div>
+      <div class="dist-row">
+        <div class="dist-seg" style="width:18%; background:var(--err); opacity:.7"></div>
+        <div class="dist-seg" style="width:25%; background:var(--warn); opacity:.7"></div>
+        <div class="dist-seg" style="width:57%; background:var(--acc); opacity:.7"></div>
+      </div>
+      <div class="dist-labels">
+        <span style="color:var(--err)">18% нижче 50б</span>
+        <span style="color:var(--warn)">25% 50–74б</span>
+        <span style="color:var(--acc)">57% вище 75б</span>
+      </div>
+
+      <div class="best-worst">
+        <div>
+          <div class="bw-label">Найвищий бал</div>
+          <div class="bw-val" style="color:var(--acc)">94<span style="font-size:var(--fs-md); color:var(--c6); font-weight:400">б</span></div>
+          <div class="bw-name">Олексій Бойко</div>
+        </div>
+        <div>
+          <div class="bw-label">Найнижчий бал</div>
+          <div class="bw-val" style="color:var(--err)">31<span style="font-size:var(--fs-md); color:var(--c6); font-weight:400">б</span></div>
+          <div class="bw-name">Василь Петренко</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENTS -->
+  <div class="students-panel">
+    <div class="students-topbar">
+      <div class="students-topbar-title">Учні — 28</div>
+      <input class="search-input" placeholder="Пошук учня..." oninput="filterStudents(this.value)">
+    </div>
+
+    <div class="students-table-head">
+      <div class="th">#</div>
+      <div class="th">Ім'я</div>
+      <div class="th right">Бал</div>
+      <div class="th right">Оцінка</div>
+      <div class="th right">Правильно</div>
+      <div class="th right">Час</div>
+      <div class="th"></div>
+    </div>
+
+    <div class="students-list" id="studentsList"></div>
+  </div>
+
 </div>
 
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-hd-left">
+        <div class="modal-tag">Детальні результати</div>
+        <div class="modal-name" id="mName">—</div>
+      </div>
+      <div class="modal-scores">
+        <div class="m-score-block">
+          <div class="m-score-big" id="mScore100">—</div>
+          <div class="m-score-label">балів / 100</div>
+        </div>
+        <div class="m-score-block">
+          <div class="m-score-big" id="mScore12" style="color:var(--c7); font-size:2.78vh">—</div>
+          <div class="m-score-label">оцінка / 12</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="mq-head">
+        <div class="mq-th">#</div>
+        <div class="mq-th">Питання</div>
+        <div class="mq-th">Відповідь</div>
+        <div class="mq-th"></div>
+      </div>
+      <div id="mBody"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="{{ url_for('history.static', filename='js/quiz_teacher_result.js') }}"></script>
+
 {% endblock %}
