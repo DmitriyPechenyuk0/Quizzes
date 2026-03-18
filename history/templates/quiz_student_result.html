@@ -7,66 +7,69 @@
 {% block title %} Quizzes - Мої результати | Учень {% endblock %}
 
 {% block main %}
-	<div class="page">
-		<div class="hero">
-			<div class="hero-top">
-				<div>
-					<div class="hero-name" id="sName">Олексій Бойко</div>
-					<div class="hero-meta">Фізика: Закони Ньютона &nbsp;·&nbsp; 10-А клас &nbsp;·&nbsp; 14.02.2025</div>
-					<div class="hero-verdict verdict-good" id="sVerdict">Відмінно</div>
-				</div>
-				<div class="hero-score-block">
-					<div class="big-score" id="sScore">—<span class="u">б</span></div>
-					<div class="score-sub" id="sScore12">— / 12-бальна</div>
-				</div>
-			</div>
-			
-			<div class="hero-stats">
-				<div class="h-stat">
-					<div class="h-stat-label">Правильно</div>
-					<div class="h-stat-val" id="sCorrect" style="color:var(--acc)">—</div>
-				</div>
-				<div class="h-stat">
-					<div class="h-stat-label">Неправильно</div>
-					<div class="h-stat-val" id="sWrong" style="color:var(--err)">—</div>
-				</div>
-				<div class="h-stat">
-					<div class="h-stat-label">Пропущено</div>
-					<div class="h-stat-val" id="sSkipped" style="color:var(--c6)">—</div>
-				</div>
-				<div class="h-stat">
-					<div class="h-stat-label">Сер. час / пит.</div>
-					<div class="h-stat-val" id="sTime" style="color:var(--warn)">—</div>
-				</div>
-			</div>
-		</div>
-		<div class="compare-block">
-			<div class="compare-label">Порівняння з класом</div>
-			<div class="compare-row">
-				<div class="compare-name">Ваш результат</div>
-				<div class="compare-bar-track">
-					<div class="compare-bar-fill" id="bar-you" style="background:var(--c8); width:0%"></div>
-				</div>
-				<div class="compare-val" id="cmp-you" style="color:var(--c9)">—</div>
-			</div>
-			<div class="compare-row">
-				<div class="compare-name">Середнє класу</div>
-				<div class="compare-bar-track">
-					<div class="compare-bar-fill" id="bar-avg" style="background:var(--c5); width:0%"></div>
-				</div>
-				<div class="compare-val" id="cmp-avg" style="color:var(--c6)">0</div>
-			</div>
-			<div class="compare-row">
-				<div class="compare-name">Найвищий</div>
-				<div class="compare-bar-track">
-					<div class="compare-bar-fill" id="bar-best" style="background:var(--acc); width:0%"></div>
-				</div>
-				<div class="compare-val" id="cmp-best" style="color:var(--acc)">0</div>
-			</div>
-		</div>
+	<script id="app-data" type="application/json">{{ quiz_data | tojson }}</script>
 
-		<div class="section-label">Відповіді — питання за питанням</div>
-		<div class="q-list" id="qList"></div>
+	<div class="page">
+	<div class="hero">
+		<div class="hero-top">
+		<div>
+			<div class="hero-name" id="sName">—</div>
+			{# Заполнит JS #}
+			<div class="hero-meta" id="sMeta">—</div>
+			<div class="hero-verdict" id="sVerdict">—</div>
+		</div>
+		<div class="hero-score-block">
+			<div class="big-score" id="sScore">—<span class="u">б</span></div>
+			<div class="score-sub" id="sScore12">— / 12-бальна</div>
+		</div>
+		</div>
+		<div class="hero-stats">
+		<div class="h-stat">
+			<div class="h-stat-label">Правильно</div>
+			<div class="h-stat-val" id="sCorrect" style="color:var(--acc)">—</div>
+		</div>
+		<div class="h-stat">
+			<div class="h-stat-label">Неправильно</div>
+			<div class="h-stat-val" id="sWrong" style="color:var(--err)">—</div>
+		</div>
+		<div class="h-stat">
+			<div class="h-stat-label">Пропущено</div>
+			<div class="h-stat-val" id="sSkipped" style="color:var(--c6)">—</div>
+		</div>
+		<div class="h-stat">
+			<div class="h-stat-label">Сер. час / пит.</div>
+			<div class="h-stat-val" id="sTime" style="color:var(--warn)">—</div>
+		</div>
+		</div>
+	</div>
+
+	<div class="compare-block">
+		<div class="compare-label">Порівняння з класом</div>
+		<div class="compare-row">
+		<div class="compare-name">Ваш результат</div>
+		<div class="compare-bar-track">
+			<div class="compare-bar-fill" id="bar-you" style="background:var(--c8); width:0%"></div>
+		</div>
+		<div class="compare-val" id="cmp-you" style="color:var(--c9)">—</div>
+		</div>
+		<div class="compare-row">
+		<div class="compare-name">Середнє класу</div>
+		<div class="compare-bar-track">
+			<div class="compare-bar-fill" id="bar-avg" style="background:var(--c5); width:0%"></div>
+		</div>
+		<div class="compare-val" id="cmp-avg" style="color:var(--c6)">—</div>
+		</div>
+		<div class="compare-row">
+		<div class="compare-name">Найвищий</div>
+		<div class="compare-bar-track">
+			<div class="compare-bar-fill" id="bar-best" style="background:var(--acc); width:0%"></div>
+		</div>
+		<div class="compare-val" id="cmp-best" style="color:var(--acc)">—</div>
+		</div>
+	</div>
+
+	<div class="section-label">Відповіді — питання за питанням</div>
+	<div class="q-list" id="qList"></div>
 	</div>
 {% endblock %}
 

@@ -7,6 +7,108 @@ from New_Quiz_App.models import Quiz
 from profile_app.models import User
 from control.models import Group, Class
 
+def get_student_results(session_id: int, user_id: int) -> dict:
+    session = QuizSession.query.get_or_404(session_id)
+    quiz    = Quiz.query.get_or_404(session.quiz_id)
+
+    questions = (
+        Question.query
+        .filter_by(quiz_id=quiz.id)
+        .order_by(Question.order_index)
+        .all()
+    )
+    question_ids  = [q.id for q in questions]
+    total_questions = len(questions)
+    my_answers = (
+        SessionAnswer.query
+        .filter_by(session_id=session_id, user_id=user_id)
+        .filter(SessionAnswer.question_id.in_(question_ids))
+        .all()
+    )
+    my_map = {a.question_id: a for a in my_answers}
+
+    answers_data = []
+    correct_count = 0
+    wrong_count   = 0
+    skipped_count = 0
+
+    for q in questions:
+        ans = my_map.get(q.id)
+        if ans is None:
+            skipped_count += 1
+            answers_data.append({
+                "question_id":    q.id,
+                "order":          q.order_index,
+                "text":           q.text,
+                "correct_answer": q.correct_answer,
+                "status":         "skipped",
+                "given":          None,
+                "time_sec":       None,
+            })
+        else:
+            if ans.is_correct:
+                correct_count += 1
+            else:
+                wrong_count += 1
+            answers_data.append({
+                "question_id":    q.id,
+                "order":          q.order_index,
+                "text":           q.text,
+                "correct_answer": q.correct_answer,
+                "status":         "correct" if ans.is_correct else "wrong",
+                "given":          ans.answer_text,
+                "time_sec":       None,
+            })
+
+    score_pct = _pct(correct_count, total_questions)
+
+    all_session_answers = (
+        SessionAnswer.query
+        .filter_by(session_id=session_id)
+        .filter(SessionAnswer.question_id.in_(question_ids))
+        .all()
+    )
+
+    scores_by_user = defaultdict(lambda: {"correct": 0, "total": total_questions})
+    for a in all_session_answers:
+        if a.is_correct:
+            scores_by_user[a.user_id]["correct"] += 1
+
+    all_scores = [
+        _pct(v["correct"], total_questions)
+        for v in scores_by_user.values()
+    ]
+
+    avg_score  = _avg(all_scores)
+    best_score = max(all_scores) if all_scores else 0
+
+    participant = SessionParticipant.query.filter_by(
+        session_id=session_id, user_id=user_id
+    ).first()
+    student_name = participant.nickname if participant else "Учень"
+
+    return {
+        "meta": {
+            "quiz_name":    quiz.name,
+            "subject":      quiz.subject,
+            "student_name": student_name,
+        },
+        "score": {
+            "pct":     score_pct,
+            "grade12": _to_12(score_pct),
+            "correct": correct_count,
+            "wrong":   wrong_count,
+            "skipped": skipped_count,
+            "avg_time_sec": None,
+        },
+        "comparison": {
+            "my_score":  score_pct,
+            "avg_score": avg_score,
+            "best_score": best_score,
+        },
+        "answers": answers_data,
+    }
+
 def get_quiz_results(session_id: int) -> dict:
     session   = QuizSession.query.get_or_404(session_id)
     quiz      = Quiz.query.get_or_404(session.quiz_id)
