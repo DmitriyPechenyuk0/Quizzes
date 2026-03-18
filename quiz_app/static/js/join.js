@@ -630,20 +630,21 @@ function initSocket() {
     socket.on("finish_session", (data) => {
         console.log("[socket] finish_session", data);
         stopTimer();
-        _overlayHide("resultOverlay");
-        _overlayHide("quizWaitingOverlay");
-        document.getElementById("progressBar").style.width = "100%";  // FIX
+        window.location.href = '/'
+        // _overlayHide("resultOverlay");
+        // _overlayHide("quizWaitingOverlay");
+        // document.getElementById("progressBar").style.width = "100%";  // FIX
 
-        setLobbyStatus("connected");
+        // setLobbyStatus("connected");
 
-        // FIX: було ".sr-status-title" / ".sr-status-text" — не існує в HTML
-        const statusBlock = document.getElementById("lobbyStatusConnected");
-        const titleEl = statusBlock?.querySelector(".lobby-status-title");
-        const textEl  = statusBlock?.querySelector(".lobby-status-text");
-        if (titleEl) titleEl.textContent = "Тест завершено";
-        if (textEl)  textEl.textContent  = "Дякуємо за участь! Результати буде підведено викладачем.";
+        // // FIX: було ".sr-status-title" / ".sr-status-text" — не існує в HTML
+        // const statusBlock = document.getElementById("lobbyStatusConnected");
+        // const titleEl = statusBlock?.querySelector(".lobby-status-title");
+        // const textEl  = statusBlock?.querySelector(".lobby-status-text");
+        // if (titleEl) titleEl.textContent = "Тест завершено";
+        // if (textEl)  textEl.textContent  = "Дякуємо за участь! Результати буде підведено викладачем.";
 
-        showSection("lobby");
+        // showSection("lobby");
     });
 
     // ── kickedd ─────────────────────────────────────────
