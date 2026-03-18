@@ -250,10 +250,6 @@ function setLobbyStatus(status) {
         status === "pending" ? "" : "none";
 }
 
-// ════════════════════════════════════════════════════════
-// 6. QUIZ — рендер питання
-// ════════════════════════════════════════════════════════
-
 const LABELS = ["A", "B", "C", "D", "E", "F"];
 
 function _parseVariants(raw) {
@@ -284,10 +280,14 @@ function renderQuestion(q) {
     imgWrap.style.display    = "none";
     submitBtn.disabled       = true;
 
+    if (q.q_image) {
+        document.getElementById("qImage").src = q.q_image;
+        imgWrap.style.display = "block";
+    }
+
     if (q.q_type === "select") {
         _renderSelectVariants(_parseVariants(q.q_variants));
         choiceWrap.style.display = "block";
-
     } else if (q.q_type === "fform" || q.q_type === "letters") {
         const ta = document.getElementById("textAnswer");
         ta.value       = "";

@@ -11,10 +11,6 @@ user_sessions = {}
 
 
 def serialize_user(user: User) -> dict:
-    """
-    BUG FIX: User — це SQLAlchemy-об'єкт, він НЕ JSON-серіалізується.
-    Перетворюємо вручну на словник із потрібними полями.
-    """
     if not user:
         return {"id": None, "name": "—", "username": "—"}
     return {
@@ -36,6 +32,7 @@ def serialize_question(q: Question) -> dict:
         "q_quantity":  qz.count_questions if qz else 0,
         "q_type":      q.type,
         "q_variants":  variants,
+        "q_image": q.image_path
     }
 
 
@@ -107,8 +104,6 @@ def broadcast_state(code: str):
         })
 
     owner_user = User.query.filter_by(id=quiz.owner).first() if quiz else None
-
-    # BUG FIX: serialize_user() замість передачі ORM-об'єкта напряму
     data = {
         "status":        sessio.status,
         "participants":  participants,
