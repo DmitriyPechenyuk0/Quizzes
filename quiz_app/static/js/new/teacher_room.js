@@ -303,11 +303,6 @@ function renderQuestion(q) {
         grid.appendChild(note);
     }
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// QUIZ — STUDENTS PANEL
-// ═══════════════════════════════════════════════════════════════════════════════
-
 function renderStudentsPanel(participants) {
     document.getElementById('qz-students-list').innerHTML     = '';
     document.getElementById('qz-students-list-mob').innerHTML = '';
@@ -392,10 +387,6 @@ function refreshQuizCount() {
     if (mobBadge) mobBadge.textContent = count;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// QUIZ — RESPONSES TAB
-// ═══════════════════════════════════════════════════════════════════════════════
-
 function clearRespList() {
     const list = document.getElementById('qz-resp-list');
     list.innerHTML = '<div class="qz-resp-empty">Поки що ніхто не відповів</div>';
@@ -406,8 +397,6 @@ function clearRespList() {
 
 function renderResponsesTab(data) {
     const list = document.getElementById('qz-resp-list');
-
-    // Remove empty-state placeholder on first answer
     const emptyEl = list.querySelector('.qz-resp-empty');
     if (emptyEl && data.participants.some(p => p.answered)) emptyEl.remove();
 
@@ -421,7 +410,6 @@ function renderResponsesTab(data) {
 
         const initials = makeInitials(p.username);
         const row = document.createElement('div');
-        // CSS class: .qz-resp-row
         row.className = 'qz-resp-row';
         row.setAttribute('data-resp-id', uid);
         row.innerHTML = `
@@ -437,11 +425,6 @@ function renderResponsesTab(data) {
     document.getElementById('qz-resp-eyebrow').textContent =
         `Відповіді — ${data.answered} з ${total} учнів`;
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// TIMER
-// ═══════════════════════════════════════════════════════════════════════════════
-
 function resetTimer(secs = 30) {
     stopTimer();
     timerSecs = secs;
@@ -503,20 +486,12 @@ function formatTime(s) {
     return String(Math.floor(ss / 60)).padStart(2, '0') + ':' + String(ss % 60).padStart(2, '0');
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// TABS
-// ═══════════════════════════════════════════════════════════════════════════════
-
 function activateTab(name) {
     document.querySelectorAll('#view-quiz .qz-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('#view-quiz .qz-tabs-bar .qz-tab').forEach(b => b.classList.remove('active'));
     document.getElementById('qz-panel-' + name)?.classList.add('active');
     document.querySelector(`#view-quiz .qz-tab[data-tab="${name}"]`)?.classList.add('active');
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// END-QUESTION MODAL
-// ═══════════════════════════════════════════════════════════════════════════════
 
 function openEndModal() {
     const answered    = currentAnswers.answered || 0;
@@ -536,10 +511,6 @@ function openEndModal() {
 function closeEndModal() {
     document.getElementById('qz-end-modal').classList.remove('show');
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// RESULTS MODAL
-// ═══════════════════════════════════════════════════════════════════════════════
 
 function openResultsModal() {
     stopTimer();
@@ -579,7 +550,6 @@ function populateResultsModal() {
     setElText('qz-stat-incorrect',  `${wrong} / ${answered}`);
     setElText('qz-stat-notanswered', noAnswer);
 
-    // Participants list inside results modal — CSS: .qz-res-p-row etc.
     const resParts = document.getElementById('qz-res-participants');
     if (resParts) {
         resParts.innerHTML = '';
@@ -646,20 +616,11 @@ function destroyCharts() {
     if (donutChartInst) { donutChartInst.destroy(); donutChartInst = null; }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// MOBILE
-// ═══════════════════════════════════════════════════════════════════════════════
-
 function openDrawer()  { document.getElementById('qz-students-drawer').classList.add('show'); }
 function closeDrawer() { document.getElementById('qz-students-drawer').classList.remove('show'); }
 
-// HTML: overlay has id="qz-control-sheet"
 function openControlSheet()  { document.getElementById('qz-control-sheet').classList.add('show'); }
 function closeControlSheet() { document.getElementById('qz-control-sheet').classList.remove('show'); }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// KICK STUDENT
-// ═══════════════════════════════════════════════════════════════════════════════
 
 function kickStudent(userId) {
     document.querySelectorAll(`[data-student-id="${userId}"]`).forEach(card => {
@@ -671,11 +632,6 @@ function kickStudent(userId) {
         refreshQuizCount();
     }, 350);
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════════════════════════════════
-
 function makeInitials(name) {
     if (!name) return '?';
     const words = name.trim().split(/\s+/);
