@@ -120,185 +120,197 @@
 // });
 
 
-const QS = [
-  "Перший закон Ньютона формулює...",
-  "Одиниця вимірювання сили в СІ",
-  "Формула другого закону Ньютона",
-  "Сила реакції відносно сили дії",
-  "Інерція залежить від...",
-  "Маса тіла 5 кг, прискорення 3 м/с². Сила?",
-  "Що таке рівноприскорений рух?",
-  "Третій закон Ньютона стверджує...",
-  "Яка маса потрібна при F=20Н, a=4м/с²?",
-  "Де закони Ньютона незастосовні?",
-  "Вага та маса — це...",
-  "Коефіцієнт тертя залежить від...",
-  "Сила тяжіння та сила реакції опори...",
-  "Прискорення вільного падіння рівне...",
-  "Силу виміряємо у ньютонах, бо...",
-];
+const DATA = JSON.parse(document.getElementById('app-data').textContent);
+const SESSION = DATA.session;
+const SUMMARY = DATA.summary;
 
-const COR = [
-  'Тіло зберігає стан спокою або рівноміру.',
-  'Ньютон (Н)','F = ma','Рівна та протилежна','Від маси тіла',
-  '15 Н','Рух зі сталим прискоренням','Сили дії і протидії рівні',
-  '5 кг','При швидкостях, близьких до c',
-  'Різні фізичні величини','Від матеріалів поверхонь',
-  'Не є парою 3-го закону','9.8 м/с²','Так визначено в СІ',
-];
+const QS   = DATA.questions.map(q => q.text);
+const COR  = DATA.questions.map(q => q.correct_answer);
+const CPCT = DATA.questions.map(q => q.correct_pct);
+const WPCT = DATA.questions.map(q => q.wrong_pct);
 
-const CPCT = [92,85,78,61,88,54,79,67,45,52,71,63,58,89,74];
-const WPCT = [5,10,16,28,8,35,14,24,40,34,20,27,33,8,18];
+const students = DATA.students.map(s => ({
+    n:       s.name,
+    score:   s.score_pct,
+    correct: s.correct_count,
+    answers: s.answers.map(a => ({ s: a.status, a: a.given ?? '—' })),
+}));
 
 function s12(p) {
-  if(p>=90)return 12; if(p>=83)return 11; if(p>=75)return 10;
-  if(p>=67)return 9;  if(p>=58)return 8;  if(p>=50)return 7;
-  if(p>=42)return 6;  if(p>=33)return 5;  if(p>=25)return 4;
-  if(p>=17)return 3;  if(p>=8)return 2;   return 1;
+    if (p >= 90) return 12; if (p >= 83) return 11; if (p >= 75) return 10;
+    if (p >= 67) return 9;  if (p >= 58) return 8;  if (p >= 50) return 7;
+    if (p >= 42) return 6;  if (p >= 33) return 5;  if (p >= 25) return 4;
+    if (p >= 17) return 3;  if (p >= 8)  return 2;  return 1;
 }
 
-const NAMES = [
-  "Олексій Бойко","Марина Коваль","Дмитро Савченко","Аліна Шевченко",
-  "Іван Мельник","Юлія Кравченко","Артем Лисенко","Наталія Бондаренко",
-  "Сергій Тимченко","Оксана Гриценко","Микола Кузьменко","Вікторія Федоренко",
-  "Євген Олексієнко","Тетяна Нечипоренко","Роман Іваненко","Софія Харченко",
-  "Андрій Ковальчук","Катерина Поліщук","Олег Сидоренко","Ганна Мороз",
-  "Павло Ткаченко","Людмила Яценко","Василь Петренко","Ірина Рибаченко",
-  "Максим Голуб","Дарина Панченко","Богдан Стець","Крістіна Сало",
-];
+document.querySelector('.stat:nth-child(1) .stat-val').innerHTML =
+    `${SUMMARY.avg_correct_pct}<span class="u">%</span>`;
 
-const RAW_SCORES = [94,87,80,80,74,74,67,67,60,60,54,54,47,47,40,40,67,80,74,87,60,54,31,67,74,80,87,60];
+document.querySelector('.stat:nth-child(2) .stat-val').innerHTML =
+    `${SUMMARY.avg_wrong_pct}<span class="u">%</span>`;
 
-const students = NAMES.map((n,i) => {
-  const score = RAW_SCORES[i];
-  const answers = QS.map((_,qi) => {
-    const r = Math.random()*100;
-    if(r < CPCT[qi]) return {s:'correct', a:['Варіант А','Варіант Б','Правильний варіант'][qi%3]};
-    if(r < CPCT[qi]+WPCT[qi]) return {s:'wrong', a:['Варіант В','Варіант Г'][qi%2]};
-    return {s:'skipped', a:'—'};
-  });
-  return {n, score, answers, time: 30 + Math.floor(Math.random()*20)};
-});
+document.querySelector('.stat:nth-child(3) .stat-val').innerHTML =
+    `${SUMMARY.avg_skipped_pct}<span class="u">%</span>`;
 
-students.sort((a,b) => b.score - a.score);
+document.querySelector('.stat:nth-child(4) .stat-val').innerHTML =
+    `—<span class="u">с</span>`;
 
-// ── CHART ──
+document.querySelector('.stat:nth-child(5) .stat-val').innerHTML =
+    `${SUMMARY.avg_score_100}<span class="u">б</span>`;
+
+document.querySelector('.stat:nth-child(6) .stat-val').innerHTML =
+    `${SUMMARY.avg_score_12}<span class="u">/12</span>`;
+
+document.querySelector('.students-topbar-title').textContent =
+    `Учні — ${SUMMARY.total_participants}`;
+
+document.querySelector('.score-pair .score-box:nth-child(1) .score-box-val').innerHTML =
+    `${SUMMARY.avg_score_100}<span class="u">б</span>`;
+
+document.querySelector('.score-pair .score-box:nth-child(2) .score-box-val').innerHTML =
+    `${SUMMARY.avg_score_12}<span class="u">/12</span>`;
+
+const dist = SUMMARY.dist;
+const segs = document.querySelectorAll('.dist-seg');
+if (segs.length === 3) {
+    segs[0].style.width = dist.below_50  + '%';
+    segs[1].style.width = dist.mid_50_74 + '%';
+    segs[2].style.width = dist.above_75  + '%';
+}
+const distLabels = document.querySelectorAll('.dist-labels span');
+if (distLabels.length === 3) {
+    distLabels[0].textContent = `${dist.below_50}% нижче 50б`;
+    distLabels[1].textContent = `${dist.mid_50_74}% 50–74б`;
+    distLabels[2].textContent = `${dist.above_75}% вище 75б`;
+}
+
+if (SUMMARY.best) {
+    document.querySelector('.best-worst div:nth-child(1) .bw-val').innerHTML =
+        `${SUMMARY.best.score}<span style="font-size:var(--fs-md);color:var(--c6);font-weight:400">б</span>`;
+    document.querySelector('.best-worst div:nth-child(1) .bw-name').textContent =
+        SUMMARY.best.name;
+}
+if (SUMMARY.worst) {
+    document.querySelector('.best-worst div:nth-child(2) .bw-val').innerHTML =
+        `${SUMMARY.worst.score}<span style="font-size:var(--fs-md);color:var(--c6);font-weight:400">б</span>`;
+    document.querySelector('.best-worst div:nth-child(2) .bw-name').textContent =
+        SUMMARY.worst.name;
+}
+
 const ctx = document.getElementById('chartQ').getContext('2d');
 new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: QS.map((_,i) => `П${i+1}`),
-    datasets: [{
-      label: '% правильних',
-      data: CPCT,
-      borderColor: 'rgba(200,200,200,0.5)',
-      backgroundColor: 'rgba(200,200,200,0.04)',
-      borderWidth: 1.5,
-      fill: true,
-      tension: 0.35,
-      pointBackgroundColor: CPCT.map(v => v>=70 ? '#00c060' : v>=50 ? '#c8a040' : '#e05050'),
-      pointBorderColor: '#111',
-      pointBorderWidth: 1.5,
-      pointRadius: 4,
-      pointHoverRadius: 6,
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        backgroundColor: '#1a1a1a',
-        borderColor: '#2a2a2a',
-        borderWidth: 1,
-        titleColor: '#fff',
-        bodyColor: '#888',
-        titleFont: { family:'Outfit', weight:'700', size:12 },
-        bodyFont: { family:'Golos Text', size:11 },
-        padding: 12,
-        callbacks: {
-          title: items => `П${items[0].dataIndex+1}: ${QS[items[0].dataIndex].substring(0,32)}...`,
-          label: item => ` ${item.raw}% відповіли правильно`,
-        }
-      }
+    type: 'line',
+    data: {
+        labels: QS.map((_, i) => `П${i + 1}`),
+        datasets: [{
+            label: '% правильних',
+            data: CPCT,
+            borderColor: 'rgba(200,200,200,0.5)',
+            backgroundColor: 'rgba(200,200,200,0.04)',
+            borderWidth: 1.5,
+            fill: true,
+            tension: 0.35,
+            pointBackgroundColor: CPCT.map(v => v >= 70 ? '#00c060' : v >= 50 ? '#c8a040' : '#e05050'),
+            pointBorderColor: '#111',
+            pointBorderWidth: 1.5,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+        }]
     },
-    scales: {
-      x: {
-        grid: { color: '#1a1a1a' },
-        ticks: { color: '#555', font: { family:'Outfit', size:11, weight:'600' } },
-        border: { color: '#222' },
-      },
-      y: {
-        min:0, max:100,
-        grid: { color: '#1a1a1a' },
-        ticks: { color: '#555', font: { family:'Outfit', size:11 }, callback: v=>v+'%', stepSize:25 },
-        border: { color: '#222' },
-      }
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: '#1a1a1a',
+                borderColor: '#2a2a2a',
+                borderWidth: 1,
+                titleColor: '#fff',
+                bodyColor: '#888',
+                titleFont: { family: 'Outfit', weight: '700', size: 12 },
+                bodyFont: { family: 'Golos Text', size: 11 },
+                padding: 12,
+                callbacks: {
+                    title: items => `П${items[0].dataIndex + 1}: ${QS[items[0].dataIndex].substring(0, 32)}...`,
+                    label: item  => ` ${item.raw}% відповіли правильно`,
+                }
+            }
+        },
+        scales: {
+            x: {
+                grid:   { color: '#1a1a1a' },
+                ticks:  { color: '#555', font: { family: 'Outfit', size: 11, weight: '600' } },
+                border: { color: '#222' },
+            },
+            y: {
+                min: 0, max: 100,
+                grid:   { color: '#1a1a1a' },
+                ticks:  { color: '#555', font: { family: 'Outfit', size: 11 }, callback: v => v + '%', stepSize: 25 },
+                border: { color: '#222' },
+            }
+        }
     }
-  }
 });
 
-// ── STUDENTS ──
 function renderStudents(list) {
-  const el = document.getElementById('studentsList');
-  el.innerHTML = list.map((s,i) => {
-    const cls     = s.score>=75 ? 'score-high' : s.score>=50 ? 'score-mid' : 'score-low';
-    const correct = s.answers.filter(a=>a.s==='correct').length;
-    return `
-      <div class="student-row ${cls}" onclick="openModal(${students.indexOf(s)})">
-        <div class="s-rank">${i+1}</div>
-        <div class="s-name">${s.n}</div>
-        <div class="s-val">${s.score}</div>
-        <div class="s-val" style="color:var(--c7)">${s12(s.score)}</div>
-        <div class="s-sub">
-          ${correct}/${QS.length}
-          <div class="s-bar"><div class="s-bar-fill" style="width:${s.score}%"></div></div>
-        </div>
-        <div class="s-val" style="color:var(--c7)">${s.time}с</div>
-        <div class="s-arrow">›</div>
-      </div>`;
-  }).join('');
+    const el = document.getElementById('studentsList');
+    el.innerHTML = list.map((s, i) => {
+        const cls = s.score >= 75 ? 'score-high' : s.score >= 50 ? 'score-mid' : 'score-low';
+        return `
+        <div class="student-row ${cls}" onclick="openModal(${students.indexOf(s)})">
+            <div class="s-rank">${i + 1}</div>
+            <div class="s-name">${s.n}</div>
+            <div class="s-val">${s.score}</div>
+            <div class="s-val" style="color:var(--c7)">${s12(s.score)}</div>
+            <div class="s-sub">
+                ${s.correct}/${QS.length}
+                <div class="s-bar"><div class="s-bar-fill" style="width:${s.score}%"></div></div>
+            </div>
+            <div class="s-val" style="color:var(--c7)">—</div>
+            <div class="s-arrow">›</div>
+        </div>`;
+    }).join('');
 }
 
 renderStudents(students);
+
 function filterStudents(q) {
-  renderStudents(students.filter(s => s.n.toLowerCase().includes(q.toLowerCase())));
+    renderStudents(students.filter(s => s.n.toLowerCase().includes(q.toLowerCase())));
 }
 
-// ── MODAL ──
 function openModal(idx) {
-  const s = students[idx];
-  document.getElementById('mName').textContent      = s.n;
-  document.getElementById('mScore100').textContent  = s.score;
-  document.getElementById('mScore12').textContent   = `${s12(s.score)}/12`;
-  document.getElementById('overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+    const s = students[idx];
+    document.getElementById('mName').textContent     = s.n;
+    document.getElementById('mScore100').textContent = s.score;
+    document.getElementById('mScore12').textContent  = `${s12(s.score)}/12`;
+    document.getElementById('overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
 
-  document.getElementById('mBody').innerHTML = s.answers.map((a,i) => `
-    <div class="mq-row ${a.s}">
-      <div class="mq-n">${i+1}</div>
-      <div>
-        <div class="mq-q">${QS[i]}</div>
-        ${a.s==='wrong' ? `<div class="mq-sub" style="color:var(--acc)">✓ ${COR[i]}</div>` : ''}
-      </div>
-      <div class="mq-ans ${a.s}">${a.s==='skipped' ? 'Пропущено' : a.a}</div>
-      <div class="mq-icon">${
-        a.s==='correct' ? '<span style="color:#00c060">✓</span>' :
-        a.s==='wrong'   ? '<span style="color:#e05050">✗</span>' :
-                          '<span style="color:#333">–</span>'
-      }</div>
-    </div>`).join('');
+    document.getElementById('mBody').innerHTML = s.answers.map((a, i) => `
+        <div class="mq-row ${a.s}">
+            <div class="mq-n">${i + 1}</div>
+            <div>
+                <div class="mq-q">${QS[i]}</div>
+                ${a.s === 'wrong' ? `<div class="mq-sub" style="color:var(--acc)">✓ ${COR[i]}</div>` : ''}
+            </div>
+            <div class="mq-ans ${a.s}">${a.s === 'skipped' ? 'Пропущено' : a.a}</div>
+            <div class="mq-icon">${
+                a.s === 'correct' ? '<span style="color:#00c060">✓</span>' :
+                a.s === 'wrong'   ? '<span style="color:#e05050">✗</span>' :
+                                    '<span style="color:#333">–</span>'
+            }</div>
+        </div>`).join('');
 }
 
 function closeModal() {
-  document.getElementById('overlay').classList.remove('open');
-  document.body.style.overflow = '';
+    document.getElementById('overlay').classList.remove('open');
+    document.body.style.overflow = '';
 }
 
 document.getElementById('overlay').addEventListener('click', e => {
-  if(e.target===e.currentTarget) closeModal();
+    if (e.target === e.currentTarget) closeModal();
 });
 document.addEventListener('keydown', e => {
-  if(e.key==='Escape') closeModal();
+    if (e.key === 'Escape') closeModal();
 });

@@ -9,16 +9,18 @@
 
 
 {% block main %}
+
+
 <div class="page">
   <div class="stats-grid">
     <div class="stat">
       <div class="stat-label">Правильних</div>
-      <div class="stat-val stat-accent">67<span class="u">%</span></div>
+      <div class="stat-val stat-accent"><span class="u">%</span></div>
       <div class="stat-foot">середнє по класу</div>
     </div>
     <div class="stat">
       <div class="stat-label">Неправильних</div>
-      <div class="stat-val stat-err">24<span class="u">%</span></div>
+      <div class="stat-val stat-err"><span class="u">%</span></div>
       <div class="stat-foot">середнє по класу</div>
     </div>
     <div class="stat">
@@ -28,21 +30,21 @@
     </div>
     <div class="stat">
       <div class="stat-label">Середній час / пит.</div>
-      <div class="stat-val stat-warn">38<span class="u">с</span></div>
+      <div class="stat-val stat-warn"><span class="u">с</span></div>
       <div class="stat-foot">по всьому тесту</div>
     </div>
     <div class="stat">
       <div class="stat-label">Оцінка / 100</div>
-      <div class="stat-val">67<span class="u">б</span></div>
+      <div class="stat-val"><span class="u">б</span></div>
       <div class="stat-foot">середня по класу</div>
     </div>
     <div class="stat">
       <div class="stat-label">Оцінка / 12</div>
-      <div class="stat-val">8<span class="u">/12</span></div>
+      <div class="stat-val"><span class="u">/12</span></div>
       <div class="stat-foot">середня по класу</div>
     </div>
   </div>
-
+  
   <div class="two-col">
     <div class="panel">
       <div class="panel-title">Успішність по питаннях</div>
@@ -50,7 +52,7 @@
     </div>
     <div class="panel">
       <div class="panel-title">Розподіл балів класу</div>
-
+      
       <div class="score-pair">
         <div class="score-box">
           <div class="score-box-label">Середній / 100</div>
@@ -61,7 +63,7 @@
           <div class="score-box-val">8<span class="u">/12</span></div>
         </div>
       </div>
-
+      
       <div class="dist-label-row">Розподіл результатів</div>
       <div class="dist-row">
         <div class="dist-seg" style="width:18%; background:var(--err); opacity:.7"></div>
@@ -73,7 +75,7 @@
         <span style="color:var(--warn)">25% 50–74б</span>
         <span style="color:var(--acc)">57% вище 75б</span>
       </div>
-
+      
       <div class="best-worst">
         <div>
           <div class="bw-label">Найвищий бал</div>
@@ -88,13 +90,13 @@
       </div>
     </div>
   </div>
-
+  
   <div class="students-panel">
     <div class="students-topbar">
       <div class="students-topbar-title">Учні — 28</div>
       <input class="search-input" placeholder="Пошук учня..." oninput="filterStudents(this.value)">
     </div>
-
+    
     <div class="students-table-head">
       <div class="th">#</div>
       <div class="th">Ім'я</div>
@@ -104,10 +106,10 @@
       <div class="th right">Час</div>
       <div class="th"></div>
     </div>
-
+    
     <div class="students-list" id="studentsList"></div>
   </div>
-
+  
 </div>
 
 <div class="overlay" id="overlay">
@@ -129,7 +131,7 @@
       </div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-
+    
     <div class="modal-body">
       <div class="mq-head">
         <div class="mq-th">#</div>
@@ -143,6 +145,7 @@
 </div>
 {% endblock %}
 {% block scripts %}
+<script id="app-data" type="application/json">{{ quiz_data | tojson }}</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="{{ url_for('history.static', filename='js/quiz_teacher_result.js') }}"></script>

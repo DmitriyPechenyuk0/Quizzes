@@ -7,6 +7,8 @@ from quiz_app.models import Question, SessionAnswer, QuizSession,  SessionPartic
 from flask_login import current_user
 from profile_app.models import User  
 from New_Quiz_App.models import Quiz
+from .quiz_results import get_quiz_results
+
 def show_history_page():
     
     return flask.render_template(template_name_or_list="history.html" )
@@ -72,48 +74,12 @@ def show_qtr_page(session_id=None):
     if not session_id:
         return flask.render_template("quiz_teacher_result.html", students=[], stats=[], avg_accuracy=0)
 
-    session = db.session.query(QuizSession).filter_by(id=session_id).first()
-    if not session:
-        return flask.render_template("quiz_teacher_result.html", students=[], stats=[], avg_accuracy=0)
+    session = QuizSession.query.get_or_404(session_id)
+    
+    # if session.who_host != current_user.id:
 
-    questions = db.session.query(Question).filter(Question.quiz_id == session.quiz_id).order_by(Question.order_index).all()
-    participants = db.session.query(SessionParticipant).filter_by(session_id=session_id).all()
+    #     return {'error': True}
 
-    question_stats = {q.id: {"text": q.text, "correct": 0, "total": 0} for q in questions}
-    student_results = []
+    quiz_data = get_quiz_results(session_id)
 
-    for participant in participants:
-        user_id = participant.user_id
-        nickname = participant.nickname
-
-        answers = db.session.query(SessionAnswer).filter_by(session_id=session_id, user_id=user_id).all()
-        correct_count = 0
-        total_count = len(answers)
-
-        for a in answers:
-            question = next((q for q in questions if q.id == a.question_id), None)
-            if not question:
-                continue
-            is_correct = (a.answer_text.strip() == question.correct_answer.strip())
-            if is_correct:
-                correct_count += 1
-                question_stats[question.id]["correct"] += 1
-            question_stats[question.id]["total"] += 1
-
-        if total_count == 0:
-            continue
-
-        accuracy = round(correct_count / total_count * 100, 2)
-        student_results.append({"id": user_id, "name": nickname, "accuracy": accuracy})
-
-   
-    avg_accuracy = round(sum(s["accuracy"] for s in student_results) / len(student_results), 2) if student_results else 0
-
-
-    stats = []
-    for q in questions:
-        s = question_stats[q.id]
-        percent = round((s["correct"] / s["total"]) * 100, 2) if s["total"] else 0
-        stats.append({"question": q.text, "percent": percent})
-
-    return flask.render_template( "quiz_teacher_result.html", students=student_results, stats=stats, avg_accuracy=avg_accuracy,session_id=session_id,quiz_name = Quiz.query.filter_by(id=QuizSession.query.filter_by(id=session_id).first().quiz_id).first().name)
+    return flask.render_template( "quiz_teacher_result.html", quiz_data=quiz_data)
