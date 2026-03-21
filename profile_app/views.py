@@ -4,87 +4,82 @@ import flask
 from control.models import Class, Group, RequestsToClass
 from profile_app.models import User
 from New_Quiz_App.models import Quiz, db
-from quiz_app.models import QuizSession, SessionParticipant 
+from quiz_app.models import QuizSession, SessionParticipant, SessionAnswer
 
-# @login_required
 def show_profile_page():
-
-
-
-    # if current_user.is_teacher:
-    #     completed_quizzes = QuizSession.query.filter_by(who_host = current_user.id).all()
-    #     sessionss = []
-
-    #     for itm in completed_quizzes:
-    #         sessionss.append({"session":itm, "quiz":Quiz.query.filter_by(id=itm.quiz_id).first()})
-    # else:
-        
-    #     completed_quizzes = SessionParticipant.query.filter_by(user_id = current_user.id).all()
-
-    #     quizz = []
-        
-    #     for item in completed_quizzes:
-    #         quizz.append(item.session_id)
-        
-    #     completed_quizzes = quizz
-        
-    #     sess = []
-        
-    #     for item in completed_quizzes:
-    #         sess.append(QuizSession.query.filter_by(id=item).first())
-        
-    #     completed_quizzes= sess
-    #     sessionss = []
-    #     for itm in completed_quizzes:
-    #         sessionss.append({"session":itm, "quiz":Quiz.query.filter_by(id=itm.quiz_id).first()})
-    # completed_counts = len(completed_quizzes)
-
-    # created_quizzes = Quiz.query.filter_by(owner=current_user.id).all()
-    if isinstance(current_user, UserMixin):
-        
-        name = current_user.name
-        email = current_user.email
-
-        if Class.query.filter_by(id=current_user.group).all():
-            user_class = Class.query.filter_by(id=current_user.group).all()[0].name
-        else:
-            user_class = False
-
-        user_initials = current_user.name.split(' ')
-        final_initials = []
-
-        for initial in user_initials:
-            final_initials.append(list(initial)[0])
-        final_initials = ''.join(final_initials)
-
-        created_tests = Quiz.query.filter_by(owner = current_user.id).all()
-
-        print(created_tests)
-
-    else:
-        name = 'Unknown User'
-        email = 'example@gmail.com'
-        final_initials = 'U'
-        user_class = False
-
+    if not isinstance(current_user, UserMixin):
+        return flask.redirect('/login')
+ 
+    name = current_user.name
+    email = current_user.email
+ 
+    user_class_obj = Class.query.filter_by(id=current_user.group).first()
+    user_class = user_class_obj.name if user_class_obj else False
+ 
+    user_initials = ''.join([part[0] for part in current_user.name.split() if part])
+ 
+    created_tests = Quiz.query.filter_by(owner=current_user.id).all()
+ 
+    completed_tests_data = []
+ 
+    if not current_user.is_teacher:
+        participations = SessionParticipant.query.filter_by(user_id=current_user.id).all()
+ 
+        for p in participations:
+            session = QuizSession.query.filter_by(id=p.session_id).first()
+            if not session or session.status != 'FINISHED':
+                continue
+ 
+            quiz = Quiz.query.filter_by(id=session.quiz_id).first()
+            if not quiz:
+                continue
+ 
+            answers = SessionAnswer.query.filter_by(
+                session_id=session.id,
+                user_id=current_user.id
+            ).all()
+ 
+            total_questions = quiz.count_questions
+            answered_count = len(answers)
+            correct_count = sum(1 for a in answers if a.is_correct)
+ 
+            if total_questions > 0:
+                percentage = round(correct_count / total_questions * 100)
+            else:
+                percentage = 0
+ 
+            circumference = 264
+            dashoffset = round(circumference * (1 - percentage / 100))
+ 
+            session_class_obj = Class.query.filter_by(id=session.group).first()
+            session_class_name = session_class_obj.name if session_class_obj else '—'
+ 
+            completed_tests_data.append({
+                'session_id': session.id,
+                'user_id': current_user.id,
+                'quiz_name': quiz.name,
+                'subject': quiz.subject,
+                'class_name': session_class_name,
+                'total_questions': total_questions,
+                'answered_count': answered_count,
+                'correct_count': correct_count,
+                'percentage': percentage,
+                'dashoffset': dashoffset,
+            })
+ 
     context = {
         'page': 'profile',
         'user_active': True,
         'is_teacher': current_user.is_teacher,
         'user_name': name,
         'user_email': email,
-        'user_initials': final_initials,
+        'user_initials': user_initials,
+        'user_class': user_class,
         'created_tests': created_tests,
-        "user_class" : user_class
-        # 'is_auth': current_user.is_authenticated,
-        # 'created_quizzes': created_quizzes, 
-        # 'created_quizzes_count': len(created_quizzes),
-        # 'completed_quizzes': sessionss,
-        # 'completed_quizzes_count': completed_counts,
-        # 'is_admin': current_user.is_teacher,
-        # 'is_teacher': current_user.is_teacher
+        'completed_tests': completed_tests_data,
+        'completed_count': len(completed_tests_data),
     }
-
+ 
     return flask.render_template("profile.html", **context)
 
 

@@ -88,226 +88,83 @@ head %}
 					Ваша історія проходження тестів
 				</p>
 			</div>
-
+		
 			<div class="cards-grid">
-				<div class="card">
-					<div class="card-header">
-						<div>
-							<div class="card-title">Лінійні рівняння</div>
-							<div class="card-subtitle">
-								Математика • ПЗ-25-2
+				{% if completed_tests %}
+					{% for test in completed_tests %}
+					<div class="card">
+						<div class="card-header">
+							<div>
+								<div class="card-title">{{ test.quiz_name }}</div>
+								<div class="card-subtitle">
+									{{ test.subject }} • {{ test.class_name }}
+								</div>
+							</div>
+							<div class="card-meta">
+								<span class="status-badge status-completed">Завершено</span>
 							</div>
 						</div>
-						<div class="card-meta">
-							<span class="status-badge status-completed"
-								>Завершено</span
-							>
+		
+						<div class="test-result-card">
+							<div class="result-info">
+								<div class="result-stat">
+									<div class="result-stat-icon">
+										<i class="bi bi-list-ol"></i>
+									</div>
+									<span class="result-stat-label">Питань</span>
+									<span class="result-stat-value">{{ test.total_questions }}</span>
+								</div>
+								<div class="result-stat">
+									<div class="result-stat-icon">
+										<i class="bi bi-check-circle"></i>
+									</div>
+									<span class="result-stat-label">Відповіді</span>
+									<span class="result-stat-value">{{ test.correct_count }}/{{ test.answered_count }}</span>
+								</div>
+								<div class="result-stat">
+									<div class="result-stat-icon">
+										<i class="bi bi-award"></i>
+									</div>
+									<span class="result-stat-label">Правильно</span>
+									<span class="result-stat-value">{{ test.correct_count }}/{{ test.total_questions }}</span>
+								</div>
+							</div>
+		
+							<div class="circular-progress">
+								<svg width="100%" height="100%" viewBox="0 0 100 100">
+									<circle
+										class="circular-progress-bg"
+										cx="50" cy="50" r="42"
+									></circle>
+									<circle
+										class="circular-progress-fill"
+										cx="50" cy="50" r="42"
+										stroke-dasharray="264"
+										stroke-dashoffset="{{ test.dashoffset }}"
+									></circle>
+								</svg>
+								<div class="circular-progress-text">{{ test.percentage }}%</div>
+							</div>
+						</div>
+		
+						<div class="card-actions">
+							<a href="/history/{{ test.session_id }}/{{ test.user_id }}" class="btn btn-secondary">
+								<i class="bi bi-file-earmark-text"></i> Деталі
+							</a>
 						</div>
 					</div>
-
-					<div class="test-result-card">
-						<div class="result-info">
-							<div class="result-stat">
-								<div class="result-stat-icon">
-									<i class="bi bi-clock"></i>
-								</div>
-								<span class="result-stat-label">Час</span>
-								<span class="result-stat-value">23 хв</span>
-							</div>
-							<div class="result-stat">
-								<div class="result-stat-icon">
-									<i class="bi bi-check-circle"></i>
-								</div>
-								<span class="result-stat-label">Відповіді</span>
-								<span class="result-stat-value">17/20</span>
-							</div>
-							<div class="result-stat">
-								<div class="result-stat-icon">
-									<i class="bi bi-award"></i>
-								</div>
-								<span class="result-stat-label">Бали</span>
-								<span class="result-stat-value">10/12</span>
-							</div>
-						</div>
-
-						<div class="circular-progress">
-							<svg
-								width="100%"
-								height="100%"
-								viewBox="0 0 100 100"
-							>
-								<circle
-									class="circular-progress-bg"
-									cx="50"
-									cy="50"
-									r="42"
-								></circle>
-								<circle
-									class="circular-progress-fill"
-									cx="50"
-									cy="50"
-									r="42"
-									stroke-dasharray="264"
-									stroke-dashoffset="40"
-								></circle>
-							</svg>
-							<div class="circular-progress-text">85%</div>
-						</div>
+					{% endfor %}
+				{% else %}
+					<div class="empty-state">
+						<i class="bi bi-inbox"></i>
+						<p>Ви ще не проходили жодного тесту</p>
 					</div>
-
-					<div class="card-actions">
-						<button class="btn btn-secondary">
-							<i class="bi bi-file-earmark-text"></i> Деталі
-						</button>
-					</div>
-				</div>
-
-				<div class="card">
-					<div class="card-header">
-						<div>
-							<div class="card-title">Структури даних</div>
-							<div class="card-subtitle">
-								Інформатика • ПЗ-25-2
-							</div>
-						</div>
-						<div class="card-meta">
-							<span class="status-badge status-completed"
-								>Завершено</span
-							>
-						</div>
-					</div>
-
-					<div class="test-result-card">
-						<div class="result-info">
-							<div class="result-stat">
-								<div class="result-stat-icon">
-									<i class="bi bi-clock"></i>
-								</div>
-								<span class="result-stat-label">Час</span>
-								<span class="result-stat-value">35 хв</span>
-							</div>
-							<div class="result-stat">
-								<div class="result-stat-icon">
-									<i class="bi bi-check-circle"></i>
-								</div>
-								<span class="result-stat-label">Відповіді</span>
-								<span class="result-stat-value">23/25</span>
-							</div>
-							<div class="result-stat">
-								<div class="result-stat-icon">
-									<i class="bi bi-award"></i>
-								</div>
-								<span class="result-stat-label">Бали</span>
-								<span class="result-stat-value">11/12</span>
-							</div>
-						</div>
-
-						<div class="circular-progress">
-							<svg
-								width="100%"
-								height="100%"
-								viewBox="0 0 100 100"
-							>
-								<circle
-									class="circular-progress-bg"
-									cx="50"
-									cy="50"
-									r="42"
-								></circle>
-								<circle
-									class="circular-progress-fill"
-									cx="50"
-									cy="50"
-									r="42"
-									stroke-dasharray="264"
-									stroke-dashoffset="21"
-								></circle>
-							</svg>
-							<div class="circular-progress-text">92%</div>
-						</div>
-					</div>
-
-					<div class="card-actions">
-						<button class="btn btn-secondary">
-							<i class="bi bi-file-earmark-text"></i> Деталі
-						</button>
-					</div>
-				</div>
-
-				<div class="card">
-					<div class="card-header">
-						<div>
-							<div class="card-title">Геометрія: Трикутники</div>
-							<div class="card-subtitle">
-								Математика • ПЗ-25-2
-							</div>
-						</div>
-						<div class="card-meta">
-							<span class="status-badge status-completed"
-								>Завершено</span
-							>
-						</div>
-					</div>
-
-					<div class="test-result-card">
-						<div class="result-info">
-							<div class="result-stat">
-								<div class="result-stat-icon">
-									<i class="bi bi-clock"></i>
-								</div>
-								<span class="result-stat-label">Час</span>
-								<span class="result-stat-value">28 хв</span>
-							</div>
-							<div class="result-stat">
-								<div class="result-stat-icon">
-									<i class="bi bi-check-circle"></i>
-								</div>
-								<span class="result-stat-label">Відповіді</span>
-								<span class="result-stat-value">12/16</span>
-							</div>
-							<div class="result-stat">
-								<div class="result-stat-icon">
-									<i class="bi bi-award"></i>
-								</div>
-								<span class="result-stat-label">Бали</span>
-								<span class="result-stat-value">9/12</span>
-							</div>
-						</div>
-
-						<div class="circular-progress">
-							<svg
-								width="100%"
-								height="100%"
-								viewBox="0 0 100 100"
-							>
-								<circle
-									class="circular-progress-bg"
-									cx="50"
-									cy="50"
-									r="42"
-								></circle>
-								<circle
-									class="circular-progress-fill"
-									cx="50"
-									cy="50"
-									r="42"
-									stroke-dasharray="264"
-									stroke-dashoffset="66"
-								></circle>
-							</svg>
-							<div class="circular-progress-text">75%</div>
-						</div>
-					</div>
-
-					<div class="card-actions">
-						<button class="btn btn-secondary">
-							<i class="bi bi-file-earmark-text"></i> Деталі
-						</button>
-					</div>
-				</div>
+				{% endif %}
 			</div>
 		</div>
+ 
 
+	</div>
 		<div
 			id="created-tests"
 			class="section teacher-only"
