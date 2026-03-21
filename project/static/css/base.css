@@ -54,7 +54,7 @@ body::-webkit-scrollbar-thumb {
     justify-content: center;
     align-items: center;
 }
-
+ 
 .nav-container {
     max-width: 75vw;
     width: 100%;
@@ -64,19 +64,19 @@ body::-webkit-scrollbar-thumb {
     justify-content: center;
     align-items: center;
 }
-
+ 
 .user-info {
     display: flex;
     align-items: center;
     gap: 1.04vw;
 }
-
+ 
 .user-details {
     text-align: right;
 }
-
+ 
 .user-name {
-    font-size: 1.48vh;
+    font-size: 1.5vh;   
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -84,25 +84,25 @@ body::-webkit-scrollbar-thumb {
     justify-content: flex-end;
     margin-bottom: 0.46vh;
 }
-
+ 
 .user-email {
-    font-size: 1.2vh;
+    font-size: 1.3vh; 
     color: #666;
 }
-
+ 
 .group-badge {
     padding: 0.46vh 0.63vw;
     background: #0f0f0f;
     border: 0.09vh solid #1a1a1a;
     border-radius: 0.21vw;
-    font-size: 1.11vh;
+    font-size: 1.89vh;        
     color: #00ff88;
     display: inline-flex;
     align-items: center;
     gap: 0.31vw;
     white-space: nowrap;
 }
-
+ 
 .avatar {
     width: 3.63vh;
     height: 3.63vh;
@@ -111,16 +111,16 @@ body::-webkit-scrollbar-thumb {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.48vh;
+    font-size: 1.52vh;      
     font-weight: 700;
     color: #0a0a0a;
     flex-shrink: 0;
 }
-
+ 
 .nav-container:has(> *:nth-child(2)) {
     justify-content: space-between;
 }
-
+ 
 .nav-logo {
     display: flex;
     align-items: center;
@@ -128,7 +128,7 @@ body::-webkit-scrollbar-thumb {
     text-decoration: none;
     color: #d1d5db;
 }
-
+ 
 .logo-icon {
     height: 3.7vh;
     aspect-ratio: 1;
@@ -137,26 +137,27 @@ body::-webkit-scrollbar-thumb {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.85vh;
+    font-size: 1.85vh; 
 }
-
+ 
 .logo-text {
-    font-size: 1.85vh;
+    font-size: 3.14vh;  
     font-weight: 700;
 }
-
+ 
 .nav-links {
     display: flex;
     gap: 0.26vw;
     list-style: none;
 }
-.nav-links > li{
+ 
+.nav-links > li {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
-
+ 
 .nav-links a {
     color: white;
     text-decoration: none;
@@ -164,13 +165,13 @@ body::-webkit-scrollbar-thumb {
     border-radius: 0.63vw;
     transition: background-color 0.2s;
     font-weight: 500;
-    font-size: 1vh;
+    font-size: 1.70vh; 
 }
-
+ 
 .nav-links a:hover {
     background-color: #27272a;
 }
-
+ 
 .nav-actions {
     display: flex;
     gap: 0.39vw;
