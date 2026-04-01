@@ -123,6 +123,7 @@
 const DATA = JSON.parse(document.getElementById('app-data').textContent);
 const SESSION = DATA.session;
 const SUMMARY = DATA.summary;
+const IMGS = DATA.questions.map(q => q.image_path ?? null);
 
 const QS   = DATA.questions.map(q => q.text);
 const COR  = DATA.questions.map(q => q.correct_answer);
@@ -290,8 +291,12 @@ function openModal(idx) {
     document.getElementById('mBody').innerHTML = s.answers.map((a, i) => `
         <div class="mq-row ${a.s}">
             <div class="mq-n">${i + 1}</div>
-            <div>
+            <div class="mq-content">
                 <div class="mq-q">${QS[i]}</div>
+                ${IMGS[i] ? `
+                <div class="mq-img-wrap">
+                    <img src="${IMGS[i]}" alt="Зображення" loading="lazy">
+                </div>` : ''}
                 ${a.s === 'wrong' ? `<div class="mq-sub" style="color:var(--acc)">✓ ${COR[i]}</div>` : ''}
             </div>
             <div class="mq-ans ${a.s}">${a.s === 'skipped' ? 'Пропущено' : a.a}</div>
@@ -301,7 +306,7 @@ function openModal(idx) {
                                     '<span style="color:#333">–</span>'
             }</div>
         </div>`).join('');
-}
+    }
 
 function closeModal() {
     document.getElementById('overlay').classList.remove('open');

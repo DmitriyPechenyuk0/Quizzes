@@ -823,3 +823,24 @@ to   { opacity:1; transform:translateY(0); }
 .modal-hd { padding: 1.5vh 4vw; }
 .modal-scores { flex-direction: column; align-items: flex-start; gap: 0.5vh; }
 }
+.mq-content { display: flex; flex-direction: column; gap: 0.56vh; }
+
+.mq-img-wrap {
+    width: 180px;
+    height: 120px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--c3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.56vh 0;
+    flex-shrink: 0;
+}
+
+.mq-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
