@@ -417,3 +417,27 @@ color: var(--c5);
 font-size: 11px;
 color: var(--c5);
 }
+
+.q-image-row {
+    padding: 0 20px 0 60px;
+    border-top: 1px solid var(--c3);
+}
+
+.q-image-wrap {
+    width: 220px;
+    height: 150px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--c3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 12px 0;
+}
+
+.q-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;   /* сохраняет соотношение сторон */
+    display: block;
+}

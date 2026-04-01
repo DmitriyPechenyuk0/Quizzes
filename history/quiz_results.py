@@ -44,6 +44,7 @@ def get_student_results(session_id: int, user_id: int) -> dict:
                 "status":         "skipped",
                 "given":          None,
                 "time_sec":       None,
+                "image_path":     q.image_path
             })
         else:
             if ans.is_correct:
@@ -58,6 +59,7 @@ def get_student_results(session_id: int, user_id: int) -> dict:
                 "status":         "correct" if ans.is_correct else "wrong",
                 "given":          ans.answer_text,
                 "time_sec":       None,
+                "image_path":     q.image_path,
             })
 
     score_pct = _pct(correct_count, total_questions)

@@ -161,6 +161,12 @@ document.getElementById('qList').innerHTML = ANSWERS.map((a, i) => `
                 <span class="q-icon-sym" style="color:${iconColor[a.status]}">${iconMap[a.status]}</span>
             </div>
         </div>
+        ${a.image_path ? `
+        <div class="q-image-row">
+            <div class="q-image-wrap">
+                <img src="${a.image_path}" alt="Зображення до питання" loading="lazy">
+            </div>
+        </div>` : ''}
         <div class="q-bottom-row">
             <div class="q-answer-block">
                 <span class="q-ans-label">Відповідь:</span>
