@@ -1441,6 +1441,36 @@ body.quiz-active { overflow: hidden; }
   .qz-modal-title { font-size: 5vw; }
   .qz-modal-desc { font-size: 3.5vw; }
   .qz-m-cancel, .qz-m-confirm { font-size: 3.5vw; padding: 3.5vw; border-radius: 1.5vw; }
+    /* Lobby participant chips */
+  .qz-lobby-chip {
+      display: flex; align-items: center; gap: 0.6vw;
+      padding: 0.8vh 0.8vw;
+      border: 1px solid var(--qz-border);
+      border-radius: calc(var(--qz-radius) * 2);
+      background: var(--qz-bg-3);
+      animation: chipIn 0.25s cubic-bezier(0.22,1,0.36,1);
+  }
+  @keyframes chipIn { from { opacity:0; transform:scale(.88); } to { opacity:1; transform:scale(1); } }
+
+  .qz-lobby-avatar {
+      width: 2vw; height: 2vw; border-radius: 50%;
+      background: var(--qz-bg-4); border: 1px solid var(--qz-border-hi);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Outfit', sans-serif; font-size: 0.65vw;
+      font-weight: 700; color: var(--qz-green); flex-shrink: 0;
+  }
+  .qz-lobby-name { flex: 1; font-size: var(--qz-f-sm); color: var(--qz-text-2); }
+
+  .qz-lobby-kick {
+      background: none; border: none; color: var(--qz-text-3);
+      cursor: pointer; opacity: 0; transition: all 0.15s; padding: 0.2vw;
+  }
+  .qz-lobby-chip:hover .qz-lobby-kick { opacity: 1; }
+  .qz-lobby-kick:hover { color: var(--qz-danger); }
+  .qz-lobby-kick svg { width: 0.7vw; height: 0.7vw; stroke: currentColor; stroke-width: 2; stroke-linecap: round; fill: none; }
+
+  /* participants-listq needs flex-wrap for chips */
+  .participants-listq { display: flex; flex-wrap: wrap; gap: 0.6vw; padding: 1.2vh 1.4vw; }
 }
 </style>
 {% endblock %}
@@ -1808,14 +1838,7 @@ body.quiz-active { overflow: hidden; }
     </div>
   </div>
 
-  <!-- ─── Finish Overlay ─── -->
-  <div class="qz-finish-overlay" id="finish-overlay">
-    <div class="qz-finish-title">🎉 Тест завершено!</div>
-    <div class="qz-finish-sub">Усі питання пройдено. Результати збережені.</div>
-    <button class="qz-finish-btn" id="finish-btn-home">На головну</button>
-  </div>
-
-</div><!-- /#view-quiz -->
+</div>
 
 {% endblock %}
 

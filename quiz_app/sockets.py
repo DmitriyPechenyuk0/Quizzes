@@ -6,7 +6,7 @@ from New_Quiz_App.models import Quiz
 from flask import request
 import colorama
 from profile_app.models import User
-
+import datetime
 user_sessions = {}
 
 
@@ -206,8 +206,12 @@ def on_teacher_start(data):
     if not first_q:
         return emit("error", {"message": "This quiz has no questions"})
 
-    sess.status        = "IN_PROGRESS"
-    sess.current_order = first_q.order_index
+    now = datetime.datetime.now(datetime.timezone.utc)
+
+    sess.status             = "IN_PROGRESS"
+    sess.current_order      = first_q.order_index
+    sess.started_at         = now
+    sess.question_started_at = now
     db.session.commit()
 
     emit("delete_user", {"id": 1}, to=code)
@@ -230,6 +234,7 @@ def on_teacher_next(data):
     nxt = next_question(s)
     if nxt:
         s.current_order = nxt.order_index
+        s.question_started_at = datetime.datetime.now(datetime.timezone.utc)
         db.session.commit()
         emit("room:question", serialize_question(nxt), to=code)
         broadcast_state(code)
@@ -238,7 +243,14 @@ def on_teacher_next(data):
 
 
 def finish_session(s: QuizSession, code: str):
+    now      = datetime.datetime.now(datetime.timezone.utc)
     s.status = "FINISHED"
+    s.ended_at = now
+
+    for p in SessionParticipant.query.filter_by(session_id=s.id).all():
+        if p.finished_at is None:
+            p.finished_at = now
+
     db.session.commit()
     final_results(s.id)
     emit('finish_session', {"session_id": s.id}, to=code)
@@ -270,6 +282,7 @@ def check_answer(data):
 def on_answer(data):
     code        = str(data.get("code", "")).strip()
     answer_text = (data.get("answer") or "").strip()
+    client_time_spent = data.get("time_spent")
 
     if not getattr(current_user, "is_authenticated", False):
         return emit("error", {"message": "Login to account"})
@@ -290,21 +303,53 @@ def on_answer(data):
     if exists:
         return
 
+    now       = datetime.datetime.now(datetime.timezone.utc)
     i_correct = is_correctt(answer_text, cur_quest.correct_answer, type=cur_quest.type)
+
+    # Приоритет: серверный расчёт, клиентский как запасной
+    time_spent = None
+    if session.question_started_at:
+        q_started  = session.question_started_at
+        if q_started.tzinfo is None:
+            q_started = q_started.replace(tzinfo=datetime.timezone.utc)
+        time_spent = round((now - q_started).total_seconds(), 2)
+    elif client_time_spent is not None:  # ✅ фолбэк на клиентское время
+        time_spent = round(float(client_time_spent), 2)
+
+    score = 0
+    if i_correct:
+        max_points  = cur_quest.points or 100
+        time_limit  = cur_quest.time_limit or 30
+        ratio       = max(0.0, 1.0 - (time_spent or 0) / time_limit)
+        score       = int(max_points * (0.5 + 0.5 * ratio))
 
     answr = SessionAnswer(
         session_id=session.id,
         user_id=current_user.id,
         question_id=cur_quest.id,
         answer_text=answer_text,
-        is_correct=i_correct
+        is_correct=i_correct,
+        answered_at=now,
+        time_spent=time_spent,
+        score=score,
     )
     db.session.add(answr)
+
+    participant = SessionParticipant.query.filter_by(
+        session_id=session.id, user_id=current_user.id
+    ).first()
+    if participant:
+        participant.total_score = (participant.total_score or 0) + score
+
     db.session.commit()
 
     if current_user.id in user_sessions:
         sid = user_sessions[current_user.id]
-        emit("waiting_overlay", {"overlay": True, "answer": i_correct}, to=sid)
+        emit("waiting_overlay", {
+            "overlay":    True,
+            "answer":     i_correct,
+            "time_spent": time_spent,
+        }, to=sid)
 
     all_participants = SessionParticipant.query.filter_by(session_id=session.id).all()
     answered_users   = SessionAnswer.query.filter_by(
